@@ -1,0 +1,400 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DECIMAL
+
+Grammar
+
+Rule 0     S' -> inicio
+Rule 1     inicio -> instrucciones
+Rule 2     instrucciones -> instrucciones instruccion
+Rule 3     instrucciones -> instruccion
+Rule 4     instruccion -> asignacion
+Rule 5     asignacion -> IDENTIFICADOR EQUALS expresion SEMICOLON
+Rule 6     asignacion -> IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
+Rule 7     tipo_dato -> INT64
+Rule 8     tipo_dato -> FLOAT64
+Rule 9     tipo_dato -> BOOL
+Rule 10    tipo_dato -> CHAR
+Rule 11    tipo_dato -> STRING
+Rule 12    tipo_dato -> ARRAY
+Rule 13    tipo_dato -> NOTHING
+Rule 14    expresion -> expresion SUM expresion
+Rule 15    expresion -> expresion RESTA expresion
+Rule 16    expresion -> expresion MUL expresion
+Rule 17    expresion -> expresion DIV expresion
+Rule 18    expresion -> ENTERO
+
+Terminals, with rules where they appear
+
+ARRAY                : 12
+BOOL                 : 9
+CHAR                 : 10
+DECIMAL              : 
+DIV                  : 17
+ENTERO               : 18
+EQUALS               : 5 6
+FLOAT64              : 8
+IDENTIFICADOR        : 5 6
+INT64                : 7
+MUL                  : 16
+NOTHING              : 13
+RESTA                : 15
+SEMICOLON            : 5 6
+STRING               : 11
+SUFIX                : 6
+SUM                  : 14
+error                : 
+
+Nonterminals, with rules where they appear
+
+asignacion           : 4
+expresion            : 5 6 14 14 15 15 16 16 17 17
+inicio               : 0
+instruccion          : 2 3
+instrucciones        : 1 2
+tipo_dato            : 6
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . inicio
+    (1) inicio -> . instrucciones
+    (2) instrucciones -> . instrucciones instruccion
+    (3) instrucciones -> . instruccion
+    (4) instruccion -> . asignacion
+    (5) asignacion -> . IDENTIFICADOR EQUALS expresion SEMICOLON
+    (6) asignacion -> . IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
+
+    IDENTIFICADOR   shift and go to state 5
+
+    inicio                         shift and go to state 1
+    instrucciones                  shift and go to state 2
+    instruccion                    shift and go to state 3
+    asignacion                     shift and go to state 4
+
+state 1
+
+    (0) S' -> inicio .
+
+
+
+state 2
+
+    (1) inicio -> instrucciones .
+    (2) instrucciones -> instrucciones . instruccion
+    (4) instruccion -> . asignacion
+    (5) asignacion -> . IDENTIFICADOR EQUALS expresion SEMICOLON
+    (6) asignacion -> . IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
+
+    $end            reduce using rule 1 (inicio -> instrucciones .)
+    IDENTIFICADOR   shift and go to state 5
+
+    instruccion                    shift and go to state 6
+    asignacion                     shift and go to state 4
+
+state 3
+
+    (3) instrucciones -> instruccion .
+
+    IDENTIFICADOR   reduce using rule 3 (instrucciones -> instruccion .)
+    $end            reduce using rule 3 (instrucciones -> instruccion .)
+
+
+state 4
+
+    (4) instruccion -> asignacion .
+
+    IDENTIFICADOR   reduce using rule 4 (instruccion -> asignacion .)
+    $end            reduce using rule 4 (instruccion -> asignacion .)
+
+
+state 5
+
+    (5) asignacion -> IDENTIFICADOR . EQUALS expresion SEMICOLON
+    (6) asignacion -> IDENTIFICADOR . EQUALS expresion SUFIX tipo_dato SEMICOLON
+
+    EQUALS          shift and go to state 7
+
+
+state 6
+
+    (2) instrucciones -> instrucciones instruccion .
+
+    IDENTIFICADOR   reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+
+
+state 7
+
+    (5) asignacion -> IDENTIFICADOR EQUALS . expresion SEMICOLON
+    (6) asignacion -> IDENTIFICADOR EQUALS . expresion SUFIX tipo_dato SEMICOLON
+    (14) expresion -> . expresion SUM expresion
+    (15) expresion -> . expresion RESTA expresion
+    (16) expresion -> . expresion MUL expresion
+    (17) expresion -> . expresion DIV expresion
+    (18) expresion -> . ENTERO
+
+    ENTERO          shift and go to state 9
+
+    expresion                      shift and go to state 8
+
+state 8
+
+    (5) asignacion -> IDENTIFICADOR EQUALS expresion . SEMICOLON
+    (6) asignacion -> IDENTIFICADOR EQUALS expresion . SUFIX tipo_dato SEMICOLON
+    (14) expresion -> expresion . SUM expresion
+    (15) expresion -> expresion . RESTA expresion
+    (16) expresion -> expresion . MUL expresion
+    (17) expresion -> expresion . DIV expresion
+
+    SEMICOLON       shift and go to state 10
+    SUFIX           shift and go to state 11
+    SUM             shift and go to state 12
+    RESTA           shift and go to state 13
+    MUL             shift and go to state 14
+    DIV             shift and go to state 15
+
+
+state 9
+
+    (18) expresion -> ENTERO .
+
+    SEMICOLON       reduce using rule 18 (expresion -> ENTERO .)
+    SUFIX           reduce using rule 18 (expresion -> ENTERO .)
+    SUM             reduce using rule 18 (expresion -> ENTERO .)
+    RESTA           reduce using rule 18 (expresion -> ENTERO .)
+    MUL             reduce using rule 18 (expresion -> ENTERO .)
+    DIV             reduce using rule 18 (expresion -> ENTERO .)
+
+
+state 10
+
+    (5) asignacion -> IDENTIFICADOR EQUALS expresion SEMICOLON .
+
+    IDENTIFICADOR   reduce using rule 5 (asignacion -> IDENTIFICADOR EQUALS expresion SEMICOLON .)
+    $end            reduce using rule 5 (asignacion -> IDENTIFICADOR EQUALS expresion SEMICOLON .)
+
+
+state 11
+
+    (6) asignacion -> IDENTIFICADOR EQUALS expresion SUFIX . tipo_dato SEMICOLON
+    (7) tipo_dato -> . INT64
+    (8) tipo_dato -> . FLOAT64
+    (9) tipo_dato -> . BOOL
+    (10) tipo_dato -> . CHAR
+    (11) tipo_dato -> . STRING
+    (12) tipo_dato -> . ARRAY
+    (13) tipo_dato -> . NOTHING
+
+    INT64           shift and go to state 17
+    FLOAT64         shift and go to state 18
+    BOOL            shift and go to state 19
+    CHAR            shift and go to state 20
+    STRING          shift and go to state 21
+    ARRAY           shift and go to state 22
+    NOTHING         shift and go to state 23
+
+    tipo_dato                      shift and go to state 16
+
+state 12
+
+    (14) expresion -> expresion SUM . expresion
+    (14) expresion -> . expresion SUM expresion
+    (15) expresion -> . expresion RESTA expresion
+    (16) expresion -> . expresion MUL expresion
+    (17) expresion -> . expresion DIV expresion
+    (18) expresion -> . ENTERO
+
+    ENTERO          shift and go to state 9
+
+    expresion                      shift and go to state 24
+
+state 13
+
+    (15) expresion -> expresion RESTA . expresion
+    (14) expresion -> . expresion SUM expresion
+    (15) expresion -> . expresion RESTA expresion
+    (16) expresion -> . expresion MUL expresion
+    (17) expresion -> . expresion DIV expresion
+    (18) expresion -> . ENTERO
+
+    ENTERO          shift and go to state 9
+
+    expresion                      shift and go to state 25
+
+state 14
+
+    (16) expresion -> expresion MUL . expresion
+    (14) expresion -> . expresion SUM expresion
+    (15) expresion -> . expresion RESTA expresion
+    (16) expresion -> . expresion MUL expresion
+    (17) expresion -> . expresion DIV expresion
+    (18) expresion -> . ENTERO
+
+    ENTERO          shift and go to state 9
+
+    expresion                      shift and go to state 26
+
+state 15
+
+    (17) expresion -> expresion DIV . expresion
+    (14) expresion -> . expresion SUM expresion
+    (15) expresion -> . expresion RESTA expresion
+    (16) expresion -> . expresion MUL expresion
+    (17) expresion -> . expresion DIV expresion
+    (18) expresion -> . ENTERO
+
+    ENTERO          shift and go to state 9
+
+    expresion                      shift and go to state 27
+
+state 16
+
+    (6) asignacion -> IDENTIFICADOR EQUALS expresion SUFIX tipo_dato . SEMICOLON
+
+    SEMICOLON       shift and go to state 28
+
+
+state 17
+
+    (7) tipo_dato -> INT64 .
+
+    SEMICOLON       reduce using rule 7 (tipo_dato -> INT64 .)
+
+
+state 18
+
+    (8) tipo_dato -> FLOAT64 .
+
+    SEMICOLON       reduce using rule 8 (tipo_dato -> FLOAT64 .)
+
+
+state 19
+
+    (9) tipo_dato -> BOOL .
+
+    SEMICOLON       reduce using rule 9 (tipo_dato -> BOOL .)
+
+
+state 20
+
+    (10) tipo_dato -> CHAR .
+
+    SEMICOLON       reduce using rule 10 (tipo_dato -> CHAR .)
+
+
+state 21
+
+    (11) tipo_dato -> STRING .
+
+    SEMICOLON       reduce using rule 11 (tipo_dato -> STRING .)
+
+
+state 22
+
+    (12) tipo_dato -> ARRAY .
+
+    SEMICOLON       reduce using rule 12 (tipo_dato -> ARRAY .)
+
+
+state 23
+
+    (13) tipo_dato -> NOTHING .
+
+    SEMICOLON       reduce using rule 13 (tipo_dato -> NOTHING .)
+
+
+state 24
+
+    (14) expresion -> expresion SUM expresion .
+    (14) expresion -> expresion . SUM expresion
+    (15) expresion -> expresion . RESTA expresion
+    (16) expresion -> expresion . MUL expresion
+    (17) expresion -> expresion . DIV expresion
+
+    SEMICOLON       reduce using rule 14 (expresion -> expresion SUM expresion .)
+    SUFIX           reduce using rule 14 (expresion -> expresion SUM expresion .)
+    SUM             reduce using rule 14 (expresion -> expresion SUM expresion .)
+    RESTA           reduce using rule 14 (expresion -> expresion SUM expresion .)
+    MUL             shift and go to state 14
+    DIV             shift and go to state 15
+
+  ! MUL             [ reduce using rule 14 (expresion -> expresion SUM expresion .) ]
+  ! DIV             [ reduce using rule 14 (expresion -> expresion SUM expresion .) ]
+  ! SUM             [ shift and go to state 12 ]
+  ! RESTA           [ shift and go to state 13 ]
+
+
+state 25
+
+    (15) expresion -> expresion RESTA expresion .
+    (14) expresion -> expresion . SUM expresion
+    (15) expresion -> expresion . RESTA expresion
+    (16) expresion -> expresion . MUL expresion
+    (17) expresion -> expresion . DIV expresion
+
+    SEMICOLON       reduce using rule 15 (expresion -> expresion RESTA expresion .)
+    SUFIX           reduce using rule 15 (expresion -> expresion RESTA expresion .)
+    SUM             reduce using rule 15 (expresion -> expresion RESTA expresion .)
+    RESTA           reduce using rule 15 (expresion -> expresion RESTA expresion .)
+    MUL             shift and go to state 14
+    DIV             shift and go to state 15
+
+  ! MUL             [ reduce using rule 15 (expresion -> expresion RESTA expresion .) ]
+  ! DIV             [ reduce using rule 15 (expresion -> expresion RESTA expresion .) ]
+  ! SUM             [ shift and go to state 12 ]
+  ! RESTA           [ shift and go to state 13 ]
+
+
+state 26
+
+    (16) expresion -> expresion MUL expresion .
+    (14) expresion -> expresion . SUM expresion
+    (15) expresion -> expresion . RESTA expresion
+    (16) expresion -> expresion . MUL expresion
+    (17) expresion -> expresion . DIV expresion
+
+    SEMICOLON       reduce using rule 16 (expresion -> expresion MUL expresion .)
+    SUFIX           reduce using rule 16 (expresion -> expresion MUL expresion .)
+    SUM             reduce using rule 16 (expresion -> expresion MUL expresion .)
+    RESTA           reduce using rule 16 (expresion -> expresion MUL expresion .)
+    MUL             reduce using rule 16 (expresion -> expresion MUL expresion .)
+    DIV             reduce using rule 16 (expresion -> expresion MUL expresion .)
+
+  ! SUM             [ shift and go to state 12 ]
+  ! RESTA           [ shift and go to state 13 ]
+  ! MUL             [ shift and go to state 14 ]
+  ! DIV             [ shift and go to state 15 ]
+
+
+state 27
+
+    (17) expresion -> expresion DIV expresion .
+    (14) expresion -> expresion . SUM expresion
+    (15) expresion -> expresion . RESTA expresion
+    (16) expresion -> expresion . MUL expresion
+    (17) expresion -> expresion . DIV expresion
+
+    SEMICOLON       reduce using rule 17 (expresion -> expresion DIV expresion .)
+    SUFIX           reduce using rule 17 (expresion -> expresion DIV expresion .)
+    SUM             reduce using rule 17 (expresion -> expresion DIV expresion .)
+    RESTA           reduce using rule 17 (expresion -> expresion DIV expresion .)
+    MUL             reduce using rule 17 (expresion -> expresion DIV expresion .)
+    DIV             reduce using rule 17 (expresion -> expresion DIV expresion .)
+
+  ! SUM             [ shift and go to state 12 ]
+  ! RESTA           [ shift and go to state 13 ]
+  ! MUL             [ shift and go to state 14 ]
+  ! DIV             [ shift and go to state 15 ]
+
+
+state 28
+
+    (6) asignacion -> IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON .
+
+    IDENTIFICADOR   reduce using rule 6 (asignacion -> IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON .)
+    $end            reduce using rule 6 (asignacion -> IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON .)
+
