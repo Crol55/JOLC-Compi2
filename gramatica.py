@@ -6,6 +6,8 @@ from Primitivas.Primitivo import Primitivo
 from Operaciones.Aritmeticas import Aritmeticas,Operador
 from Instrucciones.Asignacion import Asignacion
 from Expresiones.Nativas import *
+from Expresiones.Parse   import *
+from Expresiones.Trunc   import *
 '''
     ================== ANALISIS LEXICO ==============================
 '''
@@ -463,6 +465,14 @@ def p_nativas(t):
         elif t.slice[1].type == 'LOWERCASE':
             t[0] = Lowercase(t[3], t.lineno(1), t.lexpos(0))
             #print (t[0].execute(None).value)
+    elif len(t) == 7:
+        if t.slice[1].type == 'PARSE':
+            t[0] = Parse(t[3], t[5], t.lineno(1), t.lexpos(0))
+            print ("Valor traido del parse:", t[0].execute(None).value)
+        elif t.slice[1].type == 'TRUNC':
+            t[0] = Trunc(t[3], t[5], t.lineno(1), t.lexpos(0))
+            print ("Valor traido del Trunc:", t[0].execute(None).value)
+        
 
 # items
 def p_items(t):

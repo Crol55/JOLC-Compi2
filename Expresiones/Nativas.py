@@ -25,6 +25,7 @@ class Lowercase(Expresion):
     def __init__(self,expresion:Expresion, line, column):
         Expresion.__init__(self, line, column)
         self.expresion = expresion
+        
 
     def execute(self, ambito):
         resultado:Return = self.expresion.execute(ambito) # Ejecutamos lo que tenga adentro y el resultado debe ser tipo string
@@ -34,4 +35,8 @@ class Lowercase(Expresion):
         else: 
             print ("Error: Error sintactico, la funcion 'lower' no se puede aplicar al tipo de dato:", resultado.type)
         return None
+
+
+
+
 
