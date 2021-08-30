@@ -15,15 +15,6 @@ arreglo = [val1, val2, val3]
 operacion = Aritmeticas(val1, Operador.PLUS, val2,1,1) #Aritmeticas(val1, '+', val2,1,1)
 #print (operacion.execute(None).value)
 
-rw = { 
-    'null'   : 'Nothing', 
-    'int'    : 'Int64', 
-    'float'  : 'Float64', 
-    'bool'   : 'Bool',
-    'char'   : 'Char',
-    'str'    : 'String',
-    'arreglo': 'Arreglos'
-}
+operacion.execute(None)
 
-print (rw.get('null'))
-
+print ("hola" * 3)

@@ -1,34 +1,20 @@
-HOLA = 10 + 10;
-arr = [];
-var1 = 10^-2 > 5::  Nothing;
-testeo = "hola mundo";
-testeo = ' ';
-function suma (val::Bool, val2, x) 
 
-    return;
-end;
 
-function dos () end;
-
-funcall();
-funcall(true, 10*20, false, -5, Nothing);
-
-if true && false >10
-
-end;
-
-if true 
-elseif false
-elseif true
-else 
-end;
-
-while true < false 
-end;
-
-for x in "hola" end;
-
-arr2 = ["x", [2,3]];
-
-mutable struct personaje 
-end;
+#local x = 6 % 4 * 5+4 ;
+#global x = 6 % 4 * 5+4 ;
+#local x = 6 % 4 * 5+4.3 ;
+#x = 6 % 4 * 5+4::Int64 ;
+#var = true; 
+#var = false;
+#var = "hola mundo";
+#var = 'c';
+#z = nothing;
+#z = [];
+#z = [20, 10];
+val = "val" + " nuevo";
+val = "valuees:" * " nuevo";
+val = "valuees:" ^4;
+val = uppercase("valuees:" ^4);
+val = lowercase("TIGRE") + uppercase("tigre");
+#x = 6 * 4 -3.5 ;
+#x = 6 * 4 +1 ;

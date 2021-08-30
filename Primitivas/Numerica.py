@@ -1,5 +1,6 @@
 from Abstractas.Expresion import *
 from Nativas.Return import Return
+from Nativas.Type import Type as type
 
 class Numerica(Expresion):
     def __init__(self, valorNumerico, tipoDato:type, line, column):
