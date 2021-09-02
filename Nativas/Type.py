@@ -9,3 +9,4 @@ class Type (Enum):
     STRING = 5
     CHAR   = 6
     ANY    = 7
+    tipo   = 8

@@ -1,5 +1,8 @@
 
 
+from Expresiones.nativas.LogaritmoBaseDiez import LogaritmoBaseDiez
+from Expresiones.nativas.Logaritmo import Logaritmo
+from Expresiones.Trigonometricas import Trigonometricas
 from Nativas.Type import Type
 from Primitivas.Numerica import Numerica
 from Primitivas.Primitivo import Primitivo
@@ -8,6 +11,8 @@ from Instrucciones.Asignacion import Asignacion
 from Expresiones.Nativas import *
 from Expresiones.Parse   import *
 from Expresiones.Trunc   import *
+from Expresiones.Floatcast import Floatcast
+from Expresiones.Stringcast import Stringcast
 '''
     ================== ANALISIS LEXICO ==============================
 '''
@@ -427,9 +432,9 @@ def p_primitivas(t):
     elif t.slice[1].type == 'DECIMAL':
         t[0] = Numerica( float(t[1]), Type.FLOAT, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'TRUE':
-        t[0] = Primitivo(True, Type.BOOL, t.lineno(1), t.lexpos(0))
+        t[0] = Primitivo("true", Type.BOOL, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'FALSE':
-        t[0] = Primitivo(False, Type.BOOL, t.lineno(1), t.lexpos(0))
+        t[0] = Primitivo("false", Type.BOOL, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'STRINGLITERAL':
         t[0] = Primitivo(str(t[1]).replace('"',''), Type.STRING, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'CHARLITERAL':
@@ -465,13 +470,34 @@ def p_nativas(t):
         elif t.slice[1].type == 'LOWERCASE':
             t[0] = Lowercase(t[3], t.lineno(1), t.lexpos(0))
             #print (t[0].execute(None).value)
+        elif t.slice[1].type == 'FLOATCAST':
+            t[0] = Floatcast(t[3], t.lineno(1), t.lexpos(0))
+            print (t[0].execute(None).value)
+        elif t.slice[1].type == 'STRINGCAST':
+            t[0] = Stringcast(t[3], t.lineno(1), t.lexpos(0))
+            print (t[0].execute(None).value)
+        elif t.slice[1].type == 'TYPEOF':
+            t[0] = typeof(t[3], t.lineno(1), t.lexpos(0))
+            print (t[0].execute(None).value)
+        elif t.slice[1].type == 'SENO': 
+            t[0] = Trigonometricas(t[3], t[1], t.lineno(1), t.lexpos(0))       
+        elif t.slice[1].type == 'COSENO': 
+            t[0] = Trigonometricas(t[3], t[1], t.lineno(1), t.lexpos(0)) 
+        elif t.slice[1].type == 'TANGENTE': 
+            t[0] = Trigonometricas(t[3], t[1], t.lineno(1), t.lexpos(0))
+        elif t.slice[1].type == 'LOG10': 
+            t[0] = LogaritmoBaseDiez(t[3], t.lineno(1), t.lexpos(0)) 
+            print(t[0].execute(None).value) 
     elif len(t) == 7:
         if t.slice[1].type == 'PARSE':
             t[0] = Parse(t[3], t[5], t.lineno(1), t.lexpos(0))
-            print ("Valor traido del parse:", t[0].execute(None).value)
+            #print ("Valor traido del parse:", t[0].execute(None).value)
         elif t.slice[1].type == 'TRUNC':
             t[0] = Trunc(t[3], t[5], t.lineno(1), t.lexpos(0))
-            print ("Valor traido del Trunc:", t[0].execute(None).value)
+            #print ("Valor traido del Trunc:", t[0].execute(None).value)
+        elif t.slice[1].type == 'LOG': 
+            t[0] = Logaritmo(t[3],t[5], t.lineno(1), t.lexpos(0)) 
+            print(t[0].execute(None).value) 
         
 
 # items

@@ -37,6 +37,14 @@ class Lowercase(Expresion):
         return None
 
 
-
+class typeof(Expresion): # Se comporta como expresion, sin embargo no se puede operar con su valor de retorno
+    def __init__(self,expresion:Expresion, line, column):
+        Expresion.__init__(self, line, column)
+        self.expresion = expresion
+    
+    def execute(self, ambito):
+        tipo_dato:Return = self.expresion.execute(ambito)
+        #print ("testeo:", tipo_dato.type.name)
+        return Return(Type.tipo, tipo_dato.type.name)
 
 
