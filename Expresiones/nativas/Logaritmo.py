@@ -15,9 +15,11 @@ class Logaritmo(Expresion):
         valor:Return = this.right_expresion.execute(ambito)
 
         if this.verifyTypes(base.type):
+
             if this.verifyTypes(valor.type):
+
                 logaritmo_diferente_base = math.log(valor.value, base.value)
-                return Return(Type.FLOAT, logaritmo_diferente_base)
+                return Return(Type.FLOAT, logaritmo_diferente_base) 
             else: 
                 print("Error Sintactico: La funcion log() debe recibir un Int64 o Float64 y recibio:", valor.type)
         else: 

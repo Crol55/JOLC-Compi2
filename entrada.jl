@@ -27,5 +27,6 @@ val = cos(0.5235);
 val = tan(3.4);
 val = log10(5);
 val = log(10, 5);
+val = sqrt(25);
 #x = 6 * 4 -3.5 ;
 #x = 6 * 4 +1 ;

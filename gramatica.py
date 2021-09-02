@@ -2,6 +2,7 @@
 
 from Expresiones.nativas.LogaritmoBaseDiez import LogaritmoBaseDiez
 from Expresiones.nativas.Logaritmo import Logaritmo
+from Expresiones.nativas.Raiz import Raiz
 from Expresiones.Trigonometricas import Trigonometricas
 from Nativas.Type import Type
 from Primitivas.Numerica import Numerica
@@ -487,6 +488,9 @@ def p_nativas(t):
             t[0] = Trigonometricas(t[3], t[1], t.lineno(1), t.lexpos(0))
         elif t.slice[1].type == 'LOG10': 
             t[0] = LogaritmoBaseDiez(t[3], t.lineno(1), t.lexpos(0)) 
+            print(t[0].execute(None).value) 
+        elif t.slice[1].type == 'RAIZ': 
+            t[0] = Raiz(t[3], t.lineno(1), t.lexpos(0)) 
             print(t[0].execute(None).value) 
     elif len(t) == 7:
         if t.slice[1].type == 'PARSE':
