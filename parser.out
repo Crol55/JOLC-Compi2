@@ -6352,12 +6352,6 @@ state 146
 
     AND             reduce using rule 71 (expresion -> expresion AND expresion .)
     OR              reduce using rule 71 (expresion -> expresion AND expresion .)
-    DEQUALS         reduce using rule 71 (expresion -> expresion AND expresion .)
-    DIFF            reduce using rule 71 (expresion -> expresion AND expresion .)
-    GREATER         reduce using rule 71 (expresion -> expresion AND expresion .)
-    LESSTHAN        reduce using rule 71 (expresion -> expresion AND expresion .)
-    GEQ             reduce using rule 71 (expresion -> expresion AND expresion .)
-    LEQ             reduce using rule 71 (expresion -> expresion AND expresion .)
     BREAK           reduce using rule 71 (expresion -> expresion AND expresion .)
     CONTINUE        reduce using rule 71 (expresion -> expresion AND expresion .)
     IDENTIFICADOR   reduce using rule 71 (expresion -> expresion AND expresion .)
@@ -6388,6 +6382,12 @@ state 146
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
+    DEQUALS         shift and go to state 89
+    DIFF            shift and go to state 90
+    GREATER         shift and go to state 91
+    LESSTHAN        shift and go to state 92
+    GEQ             shift and go to state 93
+    LEQ             shift and go to state 94
 
   ! SUM             [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
   ! RESTA           [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
@@ -6395,14 +6395,14 @@ state 146
   ! DIV             [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
   ! POT             [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
   ! MOD             [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
+  ! DEQUALS         [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
+  ! DIFF            [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
+  ! GREATER         [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
+  ! LESSTHAN        [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
+  ! GEQ             [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
+  ! LEQ             [ reduce using rule 71 (expresion -> expresion AND expresion .) ]
   ! AND             [ shift and go to state 81 ]
   ! OR              [ shift and go to state 82 ]
-  ! DEQUALS         [ shift and go to state 89 ]
-  ! DIFF            [ shift and go to state 90 ]
-  ! GREATER         [ shift and go to state 91 ]
-  ! LESSTHAN        [ shift and go to state 92 ]
-  ! GEQ             [ shift and go to state 93 ]
-  ! LEQ             [ shift and go to state 94 ]
 
 
 state 147
@@ -6425,12 +6425,6 @@ state 147
 
     AND             reduce using rule 72 (expresion -> expresion OR expresion .)
     OR              reduce using rule 72 (expresion -> expresion OR expresion .)
-    DEQUALS         reduce using rule 72 (expresion -> expresion OR expresion .)
-    DIFF            reduce using rule 72 (expresion -> expresion OR expresion .)
-    GREATER         reduce using rule 72 (expresion -> expresion OR expresion .)
-    LESSTHAN        reduce using rule 72 (expresion -> expresion OR expresion .)
-    GEQ             reduce using rule 72 (expresion -> expresion OR expresion .)
-    LEQ             reduce using rule 72 (expresion -> expresion OR expresion .)
     BREAK           reduce using rule 72 (expresion -> expresion OR expresion .)
     CONTINUE        reduce using rule 72 (expresion -> expresion OR expresion .)
     IDENTIFICADOR   reduce using rule 72 (expresion -> expresion OR expresion .)
@@ -6461,6 +6455,12 @@ state 147
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
+    DEQUALS         shift and go to state 89
+    DIFF            shift and go to state 90
+    GREATER         shift and go to state 91
+    LESSTHAN        shift and go to state 92
+    GEQ             shift and go to state 93
+    LEQ             shift and go to state 94
 
   ! SUM             [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
   ! RESTA           [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
@@ -6468,14 +6468,14 @@ state 147
   ! DIV             [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
   ! POT             [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
   ! MOD             [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
+  ! DEQUALS         [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
+  ! DIFF            [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
+  ! GREATER         [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
+  ! LESSTHAN        [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
+  ! GEQ             [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
+  ! LEQ             [ reduce using rule 72 (expresion -> expresion OR expresion .) ]
   ! AND             [ shift and go to state 81 ]
   ! OR              [ shift and go to state 82 ]
-  ! DEQUALS         [ shift and go to state 89 ]
-  ! DIFF            [ shift and go to state 90 ]
-  ! GREATER         [ shift and go to state 91 ]
-  ! LESSTHAN        [ shift and go to state 92 ]
-  ! GEQ             [ shift and go to state 93 ]
-  ! LEQ             [ shift and go to state 94 ]
 
 
 state 148
@@ -6934,8 +6934,14 @@ state 154
     (83) expresion -> expresion . GEQ expresion
     (84) expresion -> expresion . LEQ expresion
 
+    AND             reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
+    OR              reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
     DEQUALS         reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
     DIFF            reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
+    GREATER         reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
+    LESSTHAN        reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
+    GEQ             reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
+    LEQ             reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
     BREAK           reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
     CONTINUE        reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
     IDENTIFICADOR   reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
@@ -6960,33 +6966,27 @@ state 154
     RPAR            reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
     COMMA           reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
     BRACKETC        reduce using rule 79 (expresion -> expresion DEQUALS expresion .)
-    AND             shift and go to state 81
-    OR              shift and go to state 82
     SUM             shift and go to state 83
     RESTA           shift and go to state 84
     MUL             shift and go to state 85
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
-    GREATER         shift and go to state 91
-    LESSTHAN        shift and go to state 92
-    GEQ             shift and go to state 93
-    LEQ             shift and go to state 94
 
-  ! AND             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
-  ! OR              [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
   ! SUM             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
   ! RESTA           [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
   ! MUL             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
   ! DIV             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
   ! POT             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
   ! MOD             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
-  ! GREATER         [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
-  ! LESSTHAN        [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
-  ! GEQ             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
-  ! LEQ             [ reduce using rule 79 (expresion -> expresion DEQUALS expresion .) ]
+  ! AND             [ shift and go to state 81 ]
+  ! OR              [ shift and go to state 82 ]
   ! DEQUALS         [ shift and go to state 89 ]
   ! DIFF            [ shift and go to state 90 ]
+  ! GREATER         [ shift and go to state 91 ]
+  ! LESSTHAN        [ shift and go to state 92 ]
+  ! GEQ             [ shift and go to state 93 ]
+  ! LEQ             [ shift and go to state 94 ]
 
 
 state 155
@@ -7007,8 +7007,14 @@ state 155
     (83) expresion -> expresion . GEQ expresion
     (84) expresion -> expresion . LEQ expresion
 
+    AND             reduce using rule 80 (expresion -> expresion DIFF expresion .)
+    OR              reduce using rule 80 (expresion -> expresion DIFF expresion .)
     DEQUALS         reduce using rule 80 (expresion -> expresion DIFF expresion .)
     DIFF            reduce using rule 80 (expresion -> expresion DIFF expresion .)
+    GREATER         reduce using rule 80 (expresion -> expresion DIFF expresion .)
+    LESSTHAN        reduce using rule 80 (expresion -> expresion DIFF expresion .)
+    GEQ             reduce using rule 80 (expresion -> expresion DIFF expresion .)
+    LEQ             reduce using rule 80 (expresion -> expresion DIFF expresion .)
     BREAK           reduce using rule 80 (expresion -> expresion DIFF expresion .)
     CONTINUE        reduce using rule 80 (expresion -> expresion DIFF expresion .)
     IDENTIFICADOR   reduce using rule 80 (expresion -> expresion DIFF expresion .)
@@ -7033,33 +7039,27 @@ state 155
     RPAR            reduce using rule 80 (expresion -> expresion DIFF expresion .)
     COMMA           reduce using rule 80 (expresion -> expresion DIFF expresion .)
     BRACKETC        reduce using rule 80 (expresion -> expresion DIFF expresion .)
-    AND             shift and go to state 81
-    OR              shift and go to state 82
     SUM             shift and go to state 83
     RESTA           shift and go to state 84
     MUL             shift and go to state 85
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
-    GREATER         shift and go to state 91
-    LESSTHAN        shift and go to state 92
-    GEQ             shift and go to state 93
-    LEQ             shift and go to state 94
 
-  ! AND             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
-  ! OR              [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
   ! SUM             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
   ! RESTA           [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
   ! MUL             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
   ! DIV             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
   ! POT             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
   ! MOD             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
-  ! GREATER         [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
-  ! LESSTHAN        [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
-  ! GEQ             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
-  ! LEQ             [ reduce using rule 80 (expresion -> expresion DIFF expresion .) ]
+  ! AND             [ shift and go to state 81 ]
+  ! OR              [ shift and go to state 82 ]
   ! DEQUALS         [ shift and go to state 89 ]
   ! DIFF            [ shift and go to state 90 ]
+  ! GREATER         [ shift and go to state 91 ]
+  ! LESSTHAN        [ shift and go to state 92 ]
+  ! GEQ             [ shift and go to state 93 ]
+  ! LEQ             [ shift and go to state 94 ]
 
 
 state 156
@@ -7080,8 +7080,8 @@ state 156
     (83) expresion -> expresion . GEQ expresion
     (84) expresion -> expresion . LEQ expresion
 
-    DEQUALS         reduce using rule 81 (expresion -> expresion GREATER expresion .)
-    DIFF            reduce using rule 81 (expresion -> expresion GREATER expresion .)
+    AND             reduce using rule 81 (expresion -> expresion GREATER expresion .)
+    OR              reduce using rule 81 (expresion -> expresion GREATER expresion .)
     GREATER         reduce using rule 81 (expresion -> expresion GREATER expresion .)
     LESSTHAN        reduce using rule 81 (expresion -> expresion GREATER expresion .)
     GEQ             reduce using rule 81 (expresion -> expresion GREATER expresion .)
@@ -7110,25 +7110,25 @@ state 156
     RPAR            reduce using rule 81 (expresion -> expresion GREATER expresion .)
     COMMA           reduce using rule 81 (expresion -> expresion GREATER expresion .)
     BRACKETC        reduce using rule 81 (expresion -> expresion GREATER expresion .)
-    AND             shift and go to state 81
-    OR              shift and go to state 82
     SUM             shift and go to state 83
     RESTA           shift and go to state 84
     MUL             shift and go to state 85
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
+    DEQUALS         shift and go to state 89
+    DIFF            shift and go to state 90
 
-  ! AND             [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
-  ! OR              [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
   ! SUM             [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
   ! RESTA           [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
   ! MUL             [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
   ! DIV             [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
   ! POT             [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
   ! MOD             [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
-  ! DEQUALS         [ shift and go to state 89 ]
-  ! DIFF            [ shift and go to state 90 ]
+  ! DEQUALS         [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
+  ! DIFF            [ reduce using rule 81 (expresion -> expresion GREATER expresion .) ]
+  ! AND             [ shift and go to state 81 ]
+  ! OR              [ shift and go to state 82 ]
   ! GREATER         [ shift and go to state 91 ]
   ! LESSTHAN        [ shift and go to state 92 ]
   ! GEQ             [ shift and go to state 93 ]
@@ -7153,8 +7153,8 @@ state 157
     (83) expresion -> expresion . GEQ expresion
     (84) expresion -> expresion . LEQ expresion
 
-    DEQUALS         reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
-    DIFF            reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
+    AND             reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
+    OR              reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
     GREATER         reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
     LESSTHAN        reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
     GEQ             reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
@@ -7183,25 +7183,25 @@ state 157
     RPAR            reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
     COMMA           reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
     BRACKETC        reduce using rule 82 (expresion -> expresion LESSTHAN expresion .)
-    AND             shift and go to state 81
-    OR              shift and go to state 82
     SUM             shift and go to state 83
     RESTA           shift and go to state 84
     MUL             shift and go to state 85
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
+    DEQUALS         shift and go to state 89
+    DIFF            shift and go to state 90
 
-  ! AND             [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
-  ! OR              [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
   ! SUM             [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
   ! RESTA           [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
   ! MUL             [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
   ! DIV             [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
   ! POT             [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
   ! MOD             [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
-  ! DEQUALS         [ shift and go to state 89 ]
-  ! DIFF            [ shift and go to state 90 ]
+  ! DEQUALS         [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
+  ! DIFF            [ reduce using rule 82 (expresion -> expresion LESSTHAN expresion .) ]
+  ! AND             [ shift and go to state 81 ]
+  ! OR              [ shift and go to state 82 ]
   ! GREATER         [ shift and go to state 91 ]
   ! LESSTHAN        [ shift and go to state 92 ]
   ! GEQ             [ shift and go to state 93 ]
@@ -7226,8 +7226,8 @@ state 158
     (83) expresion -> expresion . GEQ expresion
     (84) expresion -> expresion . LEQ expresion
 
-    DEQUALS         reduce using rule 83 (expresion -> expresion GEQ expresion .)
-    DIFF            reduce using rule 83 (expresion -> expresion GEQ expresion .)
+    AND             reduce using rule 83 (expresion -> expresion GEQ expresion .)
+    OR              reduce using rule 83 (expresion -> expresion GEQ expresion .)
     GREATER         reduce using rule 83 (expresion -> expresion GEQ expresion .)
     LESSTHAN        reduce using rule 83 (expresion -> expresion GEQ expresion .)
     GEQ             reduce using rule 83 (expresion -> expresion GEQ expresion .)
@@ -7256,25 +7256,25 @@ state 158
     RPAR            reduce using rule 83 (expresion -> expresion GEQ expresion .)
     COMMA           reduce using rule 83 (expresion -> expresion GEQ expresion .)
     BRACKETC        reduce using rule 83 (expresion -> expresion GEQ expresion .)
-    AND             shift and go to state 81
-    OR              shift and go to state 82
     SUM             shift and go to state 83
     RESTA           shift and go to state 84
     MUL             shift and go to state 85
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
+    DEQUALS         shift and go to state 89
+    DIFF            shift and go to state 90
 
-  ! AND             [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
-  ! OR              [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
   ! SUM             [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
   ! RESTA           [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
   ! MUL             [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
   ! DIV             [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
   ! POT             [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
   ! MOD             [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
-  ! DEQUALS         [ shift and go to state 89 ]
-  ! DIFF            [ shift and go to state 90 ]
+  ! DEQUALS         [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
+  ! DIFF            [ reduce using rule 83 (expresion -> expresion GEQ expresion .) ]
+  ! AND             [ shift and go to state 81 ]
+  ! OR              [ shift and go to state 82 ]
   ! GREATER         [ shift and go to state 91 ]
   ! LESSTHAN        [ shift and go to state 92 ]
   ! GEQ             [ shift and go to state 93 ]
@@ -7299,8 +7299,8 @@ state 159
     (83) expresion -> expresion . GEQ expresion
     (84) expresion -> expresion . LEQ expresion
 
-    DEQUALS         reduce using rule 84 (expresion -> expresion LEQ expresion .)
-    DIFF            reduce using rule 84 (expresion -> expresion LEQ expresion .)
+    AND             reduce using rule 84 (expresion -> expresion LEQ expresion .)
+    OR              reduce using rule 84 (expresion -> expresion LEQ expresion .)
     GREATER         reduce using rule 84 (expresion -> expresion LEQ expresion .)
     LESSTHAN        reduce using rule 84 (expresion -> expresion LEQ expresion .)
     GEQ             reduce using rule 84 (expresion -> expresion LEQ expresion .)
@@ -7329,25 +7329,25 @@ state 159
     RPAR            reduce using rule 84 (expresion -> expresion LEQ expresion .)
     COMMA           reduce using rule 84 (expresion -> expresion LEQ expresion .)
     BRACKETC        reduce using rule 84 (expresion -> expresion LEQ expresion .)
-    AND             shift and go to state 81
-    OR              shift and go to state 82
     SUM             shift and go to state 83
     RESTA           shift and go to state 84
     MUL             shift and go to state 85
     DIV             shift and go to state 86
     POT             shift and go to state 87
     MOD             shift and go to state 88
+    DEQUALS         shift and go to state 89
+    DIFF            shift and go to state 90
 
-  ! AND             [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
-  ! OR              [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
   ! SUM             [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
   ! RESTA           [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
   ! MUL             [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
   ! DIV             [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
   ! POT             [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
   ! MOD             [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
-  ! DEQUALS         [ shift and go to state 89 ]
-  ! DIFF            [ shift and go to state 90 ]
+  ! DEQUALS         [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
+  ! DIFF            [ reduce using rule 84 (expresion -> expresion LEQ expresion .) ]
+  ! AND             [ shift and go to state 81 ]
+  ! OR              [ shift and go to state 82 ]
   ! GREATER         [ shift and go to state 91 ]
   ! LESSTHAN        [ shift and go to state 92 ]
   ! GEQ             [ shift and go to state 93 ]

@@ -1,5 +1,7 @@
 
 
+from Operaciones.Logicas import Logicas, OperadorLogico, Not
+from Operaciones.Relacional import OperadorRelacional, Relacional
 from Expresiones.nativas.LogaritmoBaseDiez import LogaritmoBaseDiez
 from Expresiones.nativas.Logaritmo import Logaritmo
 from Expresiones.nativas.Raiz import Raiz
@@ -174,9 +176,9 @@ lexer = lex.lex()
 '''
 
 precedence = (
-    ('left', 'DEQUALS', 'DIFF'),
-    ('left', 'GREATER','LESSTHAN', 'GEQ', 'LEQ'),
     ('left', 'AND', 'OR'),
+    ('left', 'GREATER','LESSTHAN', 'GEQ', 'LEQ'),
+    ('left', 'DEQUALS', 'DIFF'),
     ('left', 'SUM', 'RESTA'),
     ('left', 'MUL', 'DIV', 'MOD'),
     ('right', 'NOT'),
@@ -381,8 +383,16 @@ def p_expresion(t):
                  | callFunc
                  | callArrays
     '''
-    #print ((t.slice)) 
-    if len(t) == 4: # SUM, DIV, MINUS
+    print ((t.slice)) 
+    if len(t) == 3:  # NOT, 
+        if t.slice[1].type == 'NOT': 
+            t[0] = Not( t[2], t.lineno(1), t.lexpos(0))
+            print (t[0].execute(None).value)
+        elif t.slice[1].type == 'RESTA': # Uminus
+            t[0] = Aritmeticas(Numerica(0, Type.INT,t.lineno(1), t.lexpos(0)), Operador.MINUS, t[2], t.lineno(1), t.lexpos(0))
+            print (t[0].execute(None).value)
+
+    elif len(t) == 4: # SUM, DIV, MINUS
         if (t.slice[2].type =='SUM'):
             t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(1), t.lexpos(0))    
             print (t[0].execute(None).value)
@@ -397,7 +407,32 @@ def p_expresion(t):
             t[0] = Aritmeticas(t[1], Operador.POT, t[3], t.lineno(1), t.lexpos(0))  
             print (t[0].execute(None).value)              
         elif (t.slice[2].type =='MOD'):
-            t[0] = Aritmeticas(t[1], Operador.MOD, t[3], t.lineno(1), t.lexpos(0))            
+            t[0] = Aritmeticas(t[1], Operador.MOD, t[3], t.lineno(1), t.lexpos(0))
+        elif (t.slice[2].type =='DEQUALS'):
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.DEQUAL, t.lineno(1), t.lexpos(0))  
+            print (t[0].execute(None).value)
+        elif (t.slice[2].type =='DIFF'):
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.DISTINT, t.lineno(1), t.lexpos(0))  
+            print (t[0].execute(None).value)
+        elif (t.slice[2].type =='GREATER'):
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.GREATER, t.lineno(1), t.lexpos(0))  
+            print (t[0].execute(None).value)    
+        elif (t.slice[2].type =='LESSTHAN'):
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.LESS, t.lineno(1), t.lexpos(0))  
+            print (t[0].execute(None).value)   
+        elif (t.slice[2].type =='GEQ'):
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.GEQ, t.lineno(1), t.lexpos(0))  
+            print (t[0].execute(None).value)   
+        elif (t.slice[2].type =='LEQ'):
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.LEQ, t.lineno(1), t.lexpos(0))  
+            print (t[0].execute(None).value)  
+        elif (t.slice[2].type =='AND'):
+            t[0] = Logicas(t[1], t[3], OperadorLogico.AND, t.lineno(1), t.lexpos(0))
+            print (t[0].execute(None).value)   
+        elif (t.slice[2].type =='OR'):
+            t[0] = Logicas(t[1], t[3], OperadorLogico.OR, t.lineno(1), t.lexpos(0))
+            print (t[0].execute(None).value) 
+        elif (t.slice[1].type == 'LPAR'): t[0] = t[2]
             
     elif len(t) == 2: # primitivas, nativas, callFunc, callArrays, IDENTIFICADOR
         t[0] = t[1]
@@ -433,9 +468,9 @@ def p_primitivas(t):
     elif t.slice[1].type == 'DECIMAL':
         t[0] = Numerica( float(t[1]), Type.FLOAT, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'TRUE':
-        t[0] = Primitivo("true", Type.BOOL, t.lineno(1), t.lexpos(0))
+        t[0] = Primitivo(True, Type.BOOL, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'FALSE':
-        t[0] = Primitivo("false", Type.BOOL, t.lineno(1), t.lexpos(0))
+        t[0] = Primitivo(False, Type.BOOL, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'STRINGLITERAL':
         t[0] = Primitivo(str(t[1]).replace('"',''), Type.STRING, t.lineno(1), t.lexpos(0))
     elif t.slice[1].type == 'CHARLITERAL':
