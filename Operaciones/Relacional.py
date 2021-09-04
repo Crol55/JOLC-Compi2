@@ -31,7 +31,6 @@ class Relacional(Expresion):
             comparacion.value = resultado_izq.value > resultado_der.value 
         elif this.operador == OperadorRelacional.LESS: 
             comparacion.value = resultado_izq.value < resultado_der.value
-            print ("Porque envia eso?", comparacion.value)
         elif this.operador == OperadorRelacional.GEQ: 
             comparacion.value = resultado_izq.value >= resultado_der.value
         elif this.operador == OperadorRelacional.LEQ: 

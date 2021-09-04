@@ -1,5 +1,7 @@
 
 
+from Instrucciones.Functions.Funcion import Funcion
+from Expresiones.Acceso import Acceso
 from Operaciones.Logicas import Logicas, OperadorLogico, Not
 from Operaciones.Relacional import OperadorRelacional, Relacional
 from Expresiones.nativas.LogaritmoBaseDiez import LogaritmoBaseDiez
@@ -189,9 +191,10 @@ precedence = (
 def p_inicio(t): 
     'inicio : instrucciones'
 
-    print("Cantidad de instrucciones: ", (t[1]))
+    #print("Cantidad de instrucciones: ", (t[1]))
     #for ins in t[1]: 
     #    print(ins.execute(None))
+    t[0] = t[1]
 
 def p_instrucciones(t):
     '''instrucciones : instrucciones instruccion 
@@ -221,17 +224,24 @@ def p_instruccion(t):
                    | inst_nativa
     '''
     if t.slice[1].type == 'asignacion':
-        #t[0] = { "valor": t[1]['valor'], "tree":"null"}
         t[0] = t[1]
+    else: 
+        t[0] = t[1] 
 
 # declareFunction -> | FUNCTION IDENTIFICADOR LPAR                  RPAR lista_instrucciones   SEMICOLON
 
 def p_declareFunction(t):
-    '''declareFunction : FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR lista_instrucciones  END SEMICOLON
-                       | FUNCTION IDENTIFICADOR LPAR                  RPAR                      END SEMICOLON
+    '''declareFunction : FUNCTION IDENTIFICADOR LPAR                  RPAR                      END SEMICOLON
+                       | FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR lista_instrucciones  END SEMICOLON
                        | FUNCTION IDENTIFICADOR LPAR                  RPAR lista_instrucciones  END SEMICOLON
                        | FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR                      END SEMICOLON
     '''
+    # 9 , 7 , 8, 
+    if len(t) == 7:
+        t[0] = Funcion(t[2], [], [], t.lineno(1), t.lexpos(0), None) 
+    elif len(t) == 8: return 
+    else: return 
+
 # lista_instrucciones
 def p_lista_instrucciones(t):
     '''lista_instrucciones : lista_instrucciones instruccion
@@ -257,14 +267,18 @@ def p_lista_parametros(t):
                         | IDENTIFICADOR SUFIX tipo_dato
                         | IDENTIFICADOR
     ''' 
+    if len(t) == 2: 
+        t[0] = []
 def p_asignacion(t): # La que tiene SUFIX -> Es una declaracion, por lo que no requiere local ni global
     '''asignacion :              IDENTIFICADOR EQUALS expresion                 SEMICOLON
-                  | tipoVariable IDENTIFICADOR EQUALS expresion                 SEMICOLON
                   |              IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
+                  | tipoVariable IDENTIFICADOR EQUALS expresion                 SEMICOLON
+                  | tipoVariable IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
     '''
     if len(t) == 5:    t[0] = Asignacion('local', Type.ANY, t[1], t[3], t.lineno(1), t.lexpos(0), None)
     elif len(t) == 6:  t[0] = Asignacion(t[1]   , Type.ANY, t[2], t[4], t.lineno(1), t.lexpos(0), None)
     elif len(t) == 7:  t[0] = Asignacion('local', t[5]    , t[1], t[3], t.lineno(1), t.lexpos(0), None)
+    elif len(t) == 8:  t[0] = Asignacion(t[1],    t[6]    , t[2], t[4], t.lineno(1), t.lexpos(0), None)
         
 # asignacion_struct
 def p_asignacion_struct(t): # La que tiene SUFIX -> Es una declaracion, por lo que no requiere local ni global
@@ -435,7 +449,10 @@ def p_expresion(t):
         elif (t.slice[1].type == 'LPAR'): t[0] = t[2]
             
     elif len(t) == 2: # primitivas, nativas, callFunc, callArrays, IDENTIFICADOR
-        t[0] = t[1]
+        if t.slice[1].type == 'IDENTIFICADOR':
+            t[0] = Acceso(str(t[1]), t.lineno(1), t.lexpos(0))
+        else: 
+            t[0] = t[1]
             
     
     
@@ -556,8 +573,9 @@ def p_error(t):
 import ply.yacc as yacc 
 parser = yacc.yacc()
 
-file = open('./entrada.jl', 'r')
-input = file.read()
-#print(input)
-parser.parse(input)
+def interpretar(): 
+    file = open('./entrada.jl', 'r')
+    input = file.read()
+    #print(input)
+    return parser.parse(input)
 

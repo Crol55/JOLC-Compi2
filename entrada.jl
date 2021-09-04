@@ -36,9 +36,22 @@
 #val = 20 >= 20;
 #val = true == true;
 
-#val = 10 < 20 || 10 >=11;
 #val = !(false && true);
 #val = -10*20;
-val = -25^(69-33*2)+22-32*2-33^(-48+48);
+#=val = -25^(69-33*2)+22-32*2-33^(-48+48)::Int64;
+val2 =  10 < 20 || 10 >=11;
+local val3 = 10::Int64; 
+global val4 = 23.0::Float64; 
+test = val4;=#
+
+function sumas () 
+
+end; 
+
+function testeo () 
+
+end;
+
+#val = -25^(69-33*2)+22-32*2-33^(-48+48);
 #x = 6 * 4 -3.5 ;
 #x = 6 * 4 +1 ;
