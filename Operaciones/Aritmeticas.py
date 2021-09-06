@@ -23,8 +23,8 @@ class Aritmeticas(Expresion):
 
 
     def execute(self, ambito):
-        valorIzquierdo:Return = self.leftExpression.execute(None)
-        valorDerecho:Return   = self.rightExpression.execute(None)
+        valorIzquierdo:Return = self.leftExpression.execute(ambito)
+        valorDerecho:Return   = self.rightExpression.execute(ambito)
 
         # REALIZAR UNA SUMA
         if self.operador == Operador.PLUS: 

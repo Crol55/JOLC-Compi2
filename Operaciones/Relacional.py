@@ -19,6 +19,7 @@ class Relacional(Expresion):
         this.left_expresion = left_expresion
         this.right_expresion = right_expresion
         this.operador = operador
+        
 
     def execute(this, ambito):
         

@@ -47,10 +47,20 @@ class Ambito():
             ambito = ambito.ambito_anterior
         return None
 
-    def saveFunction(self, id_function, function):
+
+    def saveFunction(self, id_function, function, input_line):
+        
         if id_function in self.functions.keys():
-            print("Error Sintactico: La funcion '",id_function,"' ya fue declarada previamente")
+            print("Error Sintactico en linea",input_line,": La funcion '",id_function,"' ya fue declarada previamente.")
             return False 
         else: 
             self.functions[id_function] = function 
         return True
+
+    def getFunction(self, id_function): 
+        ambito = self 
+        while ambito != None: 
+            if id_function in ambito.functions.keys():
+                return ambito.functions[id_function]
+            ambito = ambito.ambito_anterior
+        return None

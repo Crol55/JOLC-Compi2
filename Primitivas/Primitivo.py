@@ -17,7 +17,7 @@ class Primitivo(Expresion):
 
         self.valorPrimitivo = rawValue
         self.tipoDato       = rawType
-        print("val insertado:", rawValue, type(rawValue))
+        #print("val insertado:", rawValue, type(rawValue))
 
     def execute(self, ambito):
         objetoRetorno = Return(self.tipoDato, self.valorPrimitivo)

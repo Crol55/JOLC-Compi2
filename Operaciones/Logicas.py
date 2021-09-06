@@ -9,10 +9,13 @@ class OperadorLogico(Enum):
 
 class Logicas(Expresion):
     def __init__(this, left_expresion:Expresion, right_expresion:Expresion, operador,  line, column):
+        
         Expresion.__init__(this, line, column)
         this.left_expresion = left_expresion
         this.right_expresion = right_expresion
         this.operador = operador
+
+        
 
     def execute(this, ambito):
         left_result:Return  = this.left_expresion.execute(ambito)

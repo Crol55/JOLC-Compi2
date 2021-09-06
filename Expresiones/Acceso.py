@@ -8,6 +8,8 @@ class Acceso(Expresion):
         self.identificador = identificador
 
     def execute(self, ambito):
+        print ("Estoy cagado DEL CARLOR ", ambito)
+        print ("En que ambito estoy?", ambito.variables)
         valor_variable = ambito.getVariable(self.identificador)
         if valor_variable != None: 
             print ("jiji")

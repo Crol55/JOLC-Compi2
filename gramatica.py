@@ -1,5 +1,11 @@
 
 
+from Instrucciones.nativas.Print import Print
+from Instrucciones.Functions.CallFunction import CallFunction
+from Instrucciones.Transferencia.Break import Break
+from Instrucciones.Transferencia.Continue import Continue
+from Instrucciones.Transferencia.ReturnINST import ReturnINST
+from Instrucciones.Functions.Parametro import Parametro
 from Instrucciones.Functions.Funcion import Funcion
 from Expresiones.Acceso import Acceso
 from Operaciones.Logicas import Logicas, OperadorLogico, Not
@@ -137,7 +143,7 @@ def t_MLCOMMENT(t):
 # OLCOMMENT
 def t_OLCOMMENT(t):
     r'\#.*'
-    t.lexer.lineno += 1
+    t.lexer.lineno += t.value.count("\n")   
 
 def t_IDENTIFICADOR(t): 
     r' ([A-Za-z]|_)([0-9]|[A-Za-z]|_|[!])*'
@@ -238,9 +244,16 @@ def p_declareFunction(t):
     '''
     # 9 , 7 , 8, 
     if len(t) == 7:
-        t[0] = Funcion(t[2], [], [], t.lineno(1), t.lexpos(0), None) 
-    elif len(t) == 8: return 
-    else: return 
+        t[0] = Funcion(t[2], [], [], t.lineno(1), t.lexpos(0), None) # Produccion 1
+    elif len(t) == 8:
+        if (t.slice[4].type == 'lista_parametros'):
+            t[0] = Funcion(t[2],t[4],[], t.lineno(1), t.lexpos(0), None) # produccion 4
+        else: 
+            t[0] = Funcion(t[2],[],t[5], t.lineno(1), t.lexpos(0), None) # produccion 3
+    else:
+        print ("JODER QUE INGRESO A LA PRODUCCION 2?", t[4])
+        t[0] = Funcion(t[2],t[4],t[6], t.lineno(1), t.lexpos(0), None) # produccion 2
+        #print ("Ingreso con la ultima funcion",t[2], t[6])
 
 # lista_instrucciones
 def p_lista_instrucciones(t):
@@ -249,17 +262,37 @@ def p_lista_instrucciones(t):
                            | instruccion
                            | transferencia
     '''
+    if len(t) == 2: # instruccion o transferencia, pero a esta especificamente solo ingresa 1 vez
+        t[0] = [ t[1] ]
+    else:
+        t[1].append( t[2] )
+        t[0] = t[1]
+        
+    
 # transferencia
 def p_transferencia(t):
     '''transferencia : BREAK SEMICOLON
                      | CONTINUE SEMICOLON
                      | returnValue SEMICOLON
     '''
+    tipo_transferencia = t.slice[1].type 
+    if tipo_transferencia == 'BREAK': 
+        t[0] = Break(t.lineno(1), t.lexpos(0), None)
+    elif tipo_transferencia == 'CONTINUE': 
+        t[0] = Continue(t.lineno(1), t.lexpos(0), None)
+    else: # Produccion 3
+        t[0] = t[1]
+
 # returnValue
 def p_returnValue(t):
     '''returnValue : RETURN expresion 
                    | RETURN 
     '''
+    if len(t) == 3: # Produccion 1  
+        t[0] = ReturnINST(t[2], t.lineno(1), t.lexpos(0), None)
+    else: # Produccion 2
+        t[0] = ReturnINST(None, t.lineno(1), t.lexpos(0), None)
+
 # lista_parametros
 def p_lista_parametros(t):
     '''lista_parametros : lista_parametros COMMA IDENTIFICADOR 
@@ -268,7 +301,20 @@ def p_lista_parametros(t):
                         | IDENTIFICADOR
     ''' 
     if len(t) == 2: 
-        t[0] = []
+        t[0] = [Parametro(t[1], Type.ANY, t.lineno(1), t.lexpos(0), None)] # Produccion 4
+    elif len(t) == 4: 
+        if t.slice[1].type == 'lista_parametros':  # Produccion 1
+            t[1].append( Parametro(t[3], Type.ANY, t.lineno(1), t.lexpos(0), None) )
+            t[0] = t[1]
+        else: # Produccion 3 
+           t[0] = [Parametro(t[1], t[3], t.lineno(1), t.lexpos(0), None)] 
+
+    elif len(t) == 6: # Produccion 2
+        t[1].append( Parametro(t[3], t[5], t.lineno(1), t.lexpos(0), None) )
+        t[0] = t[1]
+        
+
+# Asignacion        
 def p_asignacion(t): # La que tiene SUFIX -> Es una declaracion, por lo que no requiere local ni global
     '''asignacion :              IDENTIFICADOR EQUALS expresion                 SEMICOLON
                   |              IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
@@ -312,11 +358,17 @@ def p_tipo_dato(t):
 def p_callFunction(t):
     '''callFunction : callFunc SEMICOLON
     '''
+    t[0] = t[1]
 
 def p_callFunc(t):
     '''callFunc : IDENTIFICADOR LPAR RPAR 
                 | IDENTIFICADOR LPAR lista_expresion RPAR 
     '''
+    if len(t) == 4: # produccion 1  
+        t[0] = CallFunction(t[1], [], t.lineno(1), t.lexpos(0), None)  
+    else: # Produccion 2
+        t[0] = CallFunction(t[1], t[3], t.lineno(1), t.lexpos(0), None) 
+
 # sentencias
 def p_sentencias(t):
     '''sentencias : lista_instrucciones
@@ -346,6 +398,12 @@ def p_lista_expresion(t):
     '''lista_expresion : lista_expresion COMMA expresion 
                        | expresion
     '''
+    if len (t) == 2:  # produccion 2
+        t[0] = [ t[1] ]
+    else:  # produccion 1
+        t[1].append( t[3] )
+        t[0] = t[1]
+
 
 #struct 
 def p_struct(t):
@@ -368,6 +426,10 @@ def p_inst_nativa(t):
                    | PUSH       LPAR IDENTIFICADOR COMMA expresion RPAR SEMICOLON
                    | POP        LPAR IDENTIFICADOR COMMA expresion RPAR SEMICOLON
     '''
+    if t.slice[1].type == 'PRINT':
+        print("Desea el usuario ejecutar un print?")
+        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, False)
+
 #expresion
 def p_expresion(t):
     '''expresion : RESTA expresion %prec UMINUS 
@@ -409,12 +471,12 @@ def p_expresion(t):
     elif len(t) == 4: # SUM, DIV, MINUS
         if (t.slice[2].type =='SUM'):
             t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(1), t.lexpos(0))    
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
         elif (t.slice[2].type =='RESTA'):
             t[0] = Aritmeticas(t[1], Operador.MINUS, t[3], t.lineno(1), t.lexpos(0))
         elif (t.slice[2].type =='MUL'): 
             t[0] =  Aritmeticas(t[1], Operador.MUL, t[3], t.lineno(1), t.lexpos(0)) 
-            print (t[0].execute(None).value)          
+            #print (t[0].execute(None).value)          
         elif (t.slice[2].type =='DIV'):
             t[0] = Aritmeticas(t[1], Operador.DIV, t[3], t.lineno(1), t.lexpos(0))           
         elif (t.slice[2].type =='POT'):

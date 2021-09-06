@@ -44,14 +44,33 @@ local val3 = 10::Int64;
 global val4 = 23.0::Float64; 
 test = val4;=#
 
-function sumas () 
-
-end; 
-
-function testeo () 
-
+#function sumas () 
+#    continue;
+#end; 
+#
+#function x () 
+#    val50 = 10;
+#end;
+val = 100;
+function vals(tipado::Int64, val1, val2)
+    #return;
+    #return 9* tipado;
+    #return tipado * 3; 
+    print("Hola mundo");
+    #return;
+    #function invalid () end;
+    #while true 
+    #    break;
+    #end;
 end;
 
+vals(10, 20 , false);
+#vals(5, 20 , false);
+
+#function testeo (tipado, notipado)
+#    
+#    break;
+#end;
 #val = -25^(69-33*2)+22-32*2-33^(-48+48);
 #x = 6 * 4 -3.5 ;
 #x = 6 * 4 +1 ;
