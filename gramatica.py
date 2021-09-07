@@ -1,5 +1,6 @@
 
 
+from Instrucciones.Loops.While import While
 from Instrucciones.Condicional.Sentencia import Sentencia
 from Instrucciones.Condicional.If import If
 from Instrucciones.nativas.Print import Print
@@ -253,7 +254,6 @@ def p_declareFunction(t):
         else: 
             t[0] = Funcion(t[2],[],t[5], t.lineno(1), t.lexpos(0), None) # produccion 3
     else:
-        print ("JODER QUE INGRESO A LA PRODUCCION 2?", t[4])
         t[0] = Funcion(t[2],t[4],t[6], t.lineno(1), t.lexpos(0), None) # produccion 2
         #print ("Ingreso con la ultima funcion",t[2], t[6])
 
@@ -434,8 +434,10 @@ def p_elseifList(t):
 
 # whileST 
 def p_whileST(t):
-    '''whileST : WHILE expresion sentencias END SEMICOLON
-    '''
+    'whileST : WHILE expresion sentencias END SEMICOLON'
+    t[0] = While(t[2], t[3], t.lineno(1), t.lexpos(0), None)
+
+
 def p_forST(t):
     '''forST : FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
     '''
@@ -517,20 +519,21 @@ def p_expresion(t):
 
     elif len(t) == 4: # SUM, DIV, MINUS
         if (t.slice[2].type =='SUM'):
-            t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(1), t.lexpos(0))    
+            t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(2), t.lexpos(0))    
             #print (t[0].execute(None).value)
         elif (t.slice[2].type =='RESTA'):
-            t[0] = Aritmeticas(t[1], Operador.MINUS, t[3], t.lineno(1), t.lexpos(0))
+            t[0] = Aritmeticas(t[1], Operador.MINUS, t[3], t.lineno(2), t.lexpos(0))
         elif (t.slice[2].type =='MUL'): 
-            t[0] =  Aritmeticas(t[1], Operador.MUL, t[3], t.lineno(1), t.lexpos(0)) 
+            #print ("El mul se ejecuta antessssssssssssssssssssssssssssssssssssssssssssssss",t.lineno(2))
+            t[0] =  Aritmeticas(t[1], Operador.MUL, t[3], t.lineno(2), t.lexpos(0)) 
             #print (t[0].execute(None).value)          
         elif (t.slice[2].type =='DIV'):
-            t[0] = Aritmeticas(t[1], Operador.DIV, t[3], t.lineno(1), t.lexpos(0))           
+            t[0] = Aritmeticas(t[1], Operador.DIV, t[3], t.lineno(2), t.lexpos(0))           
         elif (t.slice[2].type =='POT'):
-            t[0] = Aritmeticas(t[1], Operador.POT, t[3], t.lineno(1), t.lexpos(0))  
+            t[0] = Aritmeticas(t[1], Operador.POT, t[3], t.lineno(2), t.lexpos(0))  
             #print (t[0].execute(None).value)              
         elif (t.slice[2].type =='MOD'):
-            t[0] = Aritmeticas(t[1], Operador.MOD, t[3], t.lineno(1), t.lexpos(0))
+            t[0] = Aritmeticas(t[1], Operador.MOD, t[3], t.lineno(2), t.lexpos(0))
         elif (t.slice[2].type =='DEQUALS'):
             t[0] = Relacional(t[1], t[3], OperadorRelacional.DEQUAL, t.lineno(1), t.lexpos(0))  
             #print (t[0].execute(None).value)

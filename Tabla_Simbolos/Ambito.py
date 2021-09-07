@@ -63,7 +63,7 @@ class Ambito():
             return False 
         else: 
             self.functions[id_function] = function 
-        return True
+        return
 
     def getFunction(self, id_function): 
         ambito = self 

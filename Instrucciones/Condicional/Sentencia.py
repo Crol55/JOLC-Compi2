@@ -18,9 +18,9 @@ class Sentencia(Instruccion):
 
                 ret = instruccion.execute(ambito)
 
-                if ret != None: # Hubo un error o quiere hacer un (return, break, continue) adentro del if
+                if ret != None: # Hubo un error o quiere hacer un (return, break, continue) adentro del if, solo retornamos 
                     print ("Sentencia: Se encontro algo de caracter especial")
-                    return ret 
+                    return ret # Solo retornamos que fue lo que ocurrio y las sentencias de abajo dejan de ejecutarse 
         return 
 
     

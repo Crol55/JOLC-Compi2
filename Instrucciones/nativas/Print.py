@@ -14,6 +14,8 @@ class Print(Instruccion):
         for expresion in self.__arreglo_expresiones__:
             
             resultado = expresion.execute(ambito).value
+            #if resultado == False: # hubo un error en la ejecucion de la expresion
+            #    return 
             string_concat += str(resultado)
         
         # Printear los valores

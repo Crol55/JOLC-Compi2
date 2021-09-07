@@ -2,7 +2,6 @@
 from Instrucciones.Transferencia.Continue import Continue
 from Instrucciones.Transferencia.Break import Break
 from Tabla_Simbolos.Ambito import Ambito
-from Nativas.Type   import Type
 from Abstractas.Instruccion import Instruccion
 
 class Funcion(Instruccion):

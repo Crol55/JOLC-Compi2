@@ -110,7 +110,7 @@ class Aritmeticas(Expresion):
             resultado = operando1.value + operando2.value
             return Return (Type.STRING, resultado)
         else: 
-            print("Error: Ocurrio un error Sintactico, no se puede mutiplicar", operando1.type, "Con", operando2.type)
+            print("Error Sintactico en linea {}:, no se puede multiplicar {} con {}.".format(self.line, operando1.type, operando2.type) )
         return None
 
     def division(self, operando1, operando2):
@@ -145,8 +145,8 @@ class Aritmeticas(Expresion):
             resultado = operando1.value * operando2.value
             return Return (Type.STRING, resultado)
         else: 
-            print("Error: Ocurrio un error Sintactico, no se puede potenciar", operando1.type, "Con", operando2.type)
-        return None
+            print("Error Sintactico en linea {}:, no se puede potenciar {} con {}.".format(self.line, operando1.type, operando2.type) )
+        return 
 
     def modulo(self, operando1, operando2):
         if operando1.type == Type.INT and operando2.type == Type.INT: # ENTERO, ENTERO
@@ -162,7 +162,7 @@ class Aritmeticas(Expresion):
             resultado = operando1.value % operando2.value 
             return Return(Type.FLOAT, resultado)
         else: 
-            print("Error: Ocurrio un error Sintactico, no se puede modular", operando1.type, "Con", operando2.type)
+            print("Error Sintactico en linea {}:, no se puede modular {} con {}.".format(self.line, operando1.type, operando2.type) )
         return None
       
         
