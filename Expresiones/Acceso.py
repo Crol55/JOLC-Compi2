@@ -8,13 +8,12 @@ class Acceso(Expresion):
         self.identificador = identificador
 
     def execute(self, ambito):
-        print ("Estoy cagado DEL CARLOR ", ambito)
-        print ("En que ambito estoy?", ambito.variables)
+        
+        #print ("En que ambito estoy?", ambito.variables)
         valor_variable = ambito.getVariable(self.identificador)
         if valor_variable != None: 
-            print ("jiji")
-            print (valor_variable.tipoSimbolo)
-            print (valor_variable.valorSimbolo)
+            print ("ACCESO: tipo y valor de la tabla de simbolos: ",valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
+
             return Return(valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
         else: 
             print ("Error sintactico: La variable", self.identificador,"no existe")

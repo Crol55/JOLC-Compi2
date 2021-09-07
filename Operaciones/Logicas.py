@@ -21,7 +21,7 @@ class Logicas(Expresion):
         left_result:Return  = this.left_expresion.execute(ambito)
         right_result:Return = this.right_expresion.execute(ambito)
 
-        print ("Dato izquierdo:", left_result.value)
+        #print ("Dato izquierdo:", left_result.value)
         operation_state = False
         if(left_result.type == Type.BOOL and right_result.type == Type.BOOL): 
             if this.operador == OperadorLogico.AND:

@@ -1,5 +1,7 @@
 
 
+from Instrucciones.Condicional.Sentencia import Sentencia
+from Instrucciones.Condicional.If import If
 from Instrucciones.nativas.Print import Print
 from Instrucciones.Functions.CallFunction import CallFunction
 from Instrucciones.Transferencia.Break import Break
@@ -321,9 +323,9 @@ def p_asignacion(t): # La que tiene SUFIX -> Es una declaracion, por lo que no r
                   | tipoVariable IDENTIFICADOR EQUALS expresion                 SEMICOLON
                   | tipoVariable IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
     '''
-    if len(t) == 5:    t[0] = Asignacion('local', Type.ANY, t[1], t[3], t.lineno(1), t.lexpos(0), None)
+    if len(t) == 5:    t[0] = Asignacion('', Type.ANY, t[1], t[3], t.lineno(1), t.lexpos(0), None) # Prod -> 1
     elif len(t) == 6:  t[0] = Asignacion(t[1]   , Type.ANY, t[2], t[4], t.lineno(1), t.lexpos(0), None)
-    elif len(t) == 7:  t[0] = Asignacion('local', t[5]    , t[1], t[3], t.lineno(1), t.lexpos(0), None)
+    elif len(t) == 7:  t[0] = Asignacion('', t[5]    , t[1], t[3], t.lineno(1), t.lexpos(0), None)
     elif len(t) == 8:  t[0] = Asignacion(t[1],    t[6]    , t[2], t[4], t.lineno(1), t.lexpos(0), None)
         
 # asignacion_struct
@@ -374,18 +376,62 @@ def p_sentencias(t):
     '''sentencias : lista_instrucciones
                   | 
     '''
+    if len (t) == 2: # produccion 1
+        t[0] = Sentencia(t[1], t.lineno(1), t.lexpos(0), None) 
+    else:  # produccion 2
+        t[0] = None #Empty array  
+
 # condicional
 def p_condicional(t):
     '''condicional : IF  expresion  sentencias                                END SEMICOLON
-                   | IF  expresion  sentencias               ELSE sentencias  END SEMICOLON
                    | IF  expresion  sentencias  elseifList                    END SEMICOLON
+                   | IF  expresion  sentencias               ELSE sentencias  END SEMICOLON
                    | IF  expresion  sentencias  elseifList   ELSE sentencias  END SEMICOLON 
     '''
+    
+    if len(t) == 6: #produccion 1 
+        t[0] = If(t[2], t[3], None, t.lineno(1), t.lexpos(0), None) 
+    elif len (t) == 7: #produccion 2
+        t[0] = If(t[2], t[3], t[4], t.lineno(1), t.lexpos(0), None) 
+    elif len (t) == 8: #produccion 3
+        print ("El usuario quiere ejecutar un If sin de produccion #3")
+        t[0] = If(t[2], t[3], t[5], t.lineno(1), t.lexpos(0), None) 
+    elif len (t) == 9: #produccion 4
+        print ("El usuario quiere ejecutar la produccion 4")
+
+        elseif_list = t[4]
+
+        while True: # Iterar hasta que se encuentre None para poder insertar alli el ELSE
+            if elseif_list.else_or_elseif == None: 
+                elseif_list.else_or_elseif = t[6]
+                break
+            elseif_list = elseif_list.else_or_elseif
+        
+        t[0] = If(t[2], t[3], t[4], t.lineno(1), t.lexpos(0), None) 
+
 # elseCond
 def p_elseifList(t):
     '''elseifList : elseifList ELSEIF expresion sentencias
                   | ELSEIF expresion sentencias
     '''
+    if len(t) == 5: # produccion 1 
+        
+        newElseif = If(t[3], t[4], None, t.lineno(1), t.lexpos(0), None)
+        previous_if = t[1]
+
+        while True: # Iterar hasta que se encuentre None para poder insertarlo alli
+            if previous_if.else_or_elseif == None: 
+                previous_if.else_or_elseif = newElseif
+                break
+            previous_if = previous_if.else_or_elseif
+        t[0] = t[1]
+                
+    else: # produccion 2
+        t[0] = If(t[2], t[3], None, t.lineno(1), t.lexpos(0), None) # El primer elseif de la produccion
+
+
+
+
 # whileST 
 def p_whileST(t):
     '''whileST : WHILE expresion sentencias END SEMICOLON
@@ -427,8 +473,9 @@ def p_inst_nativa(t):
                    | POP        LPAR IDENTIFICADOR COMMA expresion RPAR SEMICOLON
     '''
     if t.slice[1].type == 'PRINT':
-        print("Desea el usuario ejecutar un print?")
         t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, False)
+    if t.slice[1].type == 'PRINTLN':
+        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, True)
 
 #expresion
 def p_expresion(t):
@@ -459,7 +506,7 @@ def p_expresion(t):
                  | callFunc
                  | callArrays
     '''
-    print ((t.slice)) 
+    #print ((t.slice)) 
     if len(t) == 3:  # NOT, 
         if t.slice[1].type == 'NOT': 
             t[0] = Not( t[2], t.lineno(1), t.lexpos(0))
@@ -481,33 +528,33 @@ def p_expresion(t):
             t[0] = Aritmeticas(t[1], Operador.DIV, t[3], t.lineno(1), t.lexpos(0))           
         elif (t.slice[2].type =='POT'):
             t[0] = Aritmeticas(t[1], Operador.POT, t[3], t.lineno(1), t.lexpos(0))  
-            print (t[0].execute(None).value)              
+            #print (t[0].execute(None).value)              
         elif (t.slice[2].type =='MOD'):
             t[0] = Aritmeticas(t[1], Operador.MOD, t[3], t.lineno(1), t.lexpos(0))
         elif (t.slice[2].type =='DEQUALS'):
             t[0] = Relacional(t[1], t[3], OperadorRelacional.DEQUAL, t.lineno(1), t.lexpos(0))  
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
         elif (t.slice[2].type =='DIFF'):
             t[0] = Relacional(t[1], t[3], OperadorRelacional.DISTINT, t.lineno(1), t.lexpos(0))  
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
         elif (t.slice[2].type =='GREATER'):
             t[0] = Relacional(t[1], t[3], OperadorRelacional.GREATER, t.lineno(1), t.lexpos(0))  
-            print (t[0].execute(None).value)    
+            #print (t[0].execute(None).value)    
         elif (t.slice[2].type =='LESSTHAN'):
             t[0] = Relacional(t[1], t[3], OperadorRelacional.LESS, t.lineno(1), t.lexpos(0))  
-            print (t[0].execute(None).value)   
+            #print (t[0].execute(None).value)   
         elif (t.slice[2].type =='GEQ'):
             t[0] = Relacional(t[1], t[3], OperadorRelacional.GEQ, t.lineno(1), t.lexpos(0))  
-            print (t[0].execute(None).value)   
+            #print (t[0].execute(None).value)   
         elif (t.slice[2].type =='LEQ'):
             t[0] = Relacional(t[1], t[3], OperadorRelacional.LEQ, t.lineno(1), t.lexpos(0))  
-            print (t[0].execute(None).value)  
+            #print (t[0].execute(None).value)  
         elif (t.slice[2].type =='AND'):
             t[0] = Logicas(t[1], t[3], OperadorLogico.AND, t.lineno(1), t.lexpos(0))
-            print (t[0].execute(None).value)   
+            #print (t[0].execute(None).value)   
         elif (t.slice[2].type =='OR'):
             t[0] = Logicas(t[1], t[3], OperadorLogico.OR, t.lineno(1), t.lexpos(0))
-            print (t[0].execute(None).value) 
+            #print (t[0].execute(None).value) 
         elif (t.slice[1].type == 'LPAR'): t[0] = t[2]
             
     elif len(t) == 2: # primitivas, nativas, callFunc, callArrays, IDENTIFICADOR
@@ -635,9 +682,11 @@ def p_error(t):
 import ply.yacc as yacc 
 parser = yacc.yacc()
 
+
 def interpretar(): 
     file = open('./entrada.jl', 'r')
     input = file.read()
     #print(input)
+    
     return parser.parse(input)
 

@@ -1,6 +1,6 @@
 from Abstractas.Instruccion import Instruccion
 
-class Print(Instruccion):
+class Print(Instruccion): 
 
     def __init__(self,expresiones, line, column, node, newLine = False):
         
@@ -10,7 +10,17 @@ class Print(Instruccion):
 
     def execute(self, ambito):
 
-        for expresion in self.__arreglo_expresiones__: 
-            print("QUE QUEREEEEEEEEEEEEEEEEEEEEEEEES?",expresion)
-        return  
+        string_concat = ""
+        for expresion in self.__arreglo_expresiones__:
+            
+            resultado = expresion.execute(ambito).value
+            string_concat += str(resultado)
+        
+        # Printear los valores
+        if  self.__newLine__:  # println
+                #print ("PRINT: ambito en el que estoy al impirmir:",ambito)
+                print(string_concat) 
+        else: # print
+            print(string_concat, end ='') 
+        return
         

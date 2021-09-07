@@ -15,12 +15,14 @@ class Asignacion(Instruccion):
         self.verifyType = verifyType
     
     def execute(self, ambito:Ambito):
+
         resultado_expresion:Return = self.expresion.execute(ambito)
-        print("Al momento de asignar:", resultado_expresion.value, resultado_expresion.type)
+        #print("ASIGNACION: variable:",self.nombre_variable, resultado_expresion.value, resultado_expresion.type)
+
         if resultado_expresion.type == self.verifyType or self.verifyType == Type.ANY: 
-            print ("Si puedo almacenar tu variable")
-            ambito.saveVariable(self.nombre_variable, resultado_expresion.type, resultado_expresion.value, '')
-            print ("Imprimiendo el ambito", ambito.variables)
+            #print ("ASIGNACION:      Si puedo almacenar tu variable")
+            ambito.saveVariable(self.nombre_variable, resultado_expresion.type, resultado_expresion.value, self.alcance)
+            #print ("Imprimiendo el ambito", ambito.variables)
         else: 
             print("Error sintactico: Los tipos de datos de la variable '",self.nombre_variable,"' no coinciden.")
-        return True
+        return  # Si returna None, la ejecucion se realizo correctamente

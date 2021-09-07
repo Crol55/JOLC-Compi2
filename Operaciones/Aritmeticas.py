@@ -48,7 +48,7 @@ class Aritmeticas(Expresion):
             return resultado 
         # Realizar MODULO
         elif self.operador == Operador.MOD:
-            print ("si llego a Modulo")
+            
             resultado = self.modulo (valorIzquierdo, valorDerecho)
             return resultado            
 
@@ -62,7 +62,7 @@ class Aritmeticas(Expresion):
             resultado = float(operando1.value) + float(operando2.value)
             return Return(Type.FLOAT, resultado)
         elif (operando1.type == Type.INT and operando2.type == Type.FLOAT):  # ENTERO, FLOAT
-            print("ejecuto el correcto")
+            
             resultado = float(operando1.value) + float(operando2.value)
             return Return(Type.FLOAT, resultado)
         elif (operando1.type == Type.FLOAT and operando2.type == Type.FLOAT): # FLOAT, FLOAT

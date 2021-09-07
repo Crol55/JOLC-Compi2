@@ -53,10 +53,31 @@ test = val4;=#
 #end;
 val = 100;
 function vals(tipado::Int64, val1, val2)
+    
+    val = tipado * val1;
+    esmayor = false; 
+    if (val >= 200)
+        println("Si es mayor a 200");
+        local esmayor = true;
+    else
+        println("No es mayor a 200");
+    end; 
+    println("Testeo de ambito ", esmayor);
+end;
+
+vals(10, 20 , false);
+println("El valor de Val es:", val);
+
+#=
+val = 100;
+function vals(tipado::Int64, val1, val2)
     #return;
     #return 9* tipado;
-    #return tipado * 3; 
-    print("Hola mundo");
+    #return tipado * 3;
+    
+    tipado = 23.5;
+    val = 5;
+    println("El valor en la fun:", tipado * val);
     #return;
     #function invalid () end;
     #while true 
@@ -64,13 +85,4 @@ function vals(tipado::Int64, val1, val2)
     #end;
 end;
 
-vals(10, 20 , false);
-#vals(5, 20 , false);
-
-#function testeo (tipado, notipado)
-#    
-#    break;
-#end;
-#val = -25^(69-33*2)+22-32*2-33^(-48+48);
-#x = 6 * 4 -3.5 ;
-#x = 6 * 4 +1 ;
+=#

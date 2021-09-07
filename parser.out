@@ -53,8 +53,8 @@ Rule 47    callFunc -> IDENTIFICADOR LPAR lista_expresion RPAR
 Rule 48    sentencias -> lista_instrucciones
 Rule 49    sentencias -> <empty>
 Rule 50    condicional -> IF expresion sentencias END SEMICOLON
-Rule 51    condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON
-Rule 52    condicional -> IF expresion sentencias elseifList END SEMICOLON
+Rule 51    condicional -> IF expresion sentencias elseifList END SEMICOLON
+Rule 52    condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON
 Rule 53    condicional -> IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
 Rule 54    elseifList -> elseifList ELSEIF expresion sentencias
 Rule 55    elseifList -> ELSEIF expresion sentencias
@@ -140,7 +140,7 @@ DECIMAL              : 97
 DEQUALS              : 80
 DIFF                 : 81
 DIV                  : 77
-ELSE                 : 51 53
+ELSE                 : 52 53
 ELSEIF               : 54 55
 END                  : 13 14 15 16 50 51 52 53 56 57 60 61
 ENTERO               : 96
@@ -207,7 +207,7 @@ callFunction         : 7
 condicional          : 8
 declareFunction      : 6
 dimensiones          : 93 94
-elseifList           : 52 53 54
+elseifList           : 51 53 54
 expresion            : 24 30 31 32 33 34 50 51 52 53 54 55 56 57 58 59 68 69 70 71 72 72 73 73 74 74 75 75 76 76 77 77 78 78 79 79 80 80 81 81 82 82 83 83 84 84 85 85 88 94 95 105 106 107 107 108 109 110 111 112 113 114 115 116 117 118 119
 forST                : 10
 inicio               : 0
@@ -222,7 +222,7 @@ lista_parametros     : 14 16 26 27
 nativas              : 90
 primitivas           : 89
 returnValue          : 23
-sentencias           : 50 51 51 52 53 53 54 55 56 57
+sentencias           : 50 51 52 52 53 53 54 55 56 57
 struct               : 11
 tipoVariable         : 32 33
 tipo_dato            : 27 28 31 33 62 64 113 114
@@ -257,8 +257,8 @@ state 0
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -332,8 +332,8 @@ state 2
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -671,8 +671,8 @@ state 16
 state 17
 
     (50) condicional -> IF . expresion sentencias END SEMICOLON
-    (51) condicional -> IF . expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> IF . expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> IF . expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> IF . expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> IF . expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (70) expresion -> . RESTA expresion
     (71) expresion -> . NOT expresion
@@ -1150,8 +1150,8 @@ state 34
 state 35
 
     (50) condicional -> IF expresion . sentencias END SEMICOLON
-    (51) condicional -> IF expresion . sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> IF expresion . sentencias elseifList END SEMICOLON
+    (51) condicional -> IF expresion . sentencias elseifList END SEMICOLON
+    (52) condicional -> IF expresion . sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> IF expresion . sentencias elseifList ELSE sentencias END SEMICOLON
     (72) expresion -> expresion . AND expresion
     (73) expresion -> expresion . OR expresion
@@ -1196,8 +1196,8 @@ state 35
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -2281,8 +2281,8 @@ state 65
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -2799,17 +2799,17 @@ state 79
 state 80
 
     (50) condicional -> IF expresion sentencias . END SEMICOLON
-    (51) condicional -> IF expresion sentencias . ELSE sentencias END SEMICOLON
-    (52) condicional -> IF expresion sentencias . elseifList END SEMICOLON
+    (51) condicional -> IF expresion sentencias . elseifList END SEMICOLON
+    (52) condicional -> IF expresion sentencias . ELSE sentencias END SEMICOLON
     (53) condicional -> IF expresion sentencias . elseifList ELSE sentencias END SEMICOLON
     (54) elseifList -> . elseifList ELSEIF expresion sentencias
     (55) elseifList -> . ELSEIF expresion sentencias
 
     END             shift and go to state 142
-    ELSE            shift and go to state 143
+    ELSE            shift and go to state 144
     ELSEIF          shift and go to state 145
 
-    elseifList                     shift and go to state 144
+    elseifList                     shift and go to state 143
 
 state 81
 
@@ -4015,8 +4015,8 @@ state 95
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -6095,8 +6095,8 @@ state 140
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -6167,7 +6167,18 @@ state 142
 
 state 143
 
-    (51) condicional -> IF expresion sentencias ELSE . sentencias END SEMICOLON
+    (51) condicional -> IF expresion sentencias elseifList . END SEMICOLON
+    (53) condicional -> IF expresion sentencias elseifList . ELSE sentencias END SEMICOLON
+    (54) elseifList -> elseifList . ELSEIF expresion sentencias
+
+    END             shift and go to state 215
+    ELSE            shift and go to state 216
+    ELSEIF          shift and go to state 217
+
+
+state 144
+
+    (52) condicional -> IF expresion sentencias ELSE . sentencias END SEMICOLON
     (48) sentencias -> . lista_instrucciones
     (49) sentencias -> .
     (17) lista_instrucciones -> . lista_instrucciones instruccion
@@ -6197,8 +6208,8 @@ state 143
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -6233,7 +6244,7 @@ state 143
     GLOBAL          shift and go to state 26
     LOCAL           shift and go to state 27
 
-    sentencias                     shift and go to state 215
+    sentencias                     shift and go to state 218
     lista_instrucciones            shift and go to state 95
     instruccion                    shift and go to state 96
     transferencia                  shift and go to state 97
@@ -6249,17 +6260,6 @@ state 143
     returnValue                    shift and go to state 100
     tipoVariable                   shift and go to state 14
     callFunc                       shift and go to state 16
-
-state 144
-
-    (52) condicional -> IF expresion sentencias elseifList . END SEMICOLON
-    (53) condicional -> IF expresion sentencias elseifList . ELSE sentencias END SEMICOLON
-    (54) elseifList -> elseifList . ELSEIF expresion sentencias
-
-    END             shift and go to state 216
-    ELSE            shift and go to state 217
-    ELSEIF          shift and go to state 218
-
 
 state 145
 
@@ -8386,8 +8386,8 @@ state 194
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -8877,8 +8877,8 @@ state 211
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -8959,8 +8959,8 @@ state 212
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -9047,19 +9047,12 @@ state 214
 
 state 215
 
-    (51) condicional -> IF expresion sentencias ELSE sentencias . END SEMICOLON
+    (51) condicional -> IF expresion sentencias elseifList END . SEMICOLON
 
-    END             shift and go to state 256
+    SEMICOLON       shift and go to state 256
 
 
 state 216
-
-    (52) condicional -> IF expresion sentencias elseifList END . SEMICOLON
-
-    SEMICOLON       shift and go to state 257
-
-
-state 217
 
     (53) condicional -> IF expresion sentencias elseifList ELSE . sentencias END SEMICOLON
     (48) sentencias -> . lista_instrucciones
@@ -9091,8 +9084,8 @@ state 217
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -9127,7 +9120,7 @@ state 217
     GLOBAL          shift and go to state 26
     LOCAL           shift and go to state 27
 
-    sentencias                     shift and go to state 258
+    sentencias                     shift and go to state 257
     lista_instrucciones            shift and go to state 95
     instruccion                    shift and go to state 96
     transferencia                  shift and go to state 97
@@ -9144,7 +9137,7 @@ state 217
     tipoVariable                   shift and go to state 14
     callFunc                       shift and go to state 16
 
-state 218
+state 217
 
     (54) elseifList -> elseifList ELSEIF . expresion sentencias
     (70) expresion -> . RESTA expresion
@@ -9222,11 +9215,18 @@ state 218
     STRINGCAST      shift and go to state 63
     TYPEOF          shift and go to state 64
 
-    expresion                      shift and go to state 259
+    expresion                      shift and go to state 258
     primitivas                     shift and go to state 40
     nativas                        shift and go to state 41
     callFunc                       shift and go to state 42
     callArrays                     shift and go to state 43
+
+state 218
+
+    (52) condicional -> IF expresion sentencias ELSE sentencias . END SEMICOLON
+
+    END             shift and go to state 259
+
 
 state 219
 
@@ -9274,8 +9274,8 @@ state 219
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -10505,8 +10505,8 @@ state 253
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -10575,45 +10575,38 @@ state 255
 
 state 256
 
-    (51) condicional -> IF expresion sentencias ELSE sentencias END . SEMICOLON
+    (51) condicional -> IF expresion sentencias elseifList END SEMICOLON .
 
-    SEMICOLON       shift and go to state 276
+    IDENTIFICADOR   reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    FUNCTION        reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    IF              reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    WHILE           reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    FOR             reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    MUTABLE         reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    STRUCT          reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    PRINT           reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    PRINTLN         reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    PUSH            reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    POP             reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    GLOBAL          reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    LOCAL           reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    $end            reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    BREAK           reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    CONTINUE        reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    RETURN          reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    END             reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    ELSE            reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    ELSEIF          reduce using rule 51 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
 
 
 state 257
 
-    (52) condicional -> IF expresion sentencias elseifList END SEMICOLON .
+    (53) condicional -> IF expresion sentencias elseifList ELSE sentencias . END SEMICOLON
 
-    IDENTIFICADOR   reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    FUNCTION        reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    IF              reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    WHILE           reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    FOR             reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    MUTABLE         reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    STRUCT          reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    PRINT           reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    PRINTLN         reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    PUSH            reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    POP             reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    GLOBAL          reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    LOCAL           reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    $end            reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    BREAK           reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    CONTINUE        reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    RETURN          reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    END             reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    ELSE            reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
-    ELSEIF          reduce using rule 52 (condicional -> IF expresion sentencias elseifList END SEMICOLON .)
+    END             shift and go to state 276
 
 
 state 258
-
-    (53) condicional -> IF expresion sentencias elseifList ELSE sentencias . END SEMICOLON
-
-    END             shift and go to state 277
-
-
-state 259
 
     (54) elseifList -> elseifList ELSEIF expresion . sentencias
     (72) expresion -> expresion . AND expresion
@@ -10659,8 +10652,8 @@ state 259
     (16) declareFunction -> . FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR END SEMICOLON
     (45) callFunction -> . callFunc SEMICOLON
     (50) condicional -> . IF expresion sentencias END SEMICOLON
-    (51) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
-    (52) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (51) condicional -> . IF expresion sentencias elseifList END SEMICOLON
+    (52) condicional -> . IF expresion sentencias ELSE sentencias END SEMICOLON
     (53) condicional -> . IF expresion sentencias elseifList ELSE sentencias END SEMICOLON
     (56) whileST -> . WHILE expresion sentencias END SEMICOLON
     (57) forST -> . FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
@@ -10711,7 +10704,7 @@ state 259
     GLOBAL          shift and go to state 26
     LOCAL           shift and go to state 27
 
-    sentencias                     shift and go to state 278
+    sentencias                     shift and go to state 277
     lista_instrucciones            shift and go to state 95
     instruccion                    shift and go to state 96
     transferencia                  shift and go to state 97
@@ -10727,6 +10720,13 @@ state 259
     returnValue                    shift and go to state 100
     tipoVariable                   shift and go to state 14
     callFunc                       shift and go to state 16
+
+state 259
+
+    (52) condicional -> IF expresion sentencias ELSE sentencias END . SEMICOLON
+
+    SEMICOLON       shift and go to state 278
+
 
 state 260
 
@@ -11059,44 +11059,44 @@ state 275
 
 state 276
 
-    (51) condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .
-
-    IDENTIFICADOR   reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    FUNCTION        reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    IF              reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    WHILE           reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    FOR             reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    MUTABLE         reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    STRUCT          reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    PRINT           reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    PRINTLN         reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    PUSH            reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    POP             reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    GLOBAL          reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    LOCAL           reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    $end            reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    BREAK           reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    CONTINUE        reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    RETURN          reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    END             reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    ELSE            reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-    ELSEIF          reduce using rule 51 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
-
-
-state 277
-
     (53) condicional -> IF expresion sentencias elseifList ELSE sentencias END . SEMICOLON
 
     SEMICOLON       shift and go to state 288
 
 
-state 278
+state 277
 
     (54) elseifList -> elseifList ELSEIF expresion sentencias .
 
     END             reduce using rule 54 (elseifList -> elseifList ELSEIF expresion sentencias .)
     ELSE            reduce using rule 54 (elseifList -> elseifList ELSEIF expresion sentencias .)
     ELSEIF          reduce using rule 54 (elseifList -> elseifList ELSEIF expresion sentencias .)
+
+
+state 278
+
+    (52) condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .
+
+    IDENTIFICADOR   reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    FUNCTION        reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    IF              reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    WHILE           reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    FOR             reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    MUTABLE         reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    STRUCT          reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    PRINT           reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    PRINTLN         reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    PUSH            reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    POP             reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    GLOBAL          reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    LOCAL           reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    $end            reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    BREAK           reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    CONTINUE        reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    RETURN          reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    END             reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    ELSE            reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
+    ELSEIF          reduce using rule 52 (condicional -> IF expresion sentencias ELSE sentencias END SEMICOLON .)
 
 
 state 279

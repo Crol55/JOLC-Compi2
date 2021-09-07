@@ -18,8 +18,10 @@ class Ambito():
 
         if alcance == 'local': 
             self.variables[id_variable] =  new_simbolo
+
         elif alcance == 'global':
             # Buscar el ambito global
+           
             ambito = self  
             while True : 
                 if (ambito.ambito_anterior == None): # Implica que estamos en el global
@@ -28,14 +30,20 @@ class Ambito():
                 ambito = ambito.ambito_anterior
         else :
             # Determinar si ya existe o si hay que crear una nueva
+            # La unica forma de acceder al ambito global si estamos en otro ambito es usando 'global' por lo que aqui no se puede
             ambito = self 
-            while ambito != None:
+            while ambito != None: # Iterar en los ambitos 
+
+                if ambito.ambito_anterior == None: # No iteramos en el ambito global 
+                    break 
                 if id_variable in ambito.variables.keys(): # Ya existe en el diccionario del ambito?
                     ambito.variables[id_variable] = new_simbolo # Si ya existe reescribimos el valor (tipado dinamico)
                     return 
                 ambito = ambito.ambito_anterior # Si no existe, buscamos en un ambito anterior 
-            # Si no lo encontro en ningun ambito, incluyendo el global, debemos insertarlo en el ambito ACTUAL 
+            # Si no lo encontro en ningun ambito, debemos insertarlo en el ambito ACTUAL 
+            # El ambito ACTUAL podria ser el global, a pesar de que no se itero ya que era el global
             self.variables[id_variable] = new_simbolo
+        return 
 
 
     def getVariable(self, id_variable):
