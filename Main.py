@@ -20,6 +20,7 @@ for instruccion in ast:
         if type(retMain) == bool: 
             print ("Main.py: Una instruccion esta retornando algo distinto a None")
             if retMain == False: # Hubo un error con alguna instruccion 
+                print("Main.py: Error en una instruccion: el interprete detuvo la ejecucion")
                 break
         elif retMain.type == Type.BREAK: 
             print("Error sintactico: Un 'break' no puede ser declarado afuera de un loop.")
@@ -37,6 +38,6 @@ for instruccion in ast:
     * for 
     * arreglos 
     * Operaciones con arreglos 
-    * structs 
+    structs 
     * acceso a structs
 '''

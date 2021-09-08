@@ -1,5 +1,6 @@
 
 
+from Instrucciones.Structs.CrearStruct import CrearStruct
 from Instrucciones.Loops.While import While
 from Instrucciones.Condicional.Sentencia import Sentencia
 from Instrucciones.Condicional.If import If
@@ -362,7 +363,7 @@ def p_callFunction(t):
     '''
     t[0] = t[1]
 
-def p_callFunc(t):
+def p_callFunc(t): # Puede llamar a una Funcion o llamar a un struct, ya que se declaran de la misma forma
     '''callFunc : IDENTIFICADOR LPAR RPAR 
                 | IDENTIFICADOR LPAR lista_expresion RPAR 
     '''
@@ -458,6 +459,11 @@ def p_struct(t):
     '''struct : MUTABLE STRUCT IDENTIFICADOR lista_atributos END SEMICOLON 
               |         STRUCT IDENTIFICADOR lista_atributos END SEMICOLON 
     '''
+    print ("El user va a crear un struct")
+    if len(t) == 7: # produccion 1
+        t[0] = CrearStruct(True, t[3], t[4], t.lineno(2), t.lexpos(0), None) 
+    else: # produccion 2 
+        t[0] = CrearStruct(False, t[2], t[3], t.lineno(1), t.lexpos(0), None)
 
 # lista_atributos
 def p_lista_atributos(t):
@@ -466,6 +472,17 @@ def p_lista_atributos(t):
                        |                 IDENTIFICADOR SUFIX tipo_dato SEMICOLON
                        |                 IDENTIFICADOR                 SEMICOLON
     '''
+    if len(t) == 6: #produccion 1 
+        t[1].append( Parametro(t[2], t[4], t.lineno(1), t.lexpos(0), None) )
+        t[0] = t[1] 
+    elif len(t) == 4: #produccion 2 
+        t[1].append( Parametro(t[2], Type.ANY, t.lineno(1), t.lexpos(0), None) )
+        t[0] = t[1]
+    elif len(t) == 5 : #produccion 3 
+        t[0] =  [ Parametro(t[1],     t[3], t.lineno(1), t.lexpos(0), None) ]  
+    elif len(t) == 3: #produccion 4
+        t[0] =  [ Parametro(t[1], Type.ANY, t.lineno(1), t.lexpos(0), None) ] 
+    
 
 #inst_nativa
 def p_inst_nativa(t):

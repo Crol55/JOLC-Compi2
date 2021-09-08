@@ -6,18 +6,20 @@ from Instrucciones.Functions.Funcion import Funcion
 from Abstractas.Instruccion import Instruccion
 from Tabla_Simbolos.Ambito  import Ambito
 
-class CallFunction( Instruccion ): 
+class CallFunction( Instruccion ): # call struct y call function utilizan la misma clase porque basicamente son lo mismo
     
     def __init__(self, id, parametros, line, column, node):
         Instruccion.__init__(self, line, column)
         self.id_funcion = id 
         self.parametros = parametros
 
-    def execute(self, ambito): # Al llamar una funcion, se le crea un ambito totalmente nuevo
+
+
+    def execute(self, ambito): # Al llamar una funcion/struct, se le crea un ambito totalmente nuevo
         
         new_ambito = Ambito(ambito) # Nuevo ambito y se le incrusta su ambito padre 
         
-        funcion_a_ejecutar:Funcion = new_ambito.getFunction(self.id_funcion) # Busca la funcion en el ambito actual o en el ambito inicial
+        funcion_a_ejecutar:Funcion = ambito.getFunction(self.id_funcion) # Busca la funcion en el ambito actual o en el ambito inicial
         
         if funcion_a_ejecutar != None: 
 
@@ -44,6 +46,14 @@ class CallFunction( Instruccion ):
         else: 
             print("Error en linea: {}, La funcion no existe".format(self.line))
         return 
+
+
+
+    def ejecutar_funcion(): pass 
+
+
+    def ejecutar_struct(): pass 
+
 
 
     def crear_variables_de_funcion (self, funcion_a_ejecutar, new_ambito):

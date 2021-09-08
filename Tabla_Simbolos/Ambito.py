@@ -57,6 +57,10 @@ class Ambito():
 
 
     def saveFunction(self, id_function, function, input_line):
+
+        if id_function in self.structs.keys(): 
+            print ("Error sintactico en linea: {}, ya existe un Struct con ese nombre. Una funcion y un stuct, no pueden tener el mismo nombre".format(input_line))
+            return False
         
         if id_function in self.functions.keys():
             print("Error Sintactico en linea",input_line,": La funcion '",id_function,"' ya fue declarada previamente.")
@@ -72,3 +76,16 @@ class Ambito():
                 return ambito.functions[id_function]
             ambito = ambito.ambito_anterior
         return None
+
+
+    def saveStruct (self, id_struct, struct): # ya que funcion y struct, se crean EXACTAMENTE IGUAL, debemos verificar que no exista en ambos lados
+        if id_struct in self.functions.keys(): 
+            print ("Error sintactico en linea: {}, ya existe una Funcion con ese nombre, los structs y funciones no pueden tener el mismo nombre".format(struct.line))
+            return False
+
+        if id_struct in self.structs.keys(): 
+            print ("Error sintactico en linea: {}, ya existe un Struct con ese nombre declarado previamente".format(struct.line))
+            return False
+        else: 
+            self.structs[id_struct] = struct  # Si no existe almacenamos el struct
+        return 
