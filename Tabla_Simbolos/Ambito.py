@@ -89,3 +89,7 @@ class Ambito():
         else: 
             self.structs[id_struct] = struct  # Si no existe almacenamos el struct
         return 
+        
+
+    def getStruct (self,id_struct): 
+        print("Ups..no encontre el struct")

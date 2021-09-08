@@ -12,7 +12,7 @@ class ReturnINST(Instruccion):
 
 
     def execute(self, ambito):
-
+        
         if self.expresion == None: 
             return {
                 "type": Type.RETURNINST, 

@@ -12,7 +12,7 @@ class Acceso(Expresion):
         #print ("En que ambito estoy?", ambito.variables)
         valor_variable = ambito.getVariable(self.identificador)
         if valor_variable != None: 
-            print ("ACCESO: tipo y valor de la tabla de simbolos: ",valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
+            #print ("ACCESO: tipo y valor de la tabla de simbolos: ",valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
 
             return Return(valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
         else: 

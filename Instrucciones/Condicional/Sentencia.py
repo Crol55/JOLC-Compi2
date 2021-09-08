@@ -18,9 +18,12 @@ class Sentencia(Instruccion):
 
                 ret = instruccion.execute(ambito)
 
-                if ret != None: # Hubo un error o quiere hacer un (return, break, continue) adentro del if, solo retornamos 
-                    print ("Sentencia: Se encontro algo de caracter especial")
-                    return ret # Solo retornamos que fue lo que ocurrio y las sentencias de abajo dejan de ejecutarse 
+                if ret != None: # Hubo un error o quiere hacer un (return, break, continue) adentro del if, solo retornamos
+                                # Si el retorno es de una funcion, no debemos finalizar la ejecucion de las sentencias de abajo
+                    print ("Sentencia: Se encontro algo de caracter especial->", ret) 
+                    if type(ret) == dict: 
+                        #print ("CREO QUE ESTO NO ESTA SIRVIENDO=============================")
+                        return ret # Solo retornamos que fue lo que ocurrio y las sentencias de abajo dejan de ejecutarse 
         return 
 
     

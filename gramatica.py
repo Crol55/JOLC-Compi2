@@ -367,7 +367,7 @@ def p_callFunc(t): # Puede llamar a una Funcion o llamar a un struct, ya que se 
     '''callFunc : IDENTIFICADOR LPAR RPAR 
                 | IDENTIFICADOR LPAR lista_expresion RPAR 
     '''
-    if len(t) == 4: # produccion 1  
+    if len(t) == 4: # produccion 1
         t[0] = CallFunction(t[1], [], t.lineno(1), t.lexpos(0), None)  
     else: # Produccion 2
         t[0] = CallFunction(t[1], t[3], t.lineno(1), t.lexpos(0), None) 

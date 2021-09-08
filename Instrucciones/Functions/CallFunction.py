@@ -17,42 +17,53 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
 
     def execute(self, ambito): # Al llamar una funcion/struct, se le crea un ambito totalmente nuevo
         
-        new_ambito = Ambito(ambito) # Nuevo ambito y se le incrusta su ambito padre 
+        # Probar con Funcion
+        prototype_function:Funcion = ambito.getFunction(self.id_funcion) # Busca la funcion en el  ambito global
+        #print ("funcion que estoy buscando,",self.id_funcion, ambito.functions)
+        if prototype_function != None: 
+
+            return self.ejecutar_funcion(ambito, prototype_function) 
         
-        funcion_a_ejecutar:Funcion = ambito.getFunction(self.id_funcion) # Busca la funcion en el ambito actual o en el ambito inicial
-        
-        if funcion_a_ejecutar != None: 
+        # Probar con Struct
+        struct_a_inicializar = ambito.getStruct(self.id_funcion)
 
-            # validar que los parametros sean correctos y crear las funciones si todo es correcto 
-            
-            if self.crear_variables_de_funcion(funcion_a_ejecutar, new_ambito): 
-    
-                # Ejecutar las instrucciones que esten internamente en la funcion
-                for inst in funcion_a_ejecutar.instrucciones: 
-                    
-                    posible_return_value = inst.execute(new_ambito) # Solo las instrucciones con Error o (return, continue y break) retornan algo
+        if struct_a_inicializar != None: 
+            return self.ejecutar_struct ()
 
-                    if posible_return_value != None: # Hubo error o es una sentencia de transferencia
-
-                        if type(posible_return_value) is dict: # from Class ReturnINST -> si es return ya no ejecutar las instrucciones de abajo
-                            #valor_a_retornar = posible_return_value['value']
-                            #print(valor_a_retornar.value)
-                            return posible_return_value['value']
-                            
-
-            else: 
-                return False 
-
-        else: 
-            print("Error en linea: {}, La funcion no existe".format(self.line))
+        # No existe en funcion ni struct......
+        print("Error en linea: {}, La Funcion/Struct no existe".format(self.line))
         return 
 
 
 
-    def ejecutar_funcion(): pass 
+    def ejecutar_funcion(self, ambito, funcion_a_ejecutar):
+        #print("CUANTAS LLAMADAS HAY A LA FUNCION SUMA=======================================================")
+        new_ambito = Ambito(ambito) # Nuevo ambito y se le incrusta su ambito padre 
+
+        # validar que los parametros sean correctos y crear las funciones si todo es correcto 
+        
+        if self.crear_variables_de_funcion(funcion_a_ejecutar, new_ambito): 
+
+            # Ejecutar las instrucciones que esten internamente en la funcion
+            for inst in funcion_a_ejecutar.instrucciones: 
+                
+                posible_return_value = inst.execute(new_ambito) # Solo las instrucciones con Error o (return, continue y break) retornan algo
+
+                if posible_return_value != None: # Hubo error o es una sentencia de transferencia
+
+                    if type(posible_return_value) is dict: # from Class ReturnINST -> si es return ya no ejecutar las instrucciones de abajo
+                        #valor_a_retornar = posible_return_value['value']
+                        #print("Este valor fue devuelto a la funcion que ejecuto=============================",posible_return_value['value'].value)
+                        return posible_return_value['value'] # -> Type -> Return()
+            # Si no existe algun return explicito en la funcion, retornar nothing 
+            return Return(Type.NULL, None)
+        else: 
+            return False
 
 
-    def ejecutar_struct(): pass 
+    def ejecutar_struct(self): 
+        print("Iniciando busqueda")
+        return  
 
 
 
@@ -72,7 +83,7 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
                         print ("Error Sintactico en la linea: {}, los tipos de datos enviados a la funcion no coinciden.".format(self.line))
                         return False # La funcion retornar con error (False)
                 
-                print ("variables a crear:", param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value)
+                #print ("variables a crear:", param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value)
                 # Crear en el nuevo ambito, las variables temporales de la funcion, se pasan por valor 
                 new_ambito.saveVariable(param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value, 'local')
             #print ("Supuestas variables almacenadas:", new_ambito.variables)

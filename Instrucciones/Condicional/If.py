@@ -29,6 +29,9 @@ class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
 
                 # Ejecutamos las instrucciones adentro del if
                 newAmbito = Ambito(ambito)
+                #sff = self.sentencias.execute(newAmbito)
+                #print("Adentro del IF ----------------> ", sff)
+                #print ("Cuantas instruccines tiene el if", type(self.sentencias))
                 return self.sentencias.execute(newAmbito) # PODRIA retornar (return, break,continue)
                  
             elif self.else_or_elseif != None:  
