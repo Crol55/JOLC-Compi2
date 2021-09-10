@@ -1,5 +1,6 @@
 
 
+from Instrucciones.Structs.AccesoStruct import AccesoStruct
 from Instrucciones.Structs.CrearStruct import CrearStruct
 from Instrucciones.Loops.While import While
 from Instrucciones.Condicional.Sentencia import Sentencia
@@ -349,14 +350,14 @@ def p_tipo_dato(t):
                 | STRING 
                 | ARRAY 
                 | NOTHING
-                | IDENTIFICADOR  
-    '''
+    '''# | IDENTIFICADOR  
     if   t[1] == 'Int64'  : t[0] = Type.INT
     elif t[1] == 'Float64': t[0] = Type.FLOAT
     elif t[1] == 'Bool'   : t[0] = Type.BOOL
     elif t[1] == 'Char'   : t[0] = Type.CHAR
     elif t[1] == 'String' : t[0] = Type.STRING
     elif t[1] == 'nothing': t[0] = Type.NULL
+    
 # callFunction
 def p_callFunction(t):
     '''callFunction : callFunc SEMICOLON
@@ -472,13 +473,16 @@ def p_lista_atributos(t):
                        |                 IDENTIFICADOR SUFIX tipo_dato SEMICOLON
                        |                 IDENTIFICADOR                 SEMICOLON
     '''
+    #print (t.slice)
     if len(t) == 6: #produccion 1 
+        #print("Ingreso a la produccion 3->",t[2], t[4])
         t[1].append( Parametro(t[2], t[4], t.lineno(1), t.lexpos(0), None) )
         t[0] = t[1] 
     elif len(t) == 4: #produccion 2 
         t[1].append( Parametro(t[2], Type.ANY, t.lineno(1), t.lexpos(0), None) )
         t[0] = t[1]
     elif len(t) == 5 : #produccion 3 
+        
         t[0] =  [ Parametro(t[1],     t[3], t.lineno(1), t.lexpos(0), None) ]  
     elif len(t) == 3: #produccion 4
         t[0] =  [ Parametro(t[1], Type.ANY, t.lineno(1), t.lexpos(0), None) ] 
@@ -535,8 +539,7 @@ def p_expresion(t):
             print (t[0].execute(None).value)
 
     elif len(t) == 4: # SUM, DIV, MINUS
-        if (t.slice[2].type =='SUM'):
-            t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(2), t.lexpos(0))    
+        if (t.slice[2].type =='SUM'): t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(2), t.lexpos(0))    
             #print (t[0].execute(None).value)
         elif (t.slice[2].type =='RESTA'):
             t[0] = Aritmeticas(t[1], Operador.MINUS, t[3], t.lineno(2), t.lexpos(0))
@@ -575,11 +578,15 @@ def p_expresion(t):
         elif (t.slice[2].type =='OR'):
             t[0] = Logicas(t[1], t[3], OperadorLogico.OR, t.lineno(1), t.lexpos(0))
             #print (t[0].execute(None).value) 
-        elif (t.slice[1].type == 'LPAR'): t[0] = t[2]
+        elif (t.slice[1].type == 'LPAR'): 
+            t[0] = t[2]
+        elif (t.slice[1].type =='IDENTIFICADOR'): # | IDENTIFICADOR  PUNTO  IDENTIFICADOR
+            print ("Quiere acceder a una variable del struct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            t[0] = AccesoStruct(t[1], t[3], t.lineno(1), t.lexpos(0), None)
             
     elif len(t) == 2: # primitivas, nativas, callFunc, callArrays, IDENTIFICADOR
         if t.slice[1].type == 'IDENTIFICADOR':
-            t[0] = Acceso(str(t[1]), t.lineno(1), t.lexpos(0))
+            t[0] = Acceso(str(t[1]), t.lineno(1), t.lexpos(0)) 
         else: 
             t[0] = t[1]
             
@@ -654,13 +661,13 @@ def p_nativas(t):
             #print (t[0].execute(None).value)
         elif t.slice[1].type == 'FLOATCAST':
             t[0] = Floatcast(t[3], t.lineno(1), t.lexpos(0))
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
         elif t.slice[1].type == 'STRINGCAST':
             t[0] = Stringcast(t[3], t.lineno(1), t.lexpos(0))
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
         elif t.slice[1].type == 'TYPEOF':
             t[0] = typeof(t[3], t.lineno(1), t.lexpos(0))
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
         elif t.slice[1].type == 'SENO': 
             t[0] = Trigonometricas(t[3], t[1], t.lineno(1), t.lexpos(0))       
         elif t.slice[1].type == 'COSENO': 
@@ -669,10 +676,10 @@ def p_nativas(t):
             t[0] = Trigonometricas(t[3], t[1], t.lineno(1), t.lexpos(0))
         elif t.slice[1].type == 'LOG10': 
             t[0] = LogaritmoBaseDiez(t[3], t.lineno(1), t.lexpos(0)) 
-            print(t[0].execute(None).value) 
+            #print(t[0].execute(None).value) 
         elif t.slice[1].type == 'RAIZ': 
             t[0] = Raiz(t[3], t.lineno(1), t.lexpos(0)) 
-            print(t[0].execute(None).value) 
+            #print(t[0].execute(None).value) 
     elif len(t) == 7:
         if t.slice[1].type == 'PARSE':
             t[0] = Parse(t[3], t[5], t.lineno(1), t.lexpos(0))
@@ -682,7 +689,7 @@ def p_nativas(t):
             #print ("Valor traido del Trunc:", t[0].execute(None).value)
         elif t.slice[1].type == 'LOG': 
             t[0] = Logaritmo(t[3],t[5], t.lineno(1), t.lexpos(0)) 
-            print(t[0].execute(None).value) 
+            #print(t[0].execute(None).value) 
         
 
 # items

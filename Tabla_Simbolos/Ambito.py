@@ -1,7 +1,5 @@
 
-from Tabla_Simbolos.simbolo import simbolo
-
-
+#from Tabla_Simbolos.simbolo import simbolo
 from Tabla_Simbolos.simbolo import simbolo
 
 class Ambito():
@@ -92,4 +90,44 @@ class Ambito():
         
 
     def getStruct (self,id_struct): 
-        print("Ups..no encontre el struct")
+        # Iterar en todos los ambitos hasta encontrar el struct 
+        ambito = self 
+        while ambito != None: 
+            if id_struct in ambito.structs.keys():
+                return ambito.structs[id_struct]
+            ambito = ambito.ambito_anterior
+        return None
+
+
+
+    def save_Struct_As_Variable(self, id_variable, alcance, new_simbolo):
+        
+        if alcance == 'local': 
+            self.variables[id_variable] =  new_simbolo
+
+        elif alcance == 'global':
+            # Buscar el ambito global
+           
+            ambito = self  
+            while True : 
+                if (ambito.ambito_anterior == None): # Implica que estamos en el global
+                    ambito.variables[id_variable] = new_simbolo
+                    break
+                ambito = ambito.ambito_anterior
+        else :
+            # Determinar si ya existe o si hay que crear una nueva
+            # La unica forma de acceder al ambito global si estamos en otro ambito es usando 'global' por lo que aqui no se puede
+            ambito = self 
+            while ambito != None: # Iterar en los ambitos 
+
+                if ambito.ambito_anterior == None: # No iteramos en el ambito global 
+                    break 
+                if id_variable in ambito.variables.keys(): # Ya existe en el diccionario del ambito?
+                    ambito.variables[id_variable] = new_simbolo # Si ya existe reescribimos el valor (tipado dinamico)
+                    return 
+                ambito = ambito.ambito_anterior # Si no existe, buscamos en un ambito anterior 
+            # Si no lo encontro en ningun ambito, debemos insertarlo en el ambito ACTUAL 
+            # El ambito ACTUAL podria ser el global, a pesar de que no se itero ya que era el global
+            self.variables[id_variable] = new_simbolo
+        return 
+        

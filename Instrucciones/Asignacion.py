@@ -17,11 +17,17 @@ class Asignacion(Instruccion):
     def execute(self, ambito:Ambito):
 
         resultado_expresion:Return = self.expresion.execute(ambito)
+
+        #simb = resultado_expresion.value 
+        #print ("Variables a asignar", simb.atributos)
         #print("ASIGNACION: variable:",self.nombre_variable, resultado_expresion.value, resultado_expresion.type)
 
         if resultado_expresion.type == self.verifyType or self.verifyType == Type.ANY: 
-            #print ("ASIGNACION:      Si puedo almacenar tu variable")
-            ambito.saveVariable(self.nombre_variable, resultado_expresion.type, resultado_expresion.value, self.alcance)
+            
+            if resultado_expresion.type == Type.STRUCT: 
+                ambito.save_Struct_As_Variable(self.nombre_variable, self.alcance, resultado_expresion.value) 
+            else: 
+                ambito.saveVariable(self.nombre_variable, resultado_expresion.type, resultado_expresion.value, self.alcance)
             #print ("Imprimiendo el ambito", ambito.variables)
         else: 
             print("Error sintactico: Los tipos de datos de la variable '",self.nombre_variable,"' no coinciden.")

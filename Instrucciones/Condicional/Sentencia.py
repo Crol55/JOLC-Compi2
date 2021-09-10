@@ -22,8 +22,11 @@ class Sentencia(Instruccion):
                                 # Si el retorno es de una funcion, no debemos finalizar la ejecucion de las sentencias de abajo
                     print ("Sentencia: Se encontro algo de caracter especial->", ret) 
                     if type(ret) == dict: 
-                        #print ("CREO QUE ESTO NO ESTA SIRVIENDO=============================")
-                        return ret # Solo retornamos que fue lo que ocurrio y las sentencias de abajo dejan de ejecutarse 
+
+                        return ret # Solo retornamos que fue lo que ocurrio y las sentencias de abajo dejan de ejecutarse
+                    elif (type(ret) == bool and (ret == False)): #Implica que una instruccion esta erronea, por lo que ya no debe seguir ejecutando
+
+                        return False #Retornamos False, para que la clase que llamo a sentencia, sepa que hubo un error
         return 
 
     

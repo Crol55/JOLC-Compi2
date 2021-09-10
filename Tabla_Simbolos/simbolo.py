@@ -4,3 +4,6 @@ class simbolo():
         self.IdSimbolo = IdSimbolo
         self.tipoSimbolo = tipoSimbolo
         self.valorSimbolo = valorSimbolo
+        # Solo structs tienen multiples atributos
+        self.isMutable = False
+        self.atributos = {}

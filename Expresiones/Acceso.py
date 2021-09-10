@@ -1,11 +1,12 @@
 from Nativas.Return import Return
 from Abstractas.Expresion import Expresion
 
-class Acceso(Expresion):
+class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
 
     def __init__(self,identificador:str, line, column):
         Expresion.__init__(self, line, column)
         self.identificador = identificador
+
 
     def execute(self, ambito):
         

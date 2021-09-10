@@ -38,6 +38,7 @@ for instruccion in ast:
     * for 
     * arreglos 
     * Operaciones con arreglos 
-    structs 
-    * acceso a structs
+    * structs 
+        - Asignacion de atributos  circ.color = "black";
+    * Gramatica.py linea 351 -> se removio tipo de dato identificador
 '''

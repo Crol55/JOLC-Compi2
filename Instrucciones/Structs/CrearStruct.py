@@ -1,11 +1,12 @@
 
 
+from Instrucciones.Functions.Parametro import Parametro
 from Tabla_Simbolos.Ambito import Ambito
 from Abstractas.Instruccion import Instruccion
 
 class CrearStruct(Instruccion):
     
-    def __init__(self, isMutable, id, atributos, line, column, nodo):
+    def __init__(self, isMutable, id, atributos:Parametro, line, column, nodo):
         Instruccion.__init__(self, line, column)
         self.isMutable        = isMutable 
         self.id               = id 
