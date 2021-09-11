@@ -1,5 +1,6 @@
 
 
+from Instrucciones.Structs.AsignacionStruct import AsignacionStruct
 from Instrucciones.Structs.AccesoStruct import AccesoStruct
 from Instrucciones.Structs.CrearStruct import CrearStruct
 from Instrucciones.Loops.While import While
@@ -334,6 +335,8 @@ def p_asignacion(t): # La que tiene SUFIX -> Es una declaracion, por lo que no r
 def p_asignacion_struct(t): # La que tiene SUFIX -> Es una declaracion, por lo que no requiere local ni global
     '''asignacion_struct : IDENTIFICADOR  PUNTO  IDENTIFICADOR EQUALS  expresion  SEMICOLON
     '''
+    t[0] = AsignacionStruct(t[1], t[3], t[5], t.lineno(1), t.lexpos(0))
+    
 #tipoVariable 
 def p_tipoVariable(t):
     '''tipoVariable : GLOBAL 

@@ -24,7 +24,8 @@ class Asignacion(Instruccion):
 
         if resultado_expresion.type == self.verifyType or self.verifyType == Type.ANY: 
             
-            if resultado_expresion.type == Type.STRUCT: 
+            if resultado_expresion.type == Type.STRUCT: # var = circulo.color;
+                
                 ambito.save_Struct_As_Variable(self.nombre_variable, self.alcance, resultado_expresion.value) 
             else: 
                 ambito.saveVariable(self.nombre_variable, resultado_expresion.type, resultado_expresion.value, self.alcance)

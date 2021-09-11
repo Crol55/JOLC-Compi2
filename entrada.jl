@@ -5,15 +5,17 @@ mutable struct circulo
 end; 
 
 
-struct circulo2 
-    color;
-    colorcitosss::Bool; 
-end; 
+#struct circulo2 
+#    color;
+#    colorcitosss::Bool; 
+#end; 
 
 circ = circulo("azul", true);
-val = circ.colorcito;
-test = 10;
-print ("El val es:", typeof(circ));
+#val = circ.colorcito;
+#test = 10;
+circ.colorcito = 20;
+#print ("El val es:", typeof(circ));
+println("El valor debe ser 20:", circ.colorcito);
 #function testeo(val)
 #    struct test
 #        t;
