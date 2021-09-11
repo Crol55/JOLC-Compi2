@@ -19,7 +19,7 @@ class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
     def execute(self, ambito):
 
         getConditionValue:Return = self.condicion.execute(ambito) 
-
+        print("Que mierda retorno?", getConditionValue.type)
         if getConditionValue.type == Type.BOOL: 
             
             if getConditionValue.value: #true
@@ -37,8 +37,8 @@ class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
             elif self.else_or_elseif != None:  
                 # Ejecutamos las instrucciones adentro del elseif o Else
                 newAmbito = Ambito(ambito)
-                return self.else_or_elseif.execute(newAmbito)        
+                return self.else_or_elseif.execute(newAmbito)       
         else: 
             print ("Error sintactico en linea: {}, el tipo de dato debe ser BOOL y se obtuvo: {}".format(self.line, getConditionValue.type))
-
-        return False 
+            return False 
+        return # El flujo es correcto 

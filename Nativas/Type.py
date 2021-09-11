@@ -16,3 +16,4 @@ class Type (Enum):
     BREAK    = 11
 
     STRUCT  = 12
+    RANGE   = 13

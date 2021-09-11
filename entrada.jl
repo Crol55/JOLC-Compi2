@@ -1,5 +1,5 @@
 
-mutable struct circulo 
+#=mutable struct circulo 
     color;
     colorcito::Bool; 
 end; 
@@ -13,9 +13,17 @@ end;
 circ = circulo("azul", true);
 #val = circ.colorcito;
 #test = 10;
-circ.colorcito = 20;
+circ.colorcito = "black";
 #print ("El val es:", typeof(circ));
 println("El valor debe ser 20:", circ.colorcito);
+=# 
+for val in "hola mundo!" 
+    print(val, "-");
+    if val == "m"
+        return 20;
+    end; 
+    println ("NO DEBIO");
+end;
 #function testeo(val)
 #    struct test
 #        t;

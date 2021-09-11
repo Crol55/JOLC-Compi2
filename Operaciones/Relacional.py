@@ -38,6 +38,7 @@ class Relacional(Expresion):
             comparacion.value = resultado_izq.value <= resultado_der.value
         elif this.operador == OperadorRelacional.DEQUAL: 
             comparacion.value = resultado_izq.value == resultado_der.value
+            #print ("Que estoy comparandn?", resultado_izq.value == resultado_der.value)
         elif this.operador == OperadorRelacional.DISTINT: 
             comparacion.value = resultado_izq.value != resultado_der.value
         return comparacion

@@ -35,10 +35,8 @@ for instruccion in ast:
 '''
     comandos faltantes: 
     * length
-    * for 
+    * for Puede iterar sobre tipos iterables,  (range, arrays, strings)
     * arreglos 
     * Operaciones con arreglos 
-    * structs 
-        - Asignacion de atributos  circ.color = "black";
     * Gramatica.py linea 351 -> se removio tipo de dato identificador
 '''

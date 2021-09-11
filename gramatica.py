@@ -1,5 +1,6 @@
 
 
+from Instrucciones.Loops.For import For
 from Instrucciones.Structs.AsignacionStruct import AsignacionStruct
 from Instrucciones.Structs.AccesoStruct import AccesoStruct
 from Instrucciones.Structs.CrearStruct import CrearStruct
@@ -436,16 +437,18 @@ def p_elseifList(t):
 
 
 
-
-# whileST 
+# WHILE 
 def p_whileST(t):
     'whileST : WHILE expresion sentencias END SEMICOLON'
     t[0] = While(t[2], t[3], t.lineno(1), t.lexpos(0), None)
 
 
+# FOR 
 def p_forST(t):
-    '''forST : FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON
-    '''
+    'forST : FOR IDENTIFICADOR IN expresion sentencias END SEMICOLON'
+    t[0] = For(t[2], t[4], t[5], t.lineno(1), t.lexpos(0))
+
+
 # lista_expresion
 def p_lista_expresion(t):
     '''lista_expresion : lista_expresion COMMA expresion 

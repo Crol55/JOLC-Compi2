@@ -29,6 +29,7 @@ class AsignacionStruct(Instruccion):
                     print("Error sintactico en linea: {}, el struct es Inmutable".format(self.line)) 
 
         return
+        
 
     def actualizar_atributo(self, variable_struct, valor_a_asignar):
         atributos_de_variable_struct = variable_struct.atributos
