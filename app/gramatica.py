@@ -1,6 +1,6 @@
 
 
-from Instrucciones.Loops.For import For
+from  Instrucciones.Loops.For import For
 from Instrucciones.Structs.AsignacionStruct import AsignacionStruct
 from Instrucciones.Structs.AccesoStruct import AccesoStruct
 from Instrucciones.Structs.CrearStruct import CrearStruct
@@ -716,10 +716,7 @@ import ply.yacc as yacc
 parser = yacc.yacc()
 
 
-def interpretar(): 
-    file = open('./entrada.jl', 'r')
-    input = file.read()
+def interpretar(input): 
     #print(input)
-    
     return parser.parse(input)
 

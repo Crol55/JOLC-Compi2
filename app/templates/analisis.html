@@ -2,6 +2,137 @@
 
 {% block body %}
 
-    <h1>Jodete mamahuevooo</h1>
+    <div class="flexbox-container">
+        <h2>Input</h2>
+        <button class="btnA" onclick="analizar()">analizar</button>
+        <h2>Output</h2>
+    </div>
+
+    <div class="flexbox-container">
+        <div>
+            <textarea class="rownr" name="input" id="" cols="3" rows="25" value="1" readonly></textarea>
+            
+                <textarea class="txt" rows="25" cols="50" nowrap="nowrap" wrap="off" id="input_textArea"
+                autocomplete="off" autocorrect="off" 
+                autocapitalize="off" spellcheck="false"
+                onclick="selectionchanged(this)" 
+                onkeyup="keyup(this,event)" oninput="input_changed(this)" 
+                onscroll="scroll_changed(this)"></textarea>
+                <br/><br/>
+                <label>Current position: 
+                </label><input id="sel_in" style="border-style:none" readonly>
+            
+        </div>
+        
+
+        <div>
+            <textarea class="rownr" name="input2" id="" cols="3" rows="25" value="1" readonly></textarea>
+            
+            <textarea class="txt" rows="25" cols="50" nowrap="nowrap" wrap="off" readonly 
+                autocomplete="off" autocorrect="off" 
+                autocapitalize="off" spellcheck="false"
+                onclick="selectionchanged(this)" 
+                onkeyup="keyup(this,event)" oninput="input_changed(this)" 
+                onscroll="scroll_changed(this)">
+            </textarea>
+                <br/><br/>
+                <label>Current position: 
+                </label><input id="sel_in" style="border-style:none" readonly>
+            
+        </div>
+        
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+
+        function analizar(){
+            let input_text = document.getElementById('input_textArea');
+            //window.alert(input_text.value);
+            $.ajax({
+                type:'POST', 
+                url:'/analizar',
+                data: JSON.stringify( {input: input_text.value}), 
+                success: function(data) {
+                    console.log(data);
+                    window.alert(data.msg);
+                }, 
+                contentType: 'application/json', 
+                dataType: 'json'
+            })
+            // Hacer un post al parser, para que analice el codigo
+
+        }
+        var cntline;
+
+        function count_lines(input_text) {
+            let string_array = input_text.split('\n');
+            return string_array.length;
+        }
+
+        function populate_rownr(textarea, lineCounter){
+            
+            let string_of_numbers = "";
+            for (let number = 1; number <= lineCounter; number++)
+                string_of_numbers = string_of_numbers + number + '\n';
+            textarea.value = string_of_numbers;
+        }
+
+        function input_changed(obj_txt)
+        {
+            obj_rownr = obj_txt.parentElement.parentElement.getElementsByTagName('textarea')[0];
+           
+            cntline = count_lines(obj_txt.value);
+            if(cntline == 0) cntline = 1;
+
+            tmp_arr = obj_rownr.value.split('\n');
+            cntline_old = parseInt(tmp_arr[tmp_arr.length - 1], 10);
+            // if there was a change in line count
+            if(cntline != cntline_old)
+            {
+                //window.alert("funciono:"+ cntline);
+                obj_rownr.cols = cntline.toString().length; // new width of txt_rownr
+                populate_rownr(obj_rownr, cntline);
+                scroll_changed(obj_txt);
+            }
+            selectionchanged(obj_txt);
+        }
+
+        function scroll_changed(obj_txt)
+        {
+            obj_rownr = obj_txt.parentElement.parentElement.getElementsByTagName('textarea')[0];
+            scrollsync(obj_txt, obj_rownr);
+        }
+    
+        function scrollsync(obj1, obj2)
+        {
+            // scroll text in object id1 the same as object id2
+            obj2.scrollTop = obj1.scrollTop;
+        }
+
+        function selectionchanged(obj)
+        {
+            var substr = obj.value.substring(0,obj.selectionStart).split('\n');
+            var row = substr.length;
+            var col = substr[substr.length-1].length;
+            var tmpstr = '(' + row.toString() + ',' + col.toString() + ')';
+            // if selection spans over
+            if(obj.selectionStart != obj.selectionEnd)
+            {
+                substr = obj.value.substring(obj.selectionStart, obj.selectionEnd).split('\n');
+                row += substr.length - 1;
+                col = substr[substr.length-1].length;
+                tmpstr += ' - (' + row.toString() + ',' + col.toString() + ')';
+            }
+            obj.parentElement.getElementsByTagName('input')[0].value = tmpstr;
+        }
+
+        function keyup(obj, e)
+        {
+            if(e.keyCode >= 33 && e.keyCode <= 40) // arrows ; home ; end ; page up/down
+                selectionchanged(obj, e.keyCode);
+        }
+
+    </script>
 
 {% endblock %}

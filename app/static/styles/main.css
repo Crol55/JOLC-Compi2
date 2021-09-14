@@ -38,3 +38,44 @@ body {
 .bienvenida {
     text-align: center;
 }
+
+/* Para analisis.html*/
+.flexbox-container {
+    
+    display: flex;
+    justify-content:space-around;
+}
+
+.rownr {
+    overflow-y: hidden; 
+    background-color: #04AA6D; 
+    color: white; 
+    text-align: right; 
+    vertical-align:top;
+    
+}
+.txt {
+    
+    overflow-x: scroll; 
+   
+}
+
+.btnA {
+    border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+    background-color: #008CBA;
+}
+
+.label {
+
+}
+/*div textarea{
+    background-color:black ;
+    display: inline-block;
+}*/

@@ -1,5 +1,5 @@
 
-from Instrucciones.Condicional.Sentencia import Sentencia
+from ..Condicional.Sentencia import Sentencia
 from Nativas.Type import Type
 from Abstractas.Instruccion import Instruccion
 from Tabla_Simbolos.Ambito import Ambito

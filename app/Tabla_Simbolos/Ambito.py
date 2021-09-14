@@ -1,6 +1,6 @@
 
 #from Tabla_Simbolos.simbolo import simbolo
-from Tabla_Simbolos.simbolo import simbolo
+from .simbolo import simbolo
 
 class Ambito():
     def __init__(self, ambito_anterior):

@@ -5,10 +5,14 @@ from gramatica import interpretar
 from Tabla_Simbolos.Ambito import Ambito 
 
 
+# leer la entrada 
+file = open('./entrada.jl', 'r')
+input = file.read()
+
 # Aqui se inicia toda la parte de la compilacion 
 
 newAmbitoGlobal = Ambito(None) # Este funciona como el ambito GLOBAL
-ast = interpretar()
+ast = interpretar(input)
 print("Cantidad de instrucciones: ", ast)
 print ("\n")
 print (" ================ EXECUTING FROM MAIN.PY ============================")
