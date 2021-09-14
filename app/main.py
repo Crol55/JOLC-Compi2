@@ -28,6 +28,6 @@ def analizar():
 
     return { "msg": "todo correcto", "code": 200}
 
-if __name__ == "__main__":
-    app.run()
+#if __name__ == "__main__":
+#    app.run()
     #app.run( debug=True, port=4000)
