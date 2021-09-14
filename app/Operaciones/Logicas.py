@@ -2,6 +2,9 @@ from Nativas.Type import Type
 from Abstractas.Expresion import Expresion
 from Nativas.Return import Return
 from enum import Enum
+from Nativas.Error import Error
+from Export import Output
+
 
 class OperadorLogico(Enum):
     AND = 0
@@ -30,7 +33,9 @@ class Logicas(Expresion):
                 operation_state = left_result.value or right_result.value
             return Return(Type.BOOL, operation_state) 
         else: 
-            print ("Error Sintactico: Los operandos de una operacion logica deben ser tipo 'BOOL'")
+            print ("Error Sintactico en linea: {}: Los operandos de una operacion logica deben ser tipo 'BOOL'".format(this.line))
+            Output.errorSintactico.append(Error("Los operandos de una operacion logica deben ser tipo 'BOOL'",this.line, this.column))
+
 
 class Not (Expresion):
     def __init__(this, expresion:Expresion,  line, column):
@@ -44,6 +49,12 @@ class Not (Expresion):
             valor_negado = not resultado_expresion.value 
             return Return(Type.BOOL, valor_negado)
         else: 
-            print ("Error Sintactico: La expresion NOT '!', debe negar un valor BOOL, y se obtuvo", resultado_expresion.type)
+            print ("Error Sintactico en linea: {}: La expresion NOT '!', debe negar un valor BOOL, y se obtuvo: {}" 
+            .format(this.line, resultado_expresion.type))
+            
+            Output.errorSintactico.append(
+                Error("La expresion NOT '!', debe negar un valor BOOL, y se obtuvo:".format(resultado_expresion.type),this.line, this.column)
+            )
+
         return 
             

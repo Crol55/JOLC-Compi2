@@ -1,4 +1,5 @@
 from Abstractas.Instruccion import Instruccion
+from Export import Output 
 
 class Print(Instruccion): 
 
@@ -20,8 +21,10 @@ class Print(Instruccion):
         # Printear los valores
         if  self.__newLine__:  # println
                 #print ("PRINT: ambito en el que estoy al impirmir:",ambito)
-                print(string_concat) 
+            print(string_concat) 
+            Output.salidaInterprete += (string_concat + "\n")  
         else: # print
             print(string_concat, end ='') 
+            Output.salidaInterprete += (string_concat + "\n") 
         return
         

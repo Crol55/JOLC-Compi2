@@ -3,6 +3,8 @@ from Nativas.Type import Type
 from Nativas.Return import Return
 from Abstractas.Expresion import *
 from enum import Enum
+from Nativas.Error import Error
+from Export import Output
 
 class Operador(Enum):
     PLUS  = 0
@@ -72,7 +74,9 @@ class Aritmeticas(Expresion):
             resultado = operando1.value + operando2.value
             return Return (Type.STRING, resultado)
         else: 
-            print("Error: Ocurrio un error Sintactico, no se puede Sumar", operando1.type, "Con", operando2.type)
+            print("Error: Ocurrio un error Sintactico, no se puede Sumar: {}", operando1.type, "Con", operando2.type, self.column)
+            aritmeticError = Error('No se puede sumar {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
+            Output.errorSintactico.append(aritmeticError)
         return None
 
 
@@ -91,6 +95,8 @@ class Aritmeticas(Expresion):
             return Return(Type.FLOAT, resultado)
         else: 
             print("Error: Ocurrio un error Sintactico, no se puede restar", operando1.type, "Con", operando2.type)
+            aritmeticError = Error('No se puede restar {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
+            Output.errorSintactico.append(aritmeticError)
         return None
 
     def multiplicacion(self, operando1, operando2):
@@ -111,6 +117,8 @@ class Aritmeticas(Expresion):
             return Return (Type.STRING, resultado)
         else: 
             print("Error Sintactico en linea {}:, no se puede multiplicar {} con {}.".format(self.line, operando1.type, operando2.type) )
+            aritmeticError = Error('No se puede multiplicar {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
+            Output.errorSintactico.append(aritmeticError)
         return None
 
     def division(self, operando1, operando2):
@@ -126,6 +134,10 @@ class Aritmeticas(Expresion):
         elif operando1.type == Type.FLOAT and operando2.type == Type.FLOAT:
             resultado = operando1.value / operando2.value 
             return Return(Type.FLOAT, resultado)
+        else: 
+            print("Error Sintactico en linea {}:, no se puede dividir {} con {}.".format(self.line, operando1.type, operando2.type) )
+            aritmeticError = Error('No se puede dividir {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
+            Output.errorSintactico.append(aritmeticError)
         return None
 
     def potencia(self, operando1, operando2):
@@ -146,6 +158,8 @@ class Aritmeticas(Expresion):
             return Return (Type.STRING, resultado)
         else: 
             print("Error Sintactico en linea {}:, no se puede potenciar {} con {}.".format(self.line, operando1.type, operando2.type) )
+            aritmeticError = Error('No se puede potenciar {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
+            Output.errorSintactico.append(aritmeticError)
         return 
 
     def modulo(self, operando1, operando2):
@@ -163,6 +177,8 @@ class Aritmeticas(Expresion):
             return Return(Type.FLOAT, resultado)
         else: 
             print("Error Sintactico en linea {}:, no se puede modular {} con {}.".format(self.line, operando1.type, operando2.type) )
+            aritmeticError = Error('No se puede aplicar modulo a {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
+            Output.errorSintactico.append(aritmeticError)
         return None
       
         

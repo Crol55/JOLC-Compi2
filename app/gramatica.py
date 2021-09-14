@@ -539,13 +539,13 @@ def p_expresion(t):
     if len(t) == 3:  # NOT, 
         if t.slice[1].type == 'NOT': 
             t[0] = Not( t[2], t.lineno(1), t.lexpos(0))
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
         elif t.slice[1].type == 'RESTA': # Uminus
             t[0] = Aritmeticas(Numerica(0, Type.INT,t.lineno(1), t.lexpos(0)), Operador.MINUS, t[2], t.lineno(1), t.lexpos(0))
-            print (t[0].execute(None).value)
+            #print (t[0].execute(None).value)
 
     elif len(t) == 4: # SUM, DIV, MINUS
-        if (t.slice[2].type =='SUM'): t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(2), t.lexpos(0))    
+        if (t.slice[2].type =='SUM'): t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(2), t.lexpos(2))    
             #print (t[0].execute(None).value)
         elif (t.slice[2].type =='RESTA'):
             t[0] = Aritmeticas(t[1], Operador.MINUS, t[3], t.lineno(2), t.lexpos(0))
@@ -561,33 +561,33 @@ def p_expresion(t):
         elif (t.slice[2].type =='MOD'):
             t[0] = Aritmeticas(t[1], Operador.MOD, t[3], t.lineno(2), t.lexpos(0))
         elif (t.slice[2].type =='DEQUALS'):
-            t[0] = Relacional(t[1], t[3], OperadorRelacional.DEQUAL, t.lineno(1), t.lexpos(0))  
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.DEQUAL, t.lineno(2), t.lexpos(2))  
             #print (t[0].execute(None).value)
         elif (t.slice[2].type =='DIFF'):
-            t[0] = Relacional(t[1], t[3], OperadorRelacional.DISTINT, t.lineno(1), t.lexpos(0))  
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.DISTINT, t.lineno(2), t.lexpos(2))  
             #print (t[0].execute(None).value)
         elif (t.slice[2].type =='GREATER'):
-            t[0] = Relacional(t[1], t[3], OperadorRelacional.GREATER, t.lineno(1), t.lexpos(0))  
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.GREATER, t.lineno(2), t.lexpos(2))  
             #print (t[0].execute(None).value)    
         elif (t.slice[2].type =='LESSTHAN'):
-            t[0] = Relacional(t[1], t[3], OperadorRelacional.LESS, t.lineno(1), t.lexpos(0))  
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.LESS, t.lineno(2), t.lexpos(2))  
             #print (t[0].execute(None).value)   
         elif (t.slice[2].type =='GEQ'):
-            t[0] = Relacional(t[1], t[3], OperadorRelacional.GEQ, t.lineno(1), t.lexpos(0))  
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.GEQ, t.lineno(2), t.lexpos(2))  
             #print (t[0].execute(None).value)   
         elif (t.slice[2].type =='LEQ'):
-            t[0] = Relacional(t[1], t[3], OperadorRelacional.LEQ, t.lineno(1), t.lexpos(0))  
+            t[0] = Relacional(t[1], t[3], OperadorRelacional.LEQ, t.lineno(2), t.lexpos(2))  
             #print (t[0].execute(None).value)  
         elif (t.slice[2].type =='AND'):
-            t[0] = Logicas(t[1], t[3], OperadorLogico.AND, t.lineno(1), t.lexpos(0))
+            t[0] = Logicas(t[1], t[3], OperadorLogico.AND, t.lineno(2), t.lexpos(2))
             #print (t[0].execute(None).value)   
         elif (t.slice[2].type =='OR'):
-            t[0] = Logicas(t[1], t[3], OperadorLogico.OR, t.lineno(1), t.lexpos(0))
+            t[0] = Logicas(t[1], t[3], OperadorLogico.OR, t.lineno(2), t.lexpos(2))
             #print (t[0].execute(None).value) 
         elif (t.slice[1].type == 'LPAR'): 
             t[0] = t[2]
         elif (t.slice[1].type =='IDENTIFICADOR'): # | IDENTIFICADOR  PUNTO  IDENTIFICADOR
-            print ("Quiere acceder a una variable del struct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            #print ("Quiere acceder a una variable del struct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             t[0] = AccesoStruct(t[1], t[3], t.lineno(1), t.lexpos(0), None)
             
     elif len(t) == 2: # primitivas, nativas, callFunc, callArrays, IDENTIFICADOR

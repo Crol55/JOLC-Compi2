@@ -2,6 +2,8 @@ from Nativas.Type import Type
 from Abstractas.Expresion import Expresion
 from Nativas.Return import Return
 import math
+from Nativas.Error import Error
+from Export import Output
 
 class Logaritmo(Expresion):
     def __init__(this, left_exp:Expresion, right_exp:Expresion, line, column):
@@ -22,8 +24,14 @@ class Logaritmo(Expresion):
                 return Return(Type.FLOAT, logaritmo_diferente_base) 
             else: 
                 print("Error Sintactico: La funcion log() debe recibir un Int64 o Float64 y recibio:", valor.type)
+                Output.errorSintactico.append(
+                    Error("La funcion log() debe recibir un Int64 o Float64 y recibio: {}".format(valor.type), this.line, this.column)
+                )
         else: 
-            print("Error Sintactico: La funcion log() debe recibir un Int64 o Float64 y recibio:", base.type)  
+            print("Error Sintactico: La funcion log() debe recibir un Int64 o Float64 y recibio:", base.type)
+            Output.errorSintactico.append(
+                    Error("La funcion log() debe recibir un Int64 o Float64 y recibio: {}".format(base.type), this.line, this.column)
+                )  
         return 
 
     def verifyTypes(this, actual_type):

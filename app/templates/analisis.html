@@ -28,7 +28,7 @@
         <div>
             <textarea class="rownr" name="input2" id="" cols="3" rows="25" value="1" readonly></textarea>
             
-            <textarea class="txt" rows="25" cols="50" nowrap="nowrap" wrap="off" readonly 
+            <textarea class="txt" rows="25" cols="50" nowrap="nowrap" wrap="off" readonly id="output_textArea"
                 autocomplete="off" autocorrect="off" 
                 autocapitalize="off" spellcheck="false"
                 onclick="selectionchanged(this)" 
@@ -55,7 +55,9 @@
                 data: JSON.stringify( {input: input_text.value}), 
                 success: function(data) {
                     console.log(data);
-                    window.alert(data.msg);
+                    //window.alert(data.msg);
+                    let output = document.getElementById('output_textArea'); 
+                    output.value = data.msg
                 }, 
                 contentType: 'application/json', 
                 dataType: 'json'
