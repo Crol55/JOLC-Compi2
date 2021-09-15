@@ -2,6 +2,8 @@ from Nativas.Type import Type
 from Abstractas.Expresion import Expresion
 from Nativas.Return import Return
 import math
+from Nativas.Error import Error
+from Export import Output
 
 class Raiz(Expresion):
     def __init__(this, expresion:Expresion, line, column):
@@ -17,5 +19,8 @@ class Raiz(Expresion):
             return Return(Type.FLOAT, raiz_cuadrada)
         else: 
             print("Error Sintactico: La funcion sqrt() debe recibir un Int64 o Float64 y recibio:", resultado_expresion.type.name)  
+            Output.errorSintactico.append(
+                Error("La funcion sqrt() debe recibir un Int64 o Float64 y recibio: {}".format(resultado_expresion.type.name), this.line, this.column)
+            ) 
         return 
         

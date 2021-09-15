@@ -4,6 +4,9 @@ from Nativas.Type import Type
 from Abstractas.Expresion import Expresion
 from Nativas.Return import Return
 import math
+from Nativas.Error import Error
+from Export import Output
+
 
 class LogaritmoBaseDiez(Expresion):
     def __init__(this, expresion:Expresion, line, column):
@@ -18,6 +21,9 @@ class LogaritmoBaseDiez(Expresion):
             logaritmo_base_diez = math.log10(resultado_expresion.value)
             return Return(Type.FLOAT, logaritmo_base_diez)
         else: 
-            print("Error Sintactico: La funcion log10() debe recibir un Int64 o Float64 y recibio:", resultado_expresion.type.name)  
+            print("Error Sintactico: La funcion log10() debe recibir un Int64 o Float64 y recibio:", resultado_expresion.type.name) 
+            Output.errorSintactico.append(
+                Error("La funcion log10() debe recibir un Int64 o Float64 y recibio: {}".format(resultado_expresion.type.name), this.line, this.column)
+            )  
         return 
         
