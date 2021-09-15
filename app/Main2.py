@@ -43,9 +43,13 @@ except:
         
 '''
     comandos faltantes: 
+    pasos: 
+    1. graficar errores 
+    2. testear archivos de entrada sin arrays 
+    3. Gramatica.py linea 351 -> se removio tipo de dato identificador
+    4. Agregar los arrays.. 
     * length
-    * for Puede iterar sobre tipos iterables,  (range, arrays, strings)
+    * FOR Puede iterar sobre tipos iterables,  (range, arrays, strings)
     * arreglos 
     * Operaciones con arreglos
-    * Gramatica.py linea 351 -> se removio tipo de dato identificador
 '''

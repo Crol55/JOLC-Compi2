@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from gramatica import interpretar
+#from gramatica import interpretar
 from Tabla_Simbolos.Ambito import Ambito
 from Nativas.Type import Type
 from Export import Output

@@ -17,13 +17,45 @@ circ.colorcito = "black";
 #print ("El val es:", typeof(circ));
 println("El valor debe ser 20:", circ.colorcito);
 =# 
-for val in "hola mundo!" 
-    print(val, "-");
-    if val == "m"
-        return 20;
-    end; 
-    println ("NO DEBIO");
+#for val in "hola mundo!" 
+#    print(val, "-");
+#    if val == "m"
+#        return 20;
+#    end; 
+#    println ("NO DEBIO");
+#end;
+valores = float(1300);
+println("Quiay:", typeof(valores));
+mayuscula = uppercase("HOLa");
+println(mayuscula);
+println(lowercase("MUNDO"));
+println( parse(Int64, "20.3") );
+x = tan(3);
+x1 = trunc(Int64, 10.3);
+
+
+struct carajo 
+    test::Int64;
 end;
+
+varr = carajo (64);
+v2 = varr.test;
+
+#if mayuscula == "HOLA" 
+#    function err () 
+#    end;
+#    #error ->m = uppercase(false);
+#    println("esto ya no jala");
+#
+#end;
+sho = 20::Float64;
+sho = 20::Float64;
+sho = 20::Float64;
+
+# tests(true);
+
+println("FIN");
+#val = !10;
 #function testeo(val)
 #    struct test
 #        t;
