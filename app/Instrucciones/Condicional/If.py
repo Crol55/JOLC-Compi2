@@ -4,6 +4,9 @@ from sys import getcheckinterval
 from Nativas.Type import Type
 from Nativas.Return import Return
 from Abstractas.Instruccion import Instruccion
+from Nativas.Error import Error
+from Export import Output
+
 
 class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
 
@@ -19,7 +22,7 @@ class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
     def execute(self, ambito):
 
         getConditionValue:Return = self.condicion.execute(ambito) 
-        print("Que mierda retorno?", getConditionValue.type)
+        #print("Que mierda retorno?", getConditionValue.type)
         if getConditionValue.type == Type.BOOL: 
             
             if getConditionValue.value: #true
@@ -39,6 +42,9 @@ class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
                 newAmbito = Ambito(ambito)
                 return self.else_or_elseif.execute(newAmbito)       
         else: 
-            print ("Error sintactico en linea: {}, el tipo de dato debe ser BOOL y se obtuvo: {}".format(self.line, getConditionValue.type))
+            print ("Error sintactico en linea: {}, la condicion debe ser BOOL y se obtuvo: {}".format(self.line, getConditionValue.type.name))
+            Output.errorSintactico.append(
+                Error("La condicion debe ser BOOL y se obtuvo: {}".format(getConditionValue.type.name), self.line, self.column)
+            ) 
             return False 
         return # El flujo es correcto 

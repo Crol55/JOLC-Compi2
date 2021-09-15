@@ -2,6 +2,8 @@
 from Nativas.Return import Return
 from Instrucciones.Functions.Funcion import Funcion
 from Abstractas.Instruccion import Instruccion
+from Nativas.Error import Error
+from Export import Output
 
 class Sentencia(Instruccion):
 
@@ -38,5 +40,8 @@ class Sentencia(Instruccion):
 
         if type(instruccion) == Funcion: 
             print ("Error sintactico en linea: {}, una funcion no se puede declarar en este contexto".format(instruccion.line) )
+            Output.errorSintactico.append(
+                Error("Una funcion no se puede declarar en este contexto.", self.line, self.column)
+            ) 
             return True
         return False
