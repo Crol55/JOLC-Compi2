@@ -3,6 +3,8 @@ from Tabla_Simbolos.Ambito import Ambito
 from Nativas.Type import Type
 from Abstractas.Instruccion import Instruccion
 from Abstractas.Expresion import Expresion
+from Nativas.Error import Error
+from Export import Output
 
 
 class While(Instruccion): 
@@ -13,7 +15,7 @@ class While(Instruccion):
         self.sentencias  = sentencias 
 
     def execute(self, ambito):
-        print ("Alguien desea ejecutar lo que contiene este while")
+        #print ("Alguien desea ejecutar lo que contiene este while")
 
         newAmbito = Ambito(ambito)
         getConditionValue = self.condicional.execute(newAmbito)
@@ -46,12 +48,14 @@ class While(Instruccion):
                 # Verificar una vez mas la condicion del while, si no es Booleano, salirse
                 getConditionValue = self.condicional.execute(newAmbito)
                 if (getConditionValue.type != Type.BOOL):
-                    print ("Error sintactico en linea: {}, la condicion debe ser tipo BOOL".format(self.condicional.line))
+                    print ("Error semantico en linea: {}, la condicion debe ser tipo BOOL".format(self.condicional.line))
+                    Output.errorSintactico.append( Error("La condicion debe ser tipo BOOL", self.line, self.column) )
                     return 
                 #print ("No hubieron errores")
                 #return 
         else:
-            print ("Error sintactico en linea: {}, la condicion debe ser tipo BOOL".format(self.condicional.line))
+            print ("Error semantico en linea: {}, la condicion debe ser tipo BOOL".format(self.condicional.line))
+            Output.errorSintactico.append( Error("La condicion debe ser tipo BOOL", self.line, self.column) )
         return 
 
     

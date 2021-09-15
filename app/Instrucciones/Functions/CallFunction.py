@@ -6,6 +6,9 @@ from Nativas.Type import Type
 from Instrucciones.Functions.Funcion import Funcion
 from Abstractas.Instruccion import Instruccion
 from Tabla_Simbolos.Ambito  import Ambito
+from Nativas.Error import Error
+from Export import Output
+
 
 class CallFunction( Instruccion ): # call struct y call function utilizan la misma clase porque basicamente son lo mismo
     
@@ -35,7 +38,10 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
             return newStruct # Al retornarla solo tiene sentido si se utiliza adentro de un parametro, o se iguala a otra variable
 
         # No existe en funcion ni struct......
-        print("Error en linea: {}, La Funcion/Struct no existe".format(self.line))
+        print("Error en linea: {}. La Funcion/Struct no existe".format(self.line))
+        Output.errorSintactico.append(
+            Error("La Funcion/Struct no existe", self.line, self.column)
+        ) 
         return False # Si retorna false, hubo un error
 
 
@@ -89,6 +95,9 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
                     if (param_de_funcion.tipo != get_value_from_expresion.type): # Si los tipos son distintos, es un error
 
                         print ("Error Sintactico en la linea: {}, los tipos de datos enviados a la funcion no coinciden.".format(self.line))
+                        Output.errorSintactico.append(
+                            Error("Los tipos de datos enviados a la funcion no coinciden.", self.line, self.column)
+                        ) 
                         return False # La funcion retornar con error (False)
                 
                 #print ("variables a crear:", param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value)
@@ -98,5 +107,8 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
             return True # El flujo no se interrumpio, todo se genero correctamente
         else: 
             print("Error sintactico en linea: {}, el numero de parametros no coincide con la funcion.".format(self.line))
+            Output.errorSintactico.append( 
+                Error(" El numero de parametros no coincide con la funcion.", self.line, self.column)
+            ) 
 
     

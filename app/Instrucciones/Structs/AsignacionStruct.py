@@ -1,5 +1,7 @@
 
 from Abstractas.Instruccion import Instruccion
+from Nativas.Error import Error
+from Export import Output
 
 class AsignacionStruct(Instruccion):
     def __init__(self, id_struct, id_atributo, expresion, line, column, node = None):
@@ -26,7 +28,8 @@ class AsignacionStruct(Instruccion):
                 if struct.isMutable:
                     self.actualizar_atributo(struct, valor_a_asignar)
                 else: 
-                    print("Error sintactico en linea: {}, el struct es Inmutable".format(self.line)) 
+                    print("Error semantico en linea: {}, el struct es Inmutable".format(self.line)) 
+                    Output.errorSintactico.append(Error("El struct es Inmutable", self.line, self.column)) 
 
         return
         
@@ -41,5 +44,8 @@ class AsignacionStruct(Instruccion):
             atributo.valorSimbolo = valor_a_asignar.value
             #print ("Luego de realizar la actualizacion XD:", atributo.tipoSimbolo, atributo.valorSimbolo)
         else: 
-            print ("Error sintactico en linea: {}, el atributo '{}' no existe.".format(self.line, self.id_atributo))
+            print ("Error semantico en linea: {}, el atributo '{}' no existe.".format(self.line, self.id_atributo))
+            Output.errorSintactico.append(
+                Error("El atributo: '{}' no existe.".format(self.id_atributo), self.line, self.column)
+            ) 
             

@@ -3,6 +3,9 @@ from ..Condicional.Sentencia import Sentencia
 from Nativas.Type import Type
 from Abstractas.Instruccion import Instruccion
 from Tabla_Simbolos.Ambito import Ambito
+from Nativas.Error import Error
+from Export import Output
+
 
 class For(Instruccion):
     def __init__(self,identificador, expresion, sentencias:Sentencia, line, column, node = None):
@@ -24,9 +27,12 @@ class For(Instruccion):
             elif (tipo == Type.RANGE):
                 pass    
             else: 
-                print ("Error sintactico en linea: {}, el valor a iterar debe ser (STRING, ARRAY o RANGE) y se obtuvo: {}".format(self.line, tipo.name))
- 
+                print ("Error semantico en linea: {}, el valor a iterar debe ser (STRING, ARRAY o RANGE) y se obtuvo: {}".format(self.line, tipo.name))
+                Output.errorSintactico.append(
+                Error("El valor a iterar debe ser (STRING, ARRAY o RANGE) y se obtuvo: {}".format(tipo.name), self.line, self.column)
+            ) 
         return 
+
 
     def for_string(self, identificador, cadena, sentencias:Sentencia, ambito): 
         

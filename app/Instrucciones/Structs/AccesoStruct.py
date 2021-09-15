@@ -1,6 +1,9 @@
 from Tabla_Simbolos.simbolo import simbolo
 from Nativas.Return import Return
 from Abstractas.Expresion import Expresion
+from Nativas.Error import Error
+from Export import Output
+
 
 class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
 
@@ -24,9 +27,15 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
                 #print ("Que saqueeeeeeeeeeee?", atribute_simbolo.tipoSimbolo, atribute_simbolo.valorSimbolo)
                 return Return(atribute_simbolo.tipoSimbolo, atribute_simbolo.valorSimbolo)
             else: 
-                print ("Error sintactico en linea: {}, el atributo: '{}' no existe en la declaracion del Struct.".format(self.line, self.id_atributo))
+                print ("Error semantico en linea: {}, el atributo: '{}' no existe en la declaracion del Struct.".format(self.line, self.id_atributo))
+                Output.errorSintactico.append(
+                    Error("El atributo: '{}' no existe en la declaracion del Struct.".format(self.id_atributo), self.line, self.column)
+                ) 
                 return False
         else: 
-            print ("Error sintactico: La variable", self.identificador,"no existe")
+            print ("Error semantico: La variable", self.identificador,"no existe")
+            Output.errorSintactico.append(
+                Error("La variable: '{}' no existe.".format(self.identificador), self.line, self.column)
+            ) 
         return  
         

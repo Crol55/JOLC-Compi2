@@ -35,6 +35,7 @@ try :
                 break
     print ("Lo que esta aqui abajo, sera enviado al frontend.. sin embargo aun no esta completo:")
     print (Output.salidaInterprete)
+    print ("Errores leidos", len( Output.errorSintactico) )
 except: 
    print("Error Fatal del interprete al ejecutar instrucciones")
    print ("Errores leidos", len( Output.errorSintactico) )
@@ -45,6 +46,6 @@ except:
     * length
     * for Puede iterar sobre tipos iterables,  (range, arrays, strings)
     * arreglos 
-    * Operaciones con arreglos 
+    * Operaciones con arreglos
     * Gramatica.py linea 351 -> se removio tipo de dato identificador
 '''

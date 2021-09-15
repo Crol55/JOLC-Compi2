@@ -3,6 +3,9 @@ from Instrucciones.Transferencia.Continue import Continue
 from Instrucciones.Transferencia.Break import Break
 from Tabla_Simbolos.Ambito import Ambito
 from Abstractas.Instruccion import Instruccion
+from Nativas.Error import Error
+from Export import Output
+
 
 class Funcion(Instruccion):
     def __init__(self, id, lista_parametros, lista_instrucciones, line, column, nodo):
@@ -28,15 +31,24 @@ class Funcion(Instruccion):
     def contains_invalid_instructions(self, instruccion):
 
         if type(instruccion) == Funcion: #Una funcion no se puede declarar adentro de otra
-            print("Error Sintactico en linea: {}, No se puede declarar una funcion adentro de otra funcion".format(instruccion.line))
+            print("Error Semantico en linea: {}, No se puede declarar una funcion adentro de otra funcion".format(instruccion.line))
+            Output.errorSintactico.append(
+                Error(" No se puede declarar una funcion adentro de otra funcion", self.line, self.column)
+            ) 
             return True
 
         elif type(instruccion) == Break: 
-            print("Error Sintactico en linea: {}, No se puede declarar un BREAK sin un loop".format(instruccion.line))
+            print("Error Semantico en linea: {}, No se puede declarar un BREAK sin un loop".format(instruccion.line))
+            Output.errorSintactico.append(
+                Error(" No se puede declarar un BREAK sin un loop", self.line, self.column)
+            )
             return True
 
         elif type(instruccion) == Continue: 
-            print("Error Sintactico en linea: {}, No se puede declarar un CONTINUE sin un loop".format(instruccion.line))
+            print("Error Semantico en linea: {}, No se puede declarar un CONTINUE sin un loop".format(instruccion.line))
+            Output.errorSintactico.append(
+                Error(" No se puede declarar un CONTINUE sin un loop", self.line, self.column)
+            )
             return True
         return False
 

@@ -6,6 +6,8 @@ from Tabla_Simbolos.simbolo import simbolo
 from Nativas.Return import Return
 from Nativas.Type import Type
 from Instrucciones.Structs.CrearStruct import CrearStruct
+from Nativas.Error import Error
+from Export import Output
 
 
 class InicializarStruct():
@@ -30,8 +32,12 @@ class InicializarStruct():
 
                 if parametro_del_prototipo.tipo != Type.ANY: # Verificamos si tienen el mismo tipo
                     if parametro_del_prototipo.tipo != param_value.type: 
-                        print ("Error Sintactico en la linea: {}, los tipos de datos para inicializar el struct no coinciden.".format(self.line))
+                        
+                        print ("Error Semantico en la linea: {}, los tipos de datos para inicializar el struct no coinciden.".format(self.line))
+                        Output.errorSintactico.append( Error(" Los tipos de datos para inicializar el struct no coinciden.", self.line, self.column) ) 
+                        
                         return False # La funcion retornar con error (False)
+
                 print("Creare la variable", parametro_del_prototipo.id)
                 nombre_de_variable =  parametro_del_prototipo.id 
 
@@ -39,8 +45,8 @@ class InicializarStruct():
             #Depues de crear el struct y sus variables internas, devolvemos el struct
             return Return(Type.STRUCT, new_struct) 
         else: 
-            print("Error sintactico en linea: {}, el numero de parametros no coincide con el prototipo del struct.".format(self.line))
-
-
-
-    
+            print("Error semantico en linea: {}, el numero de parametros no coincide con el prototipo del struct.".format(self.line))
+            Output.errorSintactico.append(
+                Error(" El numero de parametros no coincide con el prototipo del struct.", self.line, self.column)
+            ) 
+            
