@@ -1,6 +1,8 @@
 from Nativas.Return import Return
 from Nativas.Type import Type
 from Abstractas.Expresion import Expresion
+from Nativas.Error import Error
+from Export import Output
 
 class Trunc(Expresion):
 
@@ -21,7 +23,13 @@ class Trunc(Expresion):
             if(actual_type == Type.FLOAT):
                 return True 
             else: 
-                print ("Error sintactico: El segundo parametro de la funcion trunc debe ser float64")
+                print ("Error semantico en linea: {}. El segundo parametro de la funcion trunc debe ser tipo float64".format(self.line))
+                Output.errorSintactico.append(
+                    Error("El segundo parametro de la funcion trunc debe ser tipo float64", self.line, self.column)
+                ) 
                 return False
-        print("Error Sintactico: La conversion unicamente pude realizarse a Int64 y se ingreso", self.typeToCast)
+        print("Error semantico en linea: {}. La conversion unicamente pude realizarse a Int64 y se ingreso: {}.".format(self.line, self.typeToCast.name))
+        Output.errorSintactico.append(
+                    Error("La conversion unicamente pude realizarse a Int64 y se ingreso: {}.".format(self.typeToCast.name), self.line, self.column)
+                )
         return False

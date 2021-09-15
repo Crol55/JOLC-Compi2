@@ -3,7 +3,7 @@
 
 
 def init():
-    global errorSintactico 
+    global errorSintactico # meter todos los errores, lexicos, sintacticos y semanticos
     global salidaInterprete 
     global AST 
 

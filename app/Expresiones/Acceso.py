@@ -1,5 +1,7 @@
 from Nativas.Return import Return
 from Abstractas.Expresion import Expresion
+from Nativas.Error import Error
+from Export import Output
 
 class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
 
@@ -17,6 +19,9 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
 
             return Return(valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
         else: 
-            print ("Error sintactico: La variable", self.identificador,"no existe")
+            print ("Error semantico en linea:{}, La variable:'{}' no existe".format( self.line, self.identificador))
+            Output.errorSintactico.append(
+                Error("La variable:'{}' no existe".format(self.identificador), self.line, self.column)
+            ) 
         return  
         

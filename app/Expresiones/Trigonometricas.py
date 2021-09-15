@@ -3,6 +3,9 @@ import math
 from Nativas.Type import Type
 from Nativas.Return import Return
 from Abstractas.Expresion import Expresion
+from Nativas.Error import Error
+from Export import Output
+
 
 class Trigonometricas(Expresion):
     def __init__(self, expresion:Expresion, trigonometrica, line, column):
@@ -24,8 +27,21 @@ class Trigonometricas(Expresion):
                     resultado_operacion_trigonometrica = math.tan(resultado.value)
                 return Return(Type.FLOAT, resultado_operacion_trigonometrica)
             else:
-                print ("Error sintactico: El valor de una funcion trigonometrica '",self.operacion_trigonometrica,"'debe estar entre (pi - 2pi) radianes. Y se obtuvo:", resultado.value)
+                print ("Error semantico en linea: {}:. El valor de una funcion trigonometrica '{}' debe estar entre (pi - 2pi) radianes. Y se obtuvo: {}"
+                .format(self.line, self.operacion_trigonometrica, resultado.value))
+
+                Output.errorSintactico.append(
+                    Error("El valor de una funcion trigonometrica '{}' debe estar entre (pi - 2pi) radianes. Y se obtuvo: {}"
+                    .format(self.operacion_trigonometrica, resultado.value), self.line, self.column)
+                )
         else: 
-            print ("Error sintactico: El parametro de una trigonometrica '",self.operacion_trigonometrica,"' debe ser Int64 o Float64 y recibio:", resultado.type.name)    
+            print ("Error semantico en linea: {}:. El parametro de una trigonometrica '{}' debe ser Int64 o Float64 y recibio: {}"
+            .format(self.line, self.operacion_trigonometrica, resultado.type.name))    
+
+            Output.errorSintactico.append(
+                    Error("El valor de una funcion trigonometrica '{}' debe estar entre (pi - 2pi) radianes. Y se obtuvo: {}"
+                    .format(self.operacion_trigonometrica, resultado.value), self.line, self.column)
+            )
+            
         return 
     

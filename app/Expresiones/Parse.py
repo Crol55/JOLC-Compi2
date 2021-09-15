@@ -1,6 +1,9 @@
 from Nativas.Return import Return
 from Nativas.Type import Type
 from Abstractas.Expresion import Expresion
+from Nativas.Error import Error
+from Export import Output
+
 
 class Parse(Expresion):
 
@@ -10,25 +13,40 @@ class Parse(Expresion):
         self.expresion  = expresion
 
     def execute(self, ambito):
+
         resultado:Return = self.expresion.execute(ambito)
         
         if (resultado.type != Type.STRING): 
-            print("Error: Se detecto un error sintactico, la funcion 'Parse' unicamente se puede utilizar con 'STRING' y el parametro recibido fue:", resultado.type)
+            print("Error semantico en linea: {}, la funcion 'Parse' unicamente se puede utilizar con 'STRING' y el parametro recibido fue: {}"
+            .format(self.line, resultado.type))
+            Output.errorSintactico.append(
+                Error("La funcion 'Parse' unicamente se puede utilizar con 'STRING' y el parametro recibido fue: {}".format(resultado.type), self.line, self.column)
+            ) 
+
             return None
         
-        if not (self.is_number(resultado.value)) :
-            print ("Error sintactico: El segundo parametro de la funcion 'parse' no es un dato numerico")
+        if not (self.is_number(resultado.value)):
+
+            print ("Error semantico en linea: {}: El segundo parametro de la funcion 'parse' no es un dato numerico".format(self.line))
+            
+            Output.errorSintactico.append(
+                Error("El segundo parametro de la funcion 'parse' no es un dato numerico".format(resultado.type), self.line, self.column)
+            )
+            
             return None
 
         if (self.typeToCast == Type.INT):
             valor_casteado = int(float(resultado.value))
             return Return(Type.INT, valor_casteado)
-
+            
         elif (self.typeToCast == Type.FLOAT):
             valor_casteado = float(resultado.value)
             return Return(Type.FLOAT, valor_casteado)
         else: 
-            print ("Error, Se detecto un error sintactico, el primer parametro de la funcion 'parse' debe ser Int64 o Float64 y el parametro enviado fue:", self.typeToCast)
+            print ("Error semantico en linea: {}, el primer parametro de la funcion 'parse' debe ser Int64 o Float64 y el parametro enviado fue: {}".format(self.line, self.typeToCast.name))
+            Output.errorSintactico.append(
+                Error("El primer parametro de la funcion 'parse' debe ser Int64 o Float64 y el parametro enviado fue: {}".format(self.typeToCast.name), self.line, self.column)
+            )
         return None
 
 

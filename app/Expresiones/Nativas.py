@@ -2,7 +2,8 @@
 from Nativas.Return import Return
 from Nativas.Type import Type
 from Abstractas.Expresion import Expresion
-
+from Nativas.Error import Error
+from Export import Output
 
 class Uppercase(Expresion):
     def __init__(self,expresion:Expresion, line, column):
@@ -15,7 +16,10 @@ class Uppercase(Expresion):
             resultado_to_upper = resultado.value.upper()
             return Return(Type.STRING, resultado_to_upper)    
         else: 
-            print ("Error: Error sintactico, la funcion 'uppercase' no se puede aplicar al tipo de dato:", resultado.type)
+            print ("Error: Error semantico en linea: {}, la funcion 'uppercase' no se puede aplicar al tipo de dato: {}".format(self.line, resultado.type.name))
+            Output.errorSintactico.append(
+                Error("La funcion 'uppercase' no se puede aplicar al tipo de dato: {}".format(resultado.type.name), self.line, self.column)
+            ) 
         return None
 
 
@@ -33,7 +37,10 @@ class Lowercase(Expresion):
             resultado_to_lower = resultado.value.lower()
             return Return(Type.STRING, resultado_to_lower)    
         else: 
-            print ("Error: Error sintactico, la funcion 'lower' no se puede aplicar al tipo de dato:", resultado.type)
+            print ("Error semantico en la linea: {}, la funcion 'lowercase()' no se puede aplicar al tipo de dato:{}".format(self.line, resultado.type.name))
+            Output.errorSintactico.append(
+                Error("La funcion 'lowercase()' no se puede aplicar al tipo de dato: {}".format(resultado.type.name), self.line, self.column)
+            )
         return None
 
 

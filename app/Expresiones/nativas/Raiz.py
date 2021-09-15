@@ -18,7 +18,7 @@ class Raiz(Expresion):
             raiz_cuadrada = math.sqrt(resultado_expresion.value)
             return Return(Type.FLOAT, raiz_cuadrada)
         else: 
-            print("Error Sintactico: La funcion sqrt() debe recibir un Int64 o Float64 y recibio:", resultado_expresion.type.name)  
+            print("Error Semantico: La funcion sqrt() debe recibir un Int64 o Float64 y recibio:", resultado_expresion.type.name)  
             Output.errorSintactico.append(
                 Error("La funcion sqrt() debe recibir un Int64 o Float64 y recibio: {}".format(resultado_expresion.type.name), this.line, this.column)
             ) 
