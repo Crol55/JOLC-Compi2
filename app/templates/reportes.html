@@ -1,0 +1,92 @@
+{% extends 'index.html' %}
+
+{% block body %}
+    <h1 style="text-align: center;">AREA DE REPORTES</h1>
+    <div class="flexbox-container">
+        <button class="btnA" onclick="fetch_reportes('errores')"> Tabla de errores </button>
+        <button class="btnA" onclick="fetch_reportes('simbolos')"> Tabla de símbolos </button>
+        <button class="btnA" onclick="fetch_reportes('CST')"> Arbol de análisis sintáctico </button>
+    </div>
+    <h1> TABLA DE ERRORES</h1>
+    <h1> tABLA DE SIMBOLOS</h1>
+    <h1> ARBOL DE ANÁLISIS SINTÁCTICO</h1>
+    
+    <div id="divTE">
+        <table id="tabla_errores">
+            <tr>
+                <th>Descripcion</th>
+                <th>Linea</th>
+                <th>Columna</th>
+                <th>Fecha y hora</th>
+            </tr>
+        </table>
+    </div>
+      <br>
+
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        //let cond = true;
+        //window.alert(cond);
+        //let h1 = document.getElementById('cagada');
+        //h1.style.display = 'none';
+
+        function fetch_reportes(tipo_reporte){
+
+            $.ajax({
+                type:'POST', 
+                url:'/get_specific_report',
+                data: JSON.stringify( {tipo: tipo_reporte} ), 
+                success: function(data) {
+                    //console.log(data);
+                    if (data['estado'] == false)
+                        window.alert(data['msg']);
+                    else if(data['estado'] == true){
+                        generar_reporte(tipo_reporte, data['msg']);
+                    }                    
+                }, 
+                contentType: 'application/json', 
+                dataType: 'json'
+            })
+        }
+
+
+        function generar_reporte(tipo_reporte, data){
+
+            switch(tipo_reporte){
+                case 'errores': {
+                    //window.alert("Preparare la tabla de errores");
+                    let conta  = 1; 
+                    for (let i = 0; i < data.length; i ++){
+                        attach_rows_to_table(conta, data[i]);
+                        conta++;
+                    }
+                    //window.alert(data[0].time)
+                }break;
+                case 'simbolos': {
+                    window.alert("Fechear simbolos");
+                    let tablaErrores = document.getElementById('divTE');
+                    tablaErrores.style.display = 'none' ;
+                }break;
+                case 'CST': {
+                    window.alert("Fechear CST");
+                }break;
+            }
+        }
+
+        function attach_rows_to_table(row_pos, data_object)
+        {
+            var table = document.getElementById("tabla_errores");
+            var row = table.insertRow(row_pos);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            cell1.innerHTML = data_object.descripcion;
+            cell2.innerHTML = data_object.linea;
+            cell3.innerHTML = data_object.columna;
+            cell4.innerHTML = data_object.time;
+        }
+
+    </script>
+{% endblock %}

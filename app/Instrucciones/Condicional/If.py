@@ -40,6 +40,7 @@ class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
             elif self.else_or_elseif != None:  
                 # Ejecutamos las instrucciones adentro del elseif o Else
                 newAmbito = Ambito(ambito)
+                print("Que carajo hay aqui?", self.else_or_elseif)
                 return self.else_or_elseif.execute(newAmbito)       
         else: 
             print ("Error sintactico en linea: {}, la condicion debe ser BOOL y se obtuvo: {}".format(self.line, getConditionValue.type.name))

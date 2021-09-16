@@ -54,7 +54,42 @@ def analizar():
     return { "estado": True, "msg": Output.salidaInterprete, "code": 200}
 
 
+@app.route('/reportes')
+def reportes_view():
+    return render_template('reportes.html', cond = True)
+
+
+@app.route('/get_specific_report', methods=['POST'])
+def get_report():
+    tipo_reporte =  request.json['tipo']#request.query_string['tipo']#request.args['tipo']
+    print ("Que tipo de reporte enviaron", tipo_reporte)
+    if tipo_reporte == 'errores': 
+        try: 
+            lista_errores  = Output.errorSintactico
+            newLista = [] 
+            for err in lista_errores: 
+                print (err.descripcion) 
+                newLista.append( {"descripcion": err.descripcion, "linea":err.linea, "columna": err.columna, "time": err.time})
+            
+            return { "estado": True, "msg": newLista, "code": 200} 
+        except:
+            return { "estado": False, "msg": "No existen errores", "code": 200}
+
+    elif tipo_reporte == 'simbolos': 
+        try: 
+            lista = Output.tablaSimbolos
+            return { "estado": True, "msg": lista, "code": 200} 
+        except:
+            return { "estado": False, "msg": "Debe analizar su codigo de JOLC para que exista una tabla de simbolos", "code": 200}
+    elif tipo_reporte == 'CST': 
+        try: 
+            CST = Output.AST
+            return { "estado": True, "msg": CST, "code": 200} 
+        except:
+            return { "estado": False, "msg": "Debe analizar su codigo de JOLC para que exista un arbol de analisis sintactico", "code": 200} 
+    return {"estado": "siu"}
+
 
 if __name__ == "__main__":
-    app.run()
-    #app.run( debug=True, port=4000)
+    #app.run()
+    app.run( debug=True, port=4000)

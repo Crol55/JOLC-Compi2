@@ -33,9 +33,9 @@ try :
             elif retMain.type == Type.CONTINUE: 
                 print("Error sintactico: Un 'continue' no puede ser declarado afuera de un loop.")
                 break
-    print ("Lo que esta aqui abajo, sera enviado al frontend.. sin embargo aun no esta completo:")
-    print (Output.salidaInterprete)
-    print ("Errores leidos", len( Output.errorSintactico) )
+    #print ("Lo que esta aqui abajo, sera enviado al frontend.. sin embargo aun no esta completo:")
+    #print (Output.salidaInterprete)
+    #print ("Errores leidos", len( Output.errorSintactico) )
 except: 
    print("Error Fatal del interprete al ejecutar instrucciones")
    print ("Errores leidos", len( Output.errorSintactico) )
@@ -44,7 +44,7 @@ except:
 '''
     comandos faltantes: 
     pasos: 
-    1. graficar errores 
+    
     2. testear archivos de entrada sin arrays 
     3. Gramatica.py linea 351 -> se removio tipo de dato identificador
     4. Agregar los arrays.. 

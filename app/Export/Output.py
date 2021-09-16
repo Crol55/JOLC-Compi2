@@ -6,7 +6,9 @@ def init():
     global errorSintactico # meter todos los errores, lexicos, sintacticos y semanticos
     global salidaInterprete 
     global AST 
+    global tablaSimbolos 
 
     errorSintactico  = [] # Un arreglo de errores -> Error.py
     salidaInterprete = "" 
     AST              = "" 
+    tablaSimbolos    = []

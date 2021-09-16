@@ -70,8 +70,12 @@ body {
   margin: 4px 2px;
   cursor: pointer;
     background-color: #008CBA;
+    
 }
 
+table, td, th {
+    border: 1px solid black;
+  }
 /*div textarea{
     background-color:black ;
     display: inline-block;

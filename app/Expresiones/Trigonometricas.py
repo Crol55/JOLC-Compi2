@@ -16,9 +16,9 @@ class Trigonometricas(Expresion):
     def execute(self, ambito):
         resultado:Return = self.expresion.execute(ambito)
         if (resultado.type == Type.INT or resultado.type == Type.FLOAT): # Solo FLOAT OR INT
-            if (resultado.value >= 0 and resultado.value <= (2*math.pi)):
+            #if (resultado.value >= 0 and resultado.value <= (2*math.pi)):
                 
-                resultado_operacion_trigonometrica = 0
+                resultado_operacion_trigonometrica = 0.0
                 if (self.operacion_trigonometrica == 'sin'):
                     resultado_operacion_trigonometrica = math.sin(resultado.value)
                 elif (self.operacion_trigonometrica == 'cos'):
@@ -26,14 +26,14 @@ class Trigonometricas(Expresion):
                 else:
                     resultado_operacion_trigonometrica = math.tan(resultado.value)
                 return Return(Type.FLOAT, resultado_operacion_trigonometrica)
-            else:
-                print ("Error semantico en linea: {}:. El valor de una funcion trigonometrica '{}' debe estar entre (pi - 2pi) radianes. Y se obtuvo: {}"
-                .format(self.line, self.operacion_trigonometrica, resultado.value))
-
-                Output.errorSintactico.append(
-                    Error("El valor de una funcion trigonometrica '{}' debe estar entre (pi - 2pi) radianes. Y se obtuvo: {}"
-                    .format(self.operacion_trigonometrica, resultado.value), self.line, self.column)
-                )
+            #else:
+            #    print ("Error semantico en linea: {}:. El valor de una funcion trigonometrica '{}' debe estar entre (pi - 2pi) radianes. Y se obtuvo: {}"
+            #    .format(self.line, self.operacion_trigonometrica, resultado.value))
+#
+            #    Output.errorSintactico.append(
+            #        Error("El valor de una funcion trigonometrica '{}' debe estar entre (pi - 2pi) radianes. Y se obtuvo: {}"
+            #        .format(self.operacion_trigonometrica, resultado.value), self.line, self.column)
+            #    )
         else: 
             print ("Error semantico en linea: {}:. El parametro de una trigonometrica '{}' debe ser Int64 o Float64 y recibio: {}"
             .format(self.line, self.operacion_trigonometrica, resultado.type.name))    
