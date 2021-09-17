@@ -23,13 +23,13 @@ class Sentencia(Instruccion):
 
                 if ret != None: # Hubo un error o quiere hacer un (return, break, continue) adentro del if, solo retornamos
                                 # Si el retorno es de una funcion, no debemos finalizar la ejecucion de las sentencias de abajo
-                    print ("Sentencia: Se encontro algo de caracter especial->", ret) 
+                    #print ("Sentencia: Se encontro algo de caracter especial->", ret) 
                     if type(ret) == dict: 
 
                         return ret # Solo retornamos que fue lo que ocurrio y las sentencias de abajo dejan de ejecutarse
-                    elif type(ret) == Return: 
-
-                        return ret 
+                    #elif type(ret) == Return: 
+                    #    print("si pues aqui es donde se esta metiendo jjajjajaj")
+                    #    return ret 
                     elif (type(ret) == bool and (ret == False)): #Implica que una instruccion esta erronea, por lo que ya no debe seguir ejecutando
 
                         return False #Retornamos False, para que la clase que llamo a sentencia, sepa que hubo un error

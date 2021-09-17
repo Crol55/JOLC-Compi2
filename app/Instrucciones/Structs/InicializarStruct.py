@@ -29,13 +29,13 @@ class InicializarStruct():
             for (parametro_del_prototipo, parametro_de_inicializacion) in zip(self.struct_prototipo.lista_parametros, self.parametros): 
                 #print("tipo de dato:",parametro_del_prototipo.tipo, parametro_del_prototipo.id)
                 param_value:Return = parametro_de_inicializacion.execute(ambito)
-
+                #print ("Que parametro tiene el prototitpo", parametro_del_prototipo.tipo)
                 if parametro_del_prototipo.tipo != Type.ANY: # Verificamos si tienen el mismo tipo
                     if parametro_del_prototipo.tipo != param_value.type: 
                         
                         print ("Error Semantico en la linea: {}, los tipos de datos para inicializar el struct no coinciden.".format(self.line))
-                        Output.errorSintactico.append( Error(" Los tipos de datos para inicializar el struct no coinciden.", self.line, self.column) ) 
-                        
+                        Output.errorSintactico.append( Error(" Los tipos de datos para inicializar el struct no coinciden.", self.line, 0) ) 
+                       
                         return False # La funcion retornar con error (False)
 
                 print("Creare la variable", parametro_del_prototipo.id)
@@ -47,6 +47,7 @@ class InicializarStruct():
         else: 
             print("Error semantico en linea: {}, el numero de parametros no coincide con el prototipo del struct.".format(self.line))
             Output.errorSintactico.append(
-                Error(" El numero de parametros no coincide con el prototipo del struct.", self.line, self.column)
+                Error(" El numero de parametros no coincide con el prototipo del struct.", self.line, 0)
             ) 
+            
             

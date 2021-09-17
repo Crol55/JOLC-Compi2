@@ -13,4 +13,5 @@ class Parametro(Instruccion):
         
     
     def execute(self, ambito:Ambito):
+        print ("Alguna vez me ejecuto?")
         return self # Retorno la clase {id, tipo}

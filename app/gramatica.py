@@ -354,14 +354,17 @@ def p_tipo_dato(t):
                 | STRING 
                 | ARRAY 
                 | NOTHING
-    '''# | IDENTIFICADOR  
+                | IDENTIFICADOR 
+    ''' 
+    #print("Que carajo hay aqui?", t[1])
     if   t[1] == 'Int64'  : t[0] = Type.INT
     elif t[1] == 'Float64': t[0] = Type.FLOAT
     elif t[1] == 'Bool'   : t[0] = Type.BOOL
     elif t[1] == 'Char'   : t[0] = Type.CHAR
     elif t[1] == 'String' : t[0] = Type.STRING
     elif t[1] == 'nothing': t[0] = Type.NULL
-    
+    else: t[0] = t[1]
+     
 # callFunction
 def p_callFunction(t):
     '''callFunction : callFunc SEMICOLON
@@ -466,7 +469,7 @@ def p_struct(t):
     '''struct : MUTABLE STRUCT IDENTIFICADOR lista_atributos END SEMICOLON 
               |         STRUCT IDENTIFICADOR lista_atributos END SEMICOLON 
     '''
-    print ("El user va a crear un struct")
+    #print ("El user va a crear un struct")
     if len(t) == 7: # produccion 1
         t[0] = CrearStruct(True, t[3], t[4], t.lineno(2), t.lexpos(0), None) 
     else: # produccion 2 
@@ -482,16 +485,16 @@ def p_lista_atributos(t):
     #print (t.slice)
     if len(t) == 6: #produccion 1 
         #print("Ingreso a la produccion 3->",t[2], t[4])
-        t[1].append( Parametro(t[2], t[4], t.lineno(1), t.lexpos(0), None) )
+        t[1].append( Parametro(t[2], t[4], t.lineno(2), t.lexpos(0), None) )
         t[0] = t[1] 
     elif len(t) == 4: #produccion 2 
-        t[1].append( Parametro(t[2], Type.ANY, t.lineno(1), t.lexpos(0), None) )
+        t[1].append( Parametro(t[2], Type.ANY, t.lineno(2), t.lexpos(0), None) )
         t[0] = t[1]
     elif len(t) == 5 : #produccion 3 
         
-        t[0] =  [ Parametro(t[1],     t[3], t.lineno(1), t.lexpos(0), None) ]  
+        t[0] =  [ Parametro(t[1],     t[3], t.lineno(2), t.lexpos(0), None) ]  
     elif len(t) == 3: #produccion 4
-        t[0] =  [ Parametro(t[1], Type.ANY, t.lineno(1), t.lexpos(0), None) ] 
+        t[0] =  [ Parametro(t[1], Type.ANY, t.lineno(2), t.lexpos(0), None) ] 
     
 
 #inst_nativa

@@ -1,6 +1,8 @@
 
 #from Tabla_Simbolos.simbolo import simbolo
 from .simbolo import simbolo
+from Nativas.Error import Error
+from Export import Output
 
 class Ambito():
     def __init__(self, ambito_anterior):
@@ -58,10 +60,16 @@ class Ambito():
 
         if id_function in self.structs.keys(): 
             print ("Error sintactico en linea: {}, ya existe un Struct con ese nombre. Una funcion y un stuct, no pueden tener el mismo nombre".format(input_line))
+            Output.errorSintactico.append( 
+                Error("Ya existe un Struct con el nombre: '{}', una funcion y un stuct, no pueden tener el mismo nombre".format(id_function), function.line, function.column) 
+            ) 
             return False
         
         if id_function in self.functions.keys():
             print("Error Sintactico en linea",input_line,": La funcion '",id_function,"' ya fue declarada previamente.")
+            Output.errorSintactico.append( 
+                Error("La funcion con el nombre: '{}' fue declarada previamente".format(id_function), function.line, function.column) 
+            ) 
             return False 
         else: 
             self.functions[id_function] = function 
@@ -78,12 +86,20 @@ class Ambito():
 
 
     def saveStruct (self, id_struct, struct): # ya que funcion y struct, se crean EXACTAMENTE IGUAL, debemos verificar que no exista en ambos lados
+        
         if id_struct in self.functions.keys(): 
-            print ("Error sintactico en linea: {}, ya existe una Funcion con ese nombre, los structs y funciones no pueden tener el mismo nombre".format(struct.line))
+            print ("Error semantico en linea: {}, ya existe una Funcion con ese nombre, los structs y funciones no pueden tener el mismo nombre".format(struct.line))
+            Output.errorSintactico.append( 
+                Error(" Ya existe una Funcion con el nombre :'{}', los structs y funciones no pueden tener el mismo nombre".format(id_struct), struct.line, struct.column) 
+            ) 
             return False
 
         if id_struct in self.structs.keys(): 
-            print ("Error sintactico en linea: {}, ya existe un Struct con ese nombre declarado previamente".format(struct.line))
+            print ("Error semantico en linea: {}, ya existe un Struct con ese nombre declarado previamente".format(struct.line))
+            Output.errorSintactico.append( 
+                Error("Ya existe un Struct con el nombre: '{}' declarado previamente".format(id_struct), struct.line, struct.column) 
+            ) 
+            
             return False
         else: 
             self.structs[id_struct] = struct  # Si no existe almacenamos el struct

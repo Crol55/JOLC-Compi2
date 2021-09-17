@@ -92,7 +92,16 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
 
                 if param_de_funcion.tipo != Type.ANY: # Verificar el tipado, sino solo crear la variable en el ambito
 
-                    if (param_de_funcion.tipo != get_value_from_expresion.type): # Si los tipos son distintos, es un error
+                    #print ("al ejecutar la funcion que obtengo", param_de_funcion.tipo, get_value_from_expresion.type)
+
+                    if ( type(param_de_funcion.tipo) == str): # Es un struct
+                        #print("Encontre un struct") 
+                        struct_simbolo = get_value_from_expresion.value 
+                        
+                        if ( param_de_funcion.tipo != struct_simbolo.IdSimbolo):
+                            print ("Error semantico en linea: {}. El tipo compuesto '{}' no coincide con el enviado: '{}'".format(self.line), param_de_funcion.tipo, struct_simbolo.IdSimbolo)
+                            return None 
+                    elif (param_de_funcion.tipo != get_value_from_expresion.type): # Si los tipos son distintos, es un error
 
                         print ("Error Sintactico en la linea: {}, los tipos de datos enviados a la funcion no coinciden.".format(self.line))
                         Output.errorSintactico.append(
@@ -103,7 +112,7 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
                 #print ("variables a crear:", param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value)
                 # Crear en el nuevo ambito, las variables temporales de la funcion, se pasan por valor 
                 new_ambito.saveVariable(param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value, 'local')
-            #print ("Supuestas variables almacenadas:", new_ambito.variables)
+            
             return True # El flujo no se interrumpio, todo se genero correctamente
         else: 
             print("Error sintactico en linea: {}, el numero de parametros no coincide con la funcion.".format(self.line))

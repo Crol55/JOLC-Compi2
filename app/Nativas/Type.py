@@ -10,7 +10,7 @@ class Type (Enum):
     CHAR   = 6
     ANY    = 7
     tipo   = 8
-    # PARA INSTRUCCIONES UNICAMENTE (whiel, for, if, funcion..etc)
+    # PARA INSTRUCCIONES UNICAMENTE (while, for, if, funcion..etc)
     RETURNINST   = 9 
     CONTINUE = 10 
     BREAK    = 11
