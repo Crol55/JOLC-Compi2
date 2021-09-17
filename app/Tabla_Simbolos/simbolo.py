@@ -7,3 +7,5 @@ class simbolo():
         # Solo structs tienen multiples atributos
         self.isMutable = False
         self.atributos = {}
+
+    

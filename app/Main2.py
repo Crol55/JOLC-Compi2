@@ -52,7 +52,6 @@ for instruccion in ast:
         
 '''
     comandos faltantes: 
-    pasos: 
     3. Imprimir correctamente los structs..
     4. Agregar los arrays.. 
     * length
