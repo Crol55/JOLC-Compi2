@@ -14,11 +14,11 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
     def execute(self, ambito):
         
         #print ("En que ambito estoy?", ambito.variables)
-        print("Acceso: Que variable debo buscar?", self.identificador)
+        #print("Acceso: Que variable debo buscar?", self.identificador)
         valor_variable = ambito.getVariable(self.identificador)
         if valor_variable != None: 
             
-            print ("ACCESO: tipo y valor de la tabla de simbolos: ",valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
+         #   print ("ACCESO: tipo y valor de la tabla de simbolos: ",valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
             if valor_variable.tipoSimbolo == Type.STRUCT: 
                 #print ("Acceso: WHAT?", valor_variable.atributos)
                 return Return(Type.STRUCT, valor_variable) 

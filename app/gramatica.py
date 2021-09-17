@@ -1,6 +1,7 @@
 
 
-from  Instrucciones.Loops.For import For
+from Expresiones.Range import Range
+from Instrucciones.Loops.For import For
 from Instrucciones.Structs.AsignacionStruct import AsignacionStruct
 from Instrucciones.Structs.AccesoStruct import AccesoStruct
 from Instrucciones.Structs.CrearStruct import CrearStruct
@@ -103,7 +104,8 @@ tokens = [
     'CHARLITERAL',
     'COMMA', 
     'BRACKETA','BRACKETC', 
-    'PUNTO'
+    'PUNTO',
+    'DOSPUNTOS'
 ] + list(rw.values())
 
 # Tokens: Expresiones regulares ( 2 formas -> Expresion regular o Funcion)
@@ -129,6 +131,7 @@ t_OR = r'\|\|'
 t_MOD = r'%'
 t_POT = r'\^'
 t_SUFIX = r'::'
+t_DOSPUNTOS = r':'
 t_SUM   = r'\+'
 t_RESTA = r'-'
 t_MUL   = r'\*'
@@ -179,7 +182,7 @@ def t_ENTERO(t):
 
 # Error handling rule
 def t_error(t):
-     print("Illegal character '%s'" % t.value[0])
+     print("Error lexico, Illegal character '%s'" % t.value[0])
      t.lexer.skip(1)
 
 # Construir el analizador lexico 
@@ -191,6 +194,8 @@ lexer = lex.lex()
 '''
 
 precedence = (
+    
+    ('left', 'DOSPUNTOS'),
     ('left', 'AND', 'OR'),
     ('left', 'GREATER','LESSTHAN', 'GEQ', 'LEQ'),
     ('left', 'DEQUALS', 'DIFF'),
@@ -530,6 +535,8 @@ def p_expresion(t):
                  | expresion GEQ expresion
                  | expresion LEQ expresion
 
+                 | expresion DOSPUNTOS expresion
+
                  | IDENTIFICADOR
                  | IDENTIFICADOR  PUNTO  IDENTIFICADOR
                  | LPAR expresion RPAR
@@ -586,7 +593,11 @@ def p_expresion(t):
             #print (t[0].execute(None).value)   
         elif (t.slice[2].type =='OR'):
             t[0] = Logicas(t[1], t[3], OperadorLogico.OR, t.lineno(2), t.lexpos(2))
-            #print (t[0].execute(None).value) 
+            
+        elif (t.slice[2].type =='DOSPUNTOS'): #expresion DOSPUNTOS expresion
+            print("El usuario desea ejecutar un range")
+            t[0] = Range(t[1],t[3], t.lineno(2), t.lexpos(2))
+
         elif (t.slice[1].type == 'LPAR'): 
             t[0] = t[2]
         elif (t.slice[1].type =='IDENTIFICADOR'): # | IDENTIFICADOR  PUNTO  IDENTIFICADOR

@@ -25,7 +25,7 @@ class For(Instruccion):
             elif (tipo == Type.ARRAY):
                 pass 
             elif (tipo == Type.RANGE):
-                pass    
+                self.for_string(self.identificador, expresion_iterable.value, self.sentencias, ambito)
             else: 
                 print ("Error semantico en linea: {}, el valor a iterar debe ser (STRING, ARRAY o RANGE) y se obtuvo: {}".format(self.line, tipo.name))
                 Output.errorSintactico.append(
