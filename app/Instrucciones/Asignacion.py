@@ -26,14 +26,20 @@ class Asignacion(Instruccion):
 
         if resultado_expresion.type == self.verifyType or self.verifyType == Type.ANY: 
             
-            if resultado_expresion.type == Type.STRUCT: # var = circulo.color;
+            if resultado_expresion.type == Type.STRUCT: 
                 
                 ambito.save_Struct_As_Variable(self.nombre_variable, self.alcance, resultado_expresion.value) 
             else: 
                 ambito.saveVariable(self.nombre_variable, resultado_expresion.type, resultado_expresion.value, self.alcance)
             #print ("Imprimiendo el ambito", ambito.variables)
+        elif ( type( self.verifyType) == str and resultado_expresion.type == Type.STRUCT ):
+            
+            if self.verifyType == resultado_expresion.value.IdSimbolo: # struct.tipo == struct.tipo
+                ambito.save_Struct_As_Variable(self.nombre_variable, self.alcance, resultado_expresion.value) 
+            else: 
+                print ("Asignacion: Error semantico en linea: {}. El tipo de dato compuesto: '{}' no coincide con : '{}'".format(self.line, self.verifyType, resultado_expresion.value.IdSimbolo))
         else: 
-            print("Error semantico: Los tipos de datos de la variable '",self.nombre_variable,"' no coinciden.")
+            print("Error semantico en linea: {}. Los tipos de datos de la variable '{}' no coinciden.".format(self.line, self.nombre_variable))
             Output.errorSintactico.append(
                 Error("Los tipos de datos de la variable:{} no coinciden".format(self.nombre_variable), self.line, self.column)
             ) 

@@ -75,12 +75,6 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
             return False
 
 
-    #def inicializar_struct(self, ambito, struct_protipo): 
-    #    print("El struct si fue encontrado mi amigo")
-    #    return  
-
-
-
     def crear_variables_de_funcion (self, funcion_a_ejecutar, new_ambito):
 
         if len (funcion_a_ejecutar.parametros) == len (self.parametros): 
@@ -89,7 +83,7 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
             for (param_de_funcion, param_de_llamada) in zip(funcion_a_ejecutar.parametros, self.parametros):
                 
                 get_value_from_expresion:Return = param_de_llamada.execute(new_ambito.ambito_anterior)
-
+                
                 if param_de_funcion.tipo != Type.ANY: # Verificar el tipado, sino solo crear la variable en el ambito
 
                     #print ("al ejecutar la funcion que obtengo", param_de_funcion.tipo, get_value_from_expresion.type)
@@ -111,7 +105,11 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
                 
                 #print ("variables a crear:", param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value)
                 # Crear en el nuevo ambito, las variables temporales de la funcion, se pasan por valor 
-                new_ambito.saveVariable(param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value, 'local')
+                #print("Que tipos de variable voy a crear", get_value_from_expresion.type)
+                if get_value_from_expresion.type == Type.STRUCT: 
+                    new_ambito.save_Struct_As_Variable(param_de_funcion.id, 'local', get_value_from_expresion.value)
+                else: 
+                    new_ambito.saveVariable(param_de_funcion.id, get_value_from_expresion.type, get_value_from_expresion.value, 'local')
             
             return True # El flujo no se interrumpio, todo se genero correctamente
         else: 

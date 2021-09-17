@@ -21,7 +21,7 @@ class InicializarStruct():
 
         new_struct = simbolo(self.struct_prototipo.id, Type.STRUCT, None)
         new_struct.isMutable = self.struct_prototipo.isMutable # True or false
-
+        
         #Verificar que las variables del prototipo tengan el mismo tipo de dato que los parametros 
         if (len(self.struct_prototipo.lista_parametros) == len(self.parametros)):
             #Verificar que los parametros tengan el tipado correcto requerido por el struct
@@ -29,9 +29,20 @@ class InicializarStruct():
             for (parametro_del_prototipo, parametro_de_inicializacion) in zip(self.struct_prototipo.lista_parametros, self.parametros): 
                 #print("tipo de dato:",parametro_del_prototipo.tipo, parametro_del_prototipo.id)
                 param_value:Return = parametro_de_inicializacion.execute(ambito)
-                #print ("Que parametro tiene el prototitpo", parametro_del_prototipo.tipo)
+                print("Que clase esta involucrada:", type(parametro_de_inicializacion))
+                #print("Que parametros trae:", param_value.type, param_value.value)
+                print ("Que parametro tiene el prototitpo", parametro_del_prototipo.tipo)
                 if parametro_del_prototipo.tipo != Type.ANY: # Verificamos si tienen el mismo tipo
-                    if parametro_del_prototipo.tipo != param_value.type: 
+
+                    if ( type(parametro_del_prototipo.tipo) == str): # Es un struct
+                        
+                        struct_simbolo = param_value.value 
+                        print("Encontre un struct",parametro_del_prototipo.tipo, type(struct_simbolo) ) 
+                        if ( parametro_del_prototipo.tipo != struct_simbolo.IdSimbolo):
+                            #print ("Error semantico en linea: {}. El tipo compuesto '{}' no coincide con el enviado: '{}'".format(self.line), param_de_funcion.tipo, struct_simbolo.IdSimbolo)
+                            return None 
+
+                    elif parametro_del_prototipo.tipo != param_value.type: 
                         
                         print ("Error Semantico en la linea: {}, los tipos de datos para inicializar el struct no coinciden.".format(self.line))
                         Output.errorSintactico.append( Error(" Los tipos de datos para inicializar el struct no coinciden.", self.line, 0) ) 

@@ -53,8 +53,7 @@ for instruccion in ast:
 '''
     comandos faltantes: 
     pasos: 
-    
-    3. Gramatica.py linea 351 -> se removio tipo de dato identificador
+    3. Imprimir correctamente los structs..
     4. Agregar los arrays.. 
     * length
     * FOR Puede iterar sobre tipos iterables,  (range, arrays, strings)
