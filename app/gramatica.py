@@ -1,5 +1,6 @@
 
 
+from Expresiones.AccesoArrays import AccesoArrays
 from Expresiones.nativas.Length import Length
 from Instrucciones.nativas.Pop import Pop
 from Instrucciones.nativas.Push import Push
@@ -624,11 +625,17 @@ def p_expresion(t):
 def p_callArrays(t):
     '''callArrays : IDENTIFICADOR dimensiones
     '''
+    t[0] = AccesoArrays(t[1], t[2], t.lineno(1), t.lexpos(0), None)
 # dimensiones 
 def p_dimensiones(t):
     '''dimensiones : dimensiones BRACKETA expresion BRACKETC
                    | BRACKETA expresion BRACKETC
     '''
+    if len(t) == 5: 
+        t[1].append(  t[3]  ) 
+        t[0] = t[1]
+    else: 
+        t[0] = [ t[2] ] # creamos el arreglo de expresiones
 
 
 # primitivas
