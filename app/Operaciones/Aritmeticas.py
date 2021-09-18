@@ -74,7 +74,7 @@ class Aritmeticas(Expresion):
             resultado = operando1.value + operando2.value
             return Return (Type.STRING, resultado)
         else: 
-            print("Error: Ocurrio un error Sintactico, no se puede Sumar: {}", operando1.type, "Con", operando2.type, self.column)
+            print("Error semantico en linea: {}, no se puede Sumar: {} con {}.".format(self.line, operando1.type, "Con", operando2.type) )
             aritmeticError = Error('No se puede sumar {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
             Output.errorSintactico.append(aritmeticError)
         return None

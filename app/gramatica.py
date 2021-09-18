@@ -1,5 +1,7 @@
 
 
+from Expresiones.nativas.Length import Length
+from Instrucciones.nativas.Pop import Pop
 from Instrucciones.nativas.Push import Push
 from Primitivas.Array import Array
 from Expresiones.Range import Range
@@ -82,6 +84,7 @@ rw = {
     'typeof' : 'TYPEOF',
     'push!'  : 'PUSH',
     'pop!'   : 'POP',
+    'length' : 'LENGTH'
 }
 
 # Tokens 
@@ -509,7 +512,7 @@ def p_inst_nativa(t):
     '''inst_nativa : PRINT      LPAR lista_expresion RPAR SEMICOLON
                    | PRINTLN    LPAR lista_expresion RPAR SEMICOLON
                    | PUSH       LPAR IDENTIFICADOR COMMA expresion RPAR SEMICOLON
-                   | POP        LPAR IDENTIFICADOR COMMA expresion RPAR SEMICOLON
+                   | POP        LPAR IDENTIFICADOR                 RPAR SEMICOLON
     '''
     if t.slice[1].type == 'PRINT':
         t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, False)
@@ -518,7 +521,7 @@ def p_inst_nativa(t):
     if t.slice[1].type == 'PUSH':
         t[0] = Push(t[3],t[5], t.lineno(1), t.lexpos(0), None)
     if t.slice[1].type == 'POP':
-        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, True)
+        t[0] = Pop(t[3], t.lineno(1), t.lexpos(0), None)
 
 #expresion
 def p_expresion(t):
@@ -676,7 +679,8 @@ def p_nativas(t):
                | TRUNC     LPAR tipo_dato COMMA expresion RPAR
                | FLOATCAST LPAR expresion RPAR
                | STRINGCAST LPAR expresion RPAR
-               | TYPEOF    LPAR expresion RPAR         
+               | TYPEOF    LPAR expresion RPAR   
+               | LENGTH    LPAR expresion RPAR
     '''
     if len(t) == 5: # UPPERCASE, LOWERCASE, FLOATCAST, STRINGCAST, TYPEOF 
         if t.slice[1].type == 'UPPERCASE':
@@ -702,10 +706,12 @@ def p_nativas(t):
             t[0] = Trigonometricas(t[3], t[1], t.lineno(1), t.lexpos(0))
         elif t.slice[1].type == 'LOG10': 
             t[0] = LogaritmoBaseDiez(t[3], t.lineno(1), t.lexpos(0)) 
-            #print(t[0].execute(None).value) 
         elif t.slice[1].type == 'RAIZ': 
             t[0] = Raiz(t[3], t.lineno(1), t.lexpos(0)) 
-            #print(t[0].execute(None).value) 
+        elif t.slice[1].type == 'LENGTH': 
+            print("Desean saber la longitud de cadenas o arrays ")
+            t[0] = Length(t[3], t.lineno(1), t.lexpos(0), None)
+            
     elif len(t) == 7:
         if t.slice[1].type == 'PARSE':
             t[0] = Parse(t[3], t[5], t.lineno(1), t.lexpos(0))

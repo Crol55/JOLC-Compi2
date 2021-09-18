@@ -53,8 +53,8 @@ for instruccion in ast:
 '''
     comandos faltantes: 
     4. Agregar los arrays.. 
-    * length
-    * FOR Puede iterar sobre tipos iterables,  (range, arrays, strings)
-    * Operaciones con arreglos
+        * length(), POP!()
+        * Operaciones con arreglos
+        * FOR Puede iterar sobre tipos iterables -> solo falta arrays
     5. verificar si el typeof tiene el funcionamiento deseado
 '''
