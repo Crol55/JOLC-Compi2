@@ -52,9 +52,9 @@ for instruccion in ast:
         
 '''
     comandos faltantes: 
-    3. Imprimir correctamente los structs..
     4. Agregar los arrays.. 
     * length
     * FOR Puede iterar sobre tipos iterables,  (range, arrays, strings)
     * Operaciones con arreglos
+    5. verificar si el typeof tiene el funcionamiento deseado
 '''

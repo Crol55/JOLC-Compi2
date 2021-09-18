@@ -1,5 +1,7 @@
 
 
+from Instrucciones.nativas.Push import Push
+from Primitivas.Array import Array
 from Expresiones.Range import Range
 from Instrucciones.Loops.For import For
 from Instrucciones.Structs.AsignacionStruct import AsignacionStruct
@@ -513,6 +515,10 @@ def p_inst_nativa(t):
         t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, False)
     if t.slice[1].type == 'PRINTLN':
         t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, True)
+    if t.slice[1].type == 'PUSH':
+        t[0] = Push(t[3],t[5], t.lineno(1), t.lexpos(0), None)
+    if t.slice[1].type == 'POP':
+        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, True)
 
 #expresion
 def p_expresion(t):
@@ -651,9 +657,9 @@ def p_primitivas(t):
     elif t.slice[1].type == 'NOTHING':
         t[0] = Primitivo(None, Type.NULL, t.lineno(1), t.lexpos(0))
     elif len(t) == 3:
-        t[0] = Primitivo([], Type.ARRAY, t.lineno(1), t.lexpos(0))
+        t[0] = Array([], t.lineno(1), t.lexpos(0)) #   | BRACKETA BRACKETC
     else: 
-        t[0] = Primitivo([], Type.ARRAY, t.lineno(1), t.lexpos(0))
+        t[0] = Array(t[2], t.lineno(1), t.lexpos(0)) # | BRACKETA items BRACKETC
         
 # nativas
 def p_nativas(t):
@@ -717,8 +723,15 @@ def p_items(t):
     '''items : items COMMA expresion
              | expresion
     '''
+    if len(t) == 4: # produccion 1
+        t[1].append( t[3] )
+        t[0] = t[1]
+    else: # produccion 2
+        t[0] = [ t[1] ] 
+    
+# Error
 def p_error(t):
-    print("Syntax error in input!")
+    print("Error sintactico en la entrada!")
     print("Linea: ",t.lexer.lineno)
     print(t)
     

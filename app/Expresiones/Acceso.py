@@ -23,7 +23,8 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
                 #print ("Acceso: WHAT?", valor_variable.atributos)
                 return Return(Type.STRUCT, valor_variable) 
             else: 
-                return Return(valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
+                #print ("El paso sera por parametro", valor_variable)
+                return Return(valor_variable.tipoSimbolo, valor_variable.valorSimbolo) # Al usar Return () indirectamente utilizamos paso por 'parametros' y no por referencia
         else: 
             print ("Error semantico en linea:{}, La variable:'{}' no existe".format( self.line, self.identificador))
             Output.errorSintactico.append(

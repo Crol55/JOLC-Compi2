@@ -34,11 +34,11 @@ class For(Instruccion):
         return 
 
 
-    def for_string(self, identificador, cadena, sentencias:Sentencia, ambito): 
+    def for_string(self, identificador, expresion, sentencias:Sentencia, ambito): 
         
         newAmbito = Ambito(ambito) # Creamos el ambito del for
 
-        for indice in cadena: 
+        for indice in expresion: 
             
             newAmbito.saveVariable(identificador, Type.STRING, indice, 'local')
             #sentencias.execute(newAmbito)
