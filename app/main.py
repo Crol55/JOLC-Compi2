@@ -3,7 +3,7 @@ from gramatica import interpretar
 from Tabla_Simbolos.Ambito import Ambito
 from Nativas.Type import Type
 from Export import Output
-
+import sys 
 
 
 app = Flask(__name__)
@@ -27,6 +27,7 @@ def analizar():
     code = request.json['input']
     print("Me estoy ejecutando chato", code)
 
+    sys.setrecursionlimit(2500)
     newAmbitoGlobal = Ambito(None) # Este funciona como el ambito GLOBAL
     ast = interpretar(code)
 
@@ -91,5 +92,5 @@ def get_report():
 
 
 if __name__ == "__main__":
-    #app.run()
-    app.run( debug=True, port=4000)
+    app.run()
+    #app.run( debug=True, port=4000)

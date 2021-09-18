@@ -4,9 +4,9 @@ from Nativas.Type import Type
 from gramatica import interpretar
 from Tabla_Simbolos.Ambito import Ambito 
 from Export import Output
-#import sys 
+import sys 
 #
-#sys.setrecursionlimit(2500)
+sys.setrecursionlimit(2500)
 #print(sys.getrecursionlimit())
 
 # leer la entrada 

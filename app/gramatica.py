@@ -604,7 +604,6 @@ def p_expresion(t):
             t[0] = Logicas(t[1], t[3], OperadorLogico.OR, t.lineno(2), t.lexpos(2))
             
         elif (t.slice[2].type =='DOSPUNTOS'): #expresion DOSPUNTOS expresion
-            print("El usuario desea ejecutar un range")
             t[0] = Range(t[1],t[3], t.lineno(2), t.lexpos(2))
 
         elif (t.slice[1].type == 'LPAR'): 
@@ -630,6 +629,7 @@ def p_dimensiones(t):
     '''dimensiones : dimensiones BRACKETA expresion BRACKETC
                    | BRACKETA expresion BRACKETC
     '''
+
 
 # primitivas
 def p_primitivas(t):
@@ -709,7 +709,6 @@ def p_nativas(t):
         elif t.slice[1].type == 'RAIZ': 
             t[0] = Raiz(t[3], t.lineno(1), t.lexpos(0)) 
         elif t.slice[1].type == 'LENGTH': 
-            print("Desean saber la longitud de cadenas o arrays ")
             t[0] = Length(t[3], t.lineno(1), t.lexpos(0), None)
             
     elif len(t) == 7:
