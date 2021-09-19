@@ -27,10 +27,10 @@ class Print(Instruccion):
             elif resultado.type == Type.ARRAY: # Debemos presentar la informacion de una manera leible al usuario
                     string_concat += self.normalizar_impresion_de_arrays(resultado.value)
                     #print("Al terminar la normalizacion obtuve:", string_concat)
-            else:
-                if resultado.type == Type.NULL: #Para que imprima nothing en vez de None
-
-                    resultado.value = "nothing"
+                    
+            elif resultado.type == Type.NULL: #Para que imprima nothing en vez de None
+                string_concat += "nothing"
+            else: 
                 string_concat += str(resultado.value)
         
         # Printear los valores

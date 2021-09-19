@@ -50,8 +50,33 @@ class typeof(Expresion): # Se comporta como expresion, sin embargo no se puede o
         self.expresion = expresion
     
     def execute(self, ambito):
+        print("fijo ingreso no?")
         tipo_dato:Return = self.expresion.execute(ambito)
         #print ("testeo:", tipo_dato.type.name)
-        return Return(Type.tipo, tipo_dato.type.name)
+        #return Return(Type.tipo, tipo_dato.type.name)
+        return Return(Type.tipo, self.enmascarar_tipos_de_datos(tipo_dato.type))
 
 
+    def enmascarar_tipos_de_datos(self, tipo_dato): # Se enmascaran para presentarselos al usuario 
+        tipo_dato_enmascarado = "undefined"
+        if tipo_dato == Type.INT: 
+            tipo_dato_enmascarado = "Int64"
+        elif tipo_dato == Type.FLOAT: 
+            tipo_dato_enmascarado = "Float64" 
+        elif tipo_dato == Type.NULL: 
+            tipo_dato_enmascarado = "nothing"
+        elif tipo_dato == Type.BOOL: 
+            tipo_dato_enmascarado = "Bool"
+        elif tipo_dato == Type.ARRAY: 
+            tipo_dato_enmascarado = "Array"
+        elif tipo_dato == Type.STRING: 
+            tipo_dato_enmascarado = "String"
+        elif tipo_dato == Type.CHAR: 
+            tipo_dato_enmascarado = "Char"
+        elif tipo_dato == Type.tipo: 
+            tipo_dato_enmascarado = "Type"
+        elif tipo_dato == Type.STRUCT: 
+            tipo_dato_enmascarado = "Struct"
+        elif tipo_dato == Type.RANGE: 
+            tipo_dato_enmascarado = "Range"
+        return tipo_dato_enmascarado

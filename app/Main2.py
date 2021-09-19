@@ -52,9 +52,8 @@ for instruccion in ast:
         
 '''
     comandos faltantes: 
-    4. Agregar los arrays.. 
-        * length(), POP!()
-        * Operaciones con arreglos
-        * FOR Puede iterar sobre tipos iterables -> solo falta arrays
-    5. verificar si el typeof tiene el funcionamiento deseado
+    1. Agregar los arrays.. 
+        * FOR -> arreglar el tipo de dato en range y cadenas -> tienen el mismo
+    2. al imprimir un struct o un true adentro de un array -> muestra algo distinto
+    3. verificar si el typeof tiene el funcionamiento deseado
 '''

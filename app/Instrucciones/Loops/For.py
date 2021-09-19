@@ -16,14 +16,15 @@ class For(Instruccion):
         self.sentencias    = sentencias
 
     def execute(self, ambito):
-        print ("Desean ejecutar un mogoyudo for")
+        
         expresion_iterable  = self.expresion.execute(ambito)
         if (expresion_iterable != None ):
             tipo = expresion_iterable.type  
             if (tipo == Type.STRING): 
-                 self.for_string(self.identificador, expresion_iterable.value, self.sentencias, ambito)
+                self.for_string(self.identificador, expresion_iterable.value, self.sentencias, ambito)
             elif (tipo == Type.ARRAY):
-                pass 
+                print("SIUUUUUUUU no pense que fuera a llegar aqui la verdad")
+                self.for_arrays(self.identificador, expresion_iterable.value, self.sentencias, ambito)
             elif (tipo == Type.RANGE):
                 self.for_string(self.identificador, expresion_iterable.value, self.sentencias, ambito)
             else: 
@@ -65,8 +66,33 @@ class For(Instruccion):
             #print (indice, '-')
 
     
-    def for_arrays(): 
-        pass 
+    def for_arrays(self, identificador, expresion, sentencias:Sentencia, ambito): 
+        newAmbito = Ambito(ambito) # Creamos el ambito del for
+
+        for indice in expresion: 
+            
+            newAmbito.saveVariable(identificador, indice.type, indice.value, 'local')
+            #sentencias.execute(newAmbito)
+
+            # Verificar si el for tiene sentencias.
+            if self.sentencias != None:
+
+                ret_sentencias = sentencias.execute(newAmbito) # Clase Sentencia.py -> Si retorna algo distinto a None, hay que analizarlo
+                
+                if ret_sentencias != None: # Puede ser un error o (continue, break, return)
+                    #print("Una instruccion del while retorno algo?", ret_sentencias)
+                    if type(ret_sentencias) == bool: 
+                        if ret_sentencias == False: # Hubo un error con alguna instruccion 
+                            break
+                    elif type(ret_sentencias) == dict:  # RETURN 
+                        #print ("Se quiere retornar un valor", ret_sentencias['value'].value)
+                        return ret_sentencias['value']
+                    elif ret_sentencias.type == Type.BREAK: 
+                        #print("se detecto un break")
+                        break
+                    elif ret_sentencias.type == Type.CONTINUE: # Como 'sentencia.py' se detuvo al encontrar 'continue', lo de abajo por ende ya no se ejecuto
+                        #print("Se detecto un continue!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                        pass
 
     
     def for_range(): 
