@@ -1,5 +1,6 @@
 
 
+from Instrucciones.AsignacionArray import AsignacionArray
 from Expresiones.AccesoArrays import AccesoArrays
 from Expresiones.nativas.Length import Length
 from Instrucciones.nativas.Pop import Pop
@@ -337,9 +338,14 @@ def p_asignacion(t): # La que tiene SUFIX -> Es una declaracion, por lo que no r
                   |              IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
                   | tipoVariable IDENTIFICADOR EQUALS expresion                 SEMICOLON
                   | tipoVariable IDENTIFICADOR EQUALS expresion SUFIX tipo_dato SEMICOLON
+                  | IDENTIFICADOR dimensiones EQUALS expresion SEMICOLON
     '''
     if len(t) == 5:    t[0] = Asignacion('', Type.ANY, t[1], t[3], t.lineno(1), t.lexpos(0), None) # Prod -> 1
-    elif len(t) == 6:  t[0] = Asignacion(t[1]   , Type.ANY, t[2], t[4], t.lineno(1), t.lexpos(0), None)
+    elif len(t) == 6:
+        if t.slice[1].type == 'tipoVariable':  # prod -> 3
+            t[0] = Asignacion(t[1]   , Type.ANY, t[2], t[4], t.lineno(1), t.lexpos(0), None)
+        else: # prod -> 5
+            t[0] = AsignacionArray(t[1], t[2], t[4], Type.ANY,t.lineno(1), t.lexpos(0), None)
     elif len(t) == 7:  t[0] = Asignacion('', t[5]    , t[1], t[3], t.lineno(1), t.lexpos(0), None)
     elif len(t) == 8:  t[0] = Asignacion(t[1],    t[6]    , t[2], t[4], t.lineno(1), t.lexpos(0), None)
         
