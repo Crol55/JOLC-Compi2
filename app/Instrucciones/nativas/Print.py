@@ -1,4 +1,5 @@
 
+from typing import List
 from Tabla_Simbolos.simbolo import simbolo
 from Nativas.Type import Type
 from Abstractas.Instruccion import Instruccion
@@ -21,7 +22,11 @@ class Print(Instruccion):
             resultado = expresion.execute(ambito)
 
             if (resultado.type == Type.STRUCT):  
-                string_concat += self.generar_estructura_para_imprimir_structs(resultado.value)
+                string_concat += self.mejorar_presentacion_para_imprimir_structs(resultado.value)
+
+            elif resultado.type == Type.ARRAY: # Debemos presentar la informacion de una manera leible al usuario
+                    string_concat += self.normalizar_impresion_de_arrays(resultado.value)
+                    #print("Al terminar la normalizacion obtuve:", string_concat)
             else:
                 if resultado.type == Type.NULL: #Para que imprima nothing en vez de None
 
@@ -39,7 +44,7 @@ class Print(Instruccion):
         return
 
 
-    def generar_estructura_para_imprimir_structs(self, struct:simbolo): # la impresion del struct tiene una estructura definida (ej. Actor ("calors", 27))
+    def mejorar_presentacion_para_imprimir_structs(self, struct:simbolo): # la impresion del struct tiene una estructura definida (ej. Actor ("calors", 27))
         #print ("Que tipo de variable es ==========================", struct.type)
         string_struct_structure = str (struct.IdSimbolo) + "("
         conta_commas = 0
@@ -59,5 +64,27 @@ class Print(Instruccion):
         string_struct_structure += ")"
 
         return string_struct_structure
+
+
+    def normalizar_impresion_de_arrays(self, array:List): 
+        
+        valoresNormalizados = "[" 
+        conta_comas = 0
+
+        for dato_de_array in array: 
+            #print ("Que carajo hay aqui?....", dato_de_array)
+            if conta_comas > 0: 
+                valoresNormalizados += ", "
+
+            if dato_de_array.type == Type.ARRAY: 
+                valoresNormalizados += self.normalizar_impresion_de_arrays(dato_de_array.value)
+            else:  
+                valoresNormalizados += str(dato_de_array.value)
+            
+            conta_comas += 1
+
+        valoresNormalizados += "]"
+        return valoresNormalizados
+
         
         
