@@ -561,7 +561,6 @@ def p_expresion(t):
                  | callFunc
                  | callArrays
     '''
-    #print ((t.slice)) 
     if len(t) == 3:  # NOT, 
         if t.slice[1].type == 'NOT': 
             t[0] = Not( t[2], t.lineno(1), t.lexpos(0))

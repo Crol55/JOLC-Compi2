@@ -35,7 +35,7 @@ class AccesoArrays(Expresion):
                     # sacar el valor del array (debe ser forzosamente un array)
                     if variable_retorno.type == Type.ARRAY:
 
-                        variable_retorno = variable_retorno.value[val_expresion.value]
+                        variable_retorno = variable_retorno.value[val_expresion.value - 1]
                     else: 
                         print ("Error semantico en linea: {}. La dimension que ingreso '{}' no existe en el arreglo".format(self.line, val_expresion.value))
                         return None

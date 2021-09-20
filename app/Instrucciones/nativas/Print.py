@@ -12,7 +12,7 @@ class Print(Instruccion):
         Instruccion.__init__(self, line, column)
         self.__arreglo_expresiones__ = expresiones
         self.__newLine__ = newLine
-        
+
 
     def execute(self, ambito):
 
@@ -27,8 +27,11 @@ class Print(Instruccion):
 
             elif resultado.type == Type.ARRAY: # Debemos presentar la informacion de una manera leible al usuario
                     string_concat += self.normalizar_impresion_de_arrays(resultado.value)
-                    #print("Al terminar la normalizacion obtuve:", string_concat)
                     
+            elif resultado.type == Type.BOOL: 
+                bool_to_string = str(resultado.value)
+                string_concat += bool_to_string.lower()      
+
             elif resultado.type == Type.NULL: #Para que imprima nothing en vez de None
                 string_concat += "nothing"
             else: 
@@ -58,12 +61,15 @@ class Print(Instruccion):
             if (val_atributo.tipoSimbolo == Type.STRUCT):
 
                 string_struct_structure += self.generar_estructura_para_imprimir_structs(val_atributo.valorSimbolo)
+            
             elif val_atributo.tipoSimbolo == Type.ARRAY: 
                 #print ("Aqui tiene que estar", val_atributo.valorSimbolo)
                 string_struct_structure += self.normalizar_impresion_de_arrays(val_atributo.valorSimbolo)
+            
             elif val_atributo.tipoSimbolo == Type.BOOL: 
                 bool_to_string = str(val_atributo.valorSimbolo)
                 string_struct_structure += bool_to_string.lower()
+            
             else:
 
                 string_struct_structure += str(val_atributo.valorSimbolo)

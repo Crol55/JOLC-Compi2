@@ -42,7 +42,6 @@ class While(Instruccion):
                             #print("se detecto un break")
                             break
                         elif ret_sentencias.type == Type.CONTINUE: # Como 'sentencia.py' se detuvo al encontrar 'continue', lo de abajo por ende ya no se ejecuto
-                            #print("Se detecto un continue")
                             pass
 
                 # Verificar una vez mas la condicion del while, si no es Booleano, salirse
