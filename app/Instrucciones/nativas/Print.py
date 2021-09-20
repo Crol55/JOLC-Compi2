@@ -12,16 +12,17 @@ class Print(Instruccion):
         Instruccion.__init__(self, line, column)
         self.__arreglo_expresiones__ = expresiones
         self.__newLine__ = newLine
+        
 
     def execute(self, ambito):
 
         string_concat = ""
-        for expresion in self.__arreglo_expresiones__:
-            
+        for expresion in self.__arreglo_expresiones__: 
             
             resultado = expresion.execute(ambito)
 
             if (resultado.type == Type.STRUCT):  
+                #print ("DEBERIA ENTRAR 2 VECES !!!!!!!!!!!!!!!!!!!!!!", len(resultado.value.atributos))
                 string_concat += self.mejorar_presentacion_para_imprimir_structs(resultado.value)
 
             elif resultado.type == Type.ARRAY: # Debemos presentar la informacion de una manera leible al usuario
@@ -53,10 +54,16 @@ class Print(Instruccion):
             #print ("wujuuuu", type(val_atributo))
             if conta_commas > 0: 
                 string_struct_structure += ", "
-            #print ("Sera struct?:", val_atributo.tipoSimbolo)
+            
             if (val_atributo.tipoSimbolo == Type.STRUCT):
 
                 string_struct_structure += self.generar_estructura_para_imprimir_structs(val_atributo.valorSimbolo)
+            elif val_atributo.tipoSimbolo == Type.ARRAY: 
+                #print ("Aqui tiene que estar", val_atributo.valorSimbolo)
+                string_struct_structure += self.normalizar_impresion_de_arrays(val_atributo.valorSimbolo)
+            elif val_atributo.tipoSimbolo == Type.BOOL: 
+                bool_to_string = str(val_atributo.valorSimbolo)
+                string_struct_structure += bool_to_string.lower()
             else:
 
                 string_struct_structure += str(val_atributo.valorSimbolo)
@@ -70,15 +77,20 @@ class Print(Instruccion):
         
         valoresNormalizados = "[" 
         conta_comas = 0
-
+        #print("que longitud tiene ----------------->", len(array))
         for dato_de_array in array: 
-            #print ("Que carajo hay aqui?....", dato_de_array)
+           
             if conta_comas > 0: 
                 valoresNormalizados += ", "
 
             if dato_de_array.type == Type.ARRAY: 
                 valoresNormalizados += self.normalizar_impresion_de_arrays(dato_de_array.value)
-            else:  
+            elif dato_de_array.type == Type.BOOL: 
+                bool_to_string = str(dato_de_array.value)
+                valoresNormalizados += bool_to_string.lower()
+            elif dato_de_array.type == Type.STRUCT: 
+                valoresNormalizados += self.mejorar_presentacion_para_imprimir_structs(dato_de_array.value)
+            else:
                 valoresNormalizados += str(dato_de_array.value)
             
             conta_comas += 1

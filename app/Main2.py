@@ -52,8 +52,5 @@ for instruccion in ast:
         
 '''
     comandos faltantes: 
-    1. Agregar los arrays.. 
-        * FOR -> arreglar el tipo de dato en range y cadenas -> tienen el mismo
     2. al imprimir un struct o un true adentro de un array -> muestra algo distinto
-    3. verificar si el typeof tiene el funcionamiento deseado
 '''

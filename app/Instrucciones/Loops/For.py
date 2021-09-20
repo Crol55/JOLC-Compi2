@@ -1,4 +1,5 @@
 
+from Nativas.Return import Return
 from ..Condicional.Sentencia import Sentencia
 from Nativas.Type import Type
 from Abstractas.Instruccion import Instruccion
@@ -20,13 +21,13 @@ class For(Instruccion):
         expresion_iterable  = self.expresion.execute(ambito)
         if (expresion_iterable != None ):
             tipo = expresion_iterable.type  
-            if (tipo == Type.STRING): 
-                self.for_string(self.identificador, expresion_iterable.value, self.sentencias, ambito)
+            if (tipo == Type.STRING or tipo == Type.RANGE): 
+                self.for_generico(self.identificador, expresion_iterable, self.sentencias, ambito)
             elif (tipo == Type.ARRAY):
-                print("SIUUUUUUUU no pense que fuera a llegar aqui la verdad")
+                #print("SIUUUUUUUU no pense que fuera a llegar aqui la verdad")
                 self.for_arrays(self.identificador, expresion_iterable.value, self.sentencias, ambito)
-            elif (tipo == Type.RANGE):
-                self.for_string(self.identificador, expresion_iterable.value, self.sentencias, ambito)
+            #elif (tipo == Type.RANGE):
+            #    self.for_string(self.identificador, expresion_iterable.value, self.sentencias, ambito)
             else: 
                 print ("Error semantico en linea: {}, el valor a iterar debe ser (STRING, ARRAY o RANGE) y se obtuvo: {}".format(self.line, tipo.name))
                 Output.errorSintactico.append(
@@ -35,13 +36,18 @@ class For(Instruccion):
         return 
 
 
-    def for_string(self, identificador, expresion, sentencias:Sentencia, ambito): 
+    def for_generico(self, identificador, expresion_iterable:Return, sentencias:Sentencia, ambito): 
         
         newAmbito = Ambito(ambito) # Creamos el ambito del for
-
-        for indice in expresion: 
+        tipo = None 
+        if expresion_iterable.type == Type.STRING: 
+            tipo = Type.STRING 
+        elif expresion_iterable.type == Type.RANGE:
+            tipo = Type.INT
+        
+        for indice in expresion_iterable.value: 
             
-            newAmbito.saveVariable(identificador, Type.STRING, indice, 'local')
+            newAmbito.saveVariable(identificador, tipo, indice, 'local')
             #sentencias.execute(newAmbito)
 
             # Verificar si el for tiene sentencias.
@@ -70,8 +76,10 @@ class For(Instruccion):
         newAmbito = Ambito(ambito) # Creamos el ambito del for
 
         for indice in expresion: 
-            
-            newAmbito.saveVariable(identificador, indice.type, indice.value, 'local')
+            if indice.type == Type.STRUCT: 
+                newAmbito.save_Struct_As_Variable(identificador, 'local', indice.value)
+            else: 
+                newAmbito.saveVariable(identificador, indice.type, indice.value, 'local')
             #sentencias.execute(newAmbito)
 
             # Verificar si el for tiene sentencias.

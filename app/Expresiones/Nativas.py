@@ -50,7 +50,7 @@ class typeof(Expresion): # Se comporta como expresion, sin embargo no se puede o
         self.expresion = expresion
     
     def execute(self, ambito):
-        print("fijo ingreso no?")
+        #print("fijo ingreso no?")
         tipo_dato:Return = self.expresion.execute(ambito)
         #print ("testeo:", tipo_dato.type.name)
         #return Return(Type.tipo, tipo_dato.type.name)
