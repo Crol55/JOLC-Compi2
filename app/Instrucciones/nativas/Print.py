@@ -20,6 +20,8 @@ class Print(Instruccion):
         for expresion in self.__arreglo_expresiones__: 
             
             resultado = expresion.execute(ambito)
+            if resultado == None: # Capturamos el error y no imprimimos
+                return None 
 
             if (resultado.type == Type.STRUCT):  
                 #print ("DEBERIA ENTRAR 2 VECES !!!!!!!!!!!!!!!!!!!!!!", len(resultado.value.atributos))
