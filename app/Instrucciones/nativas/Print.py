@@ -57,7 +57,7 @@ class Print(Instruccion):
             
             if (val_atributo.tipoSimbolo == Type.STRUCT):
 
-                string_struct_structure += self.generar_estructura_para_imprimir_structs(val_atributo.valorSimbolo)
+                string_struct_structure += self.mejorar_presentacion_para_imprimir_structs(val_atributo.valorSimbolo)
             elif val_atributo.tipoSimbolo == Type.ARRAY: 
                 #print ("Aqui tiene que estar", val_atributo.valorSimbolo)
                 string_struct_structure += self.normalizar_impresion_de_arrays(val_atributo.valorSimbolo)
