@@ -40,27 +40,51 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
             ) 
         return  
 
+
+    def testing (self, struct:simbolo): 
+        print ("analizaremos lo que se nos envio")
+        print(struct.IdSimbolo)
+        print("--", struct.atributos)
+        actor:simbolo = struct.atributos['actor']
+        print(actor.IdSimbolo)
+        print("---", actor.atributos)
+
+
+
     def execute(self, ambito):
+        
         print("Aqui viene el momento decisivo", self.lista_idAtributos)
         struct_temp:simbolo = ambito.getVariable(self.identificador)
+        if (struct_temp.IdSimbolo == 'Contrato'):
+            self.testing(struct_temp)
+            return None
 
-        if (struct_temp != None) and (struct_temp.tipoSimbolo == Type.STRUCT):  # creo que esta linea se puede quitar XD
-            # Iterar la lista (ej, raton.cola.color.edad)
-            for nombre_atributo in self.lista_idAtributos:
-                
-                #como esta en un ciclo hay que verificar que no sea None y siempre sea un struct
-                if (struct_temp != None) and (struct_temp.tipoSimbolo == Type.STRUCT):
-                    # Buscar adentro del struct la variable -> puede devolver otro struct o una variable normal
-                    if nombre_atributo in struct_temp.atributos:
-                        
-                        struct_temp = struct_temp.atributos[nombre_atributo] # Actualizamos struct_temp
-                    else: 
-                        print ("Error semantico en linea: {}, '{}' no es un atributo del struct '{}'".format(self.line, nombre_atributo, struct_temp.IdSimbolo)) 
-                        return None
+        #if (struct_temp != None) and (struct_temp.tipoSimbolo == Type.STRUCT):  # creo que esta linea se puede quitar XD
+        
+        for nombre_atributo in self.lista_idAtributos: # Iterar la lista (ej, raton.cola.color.edad)
+            print ("Cuantas veces baja antes de fallar?", struct_temp.IdSimbolo)
+            #como esta en un ciclo hay que verificar que no sea None y siempre sea un struct
+            if (struct_temp != None) and (struct_temp.tipoSimbolo == Type.STRUCT):
+                # Buscar adentro del struct la variable -> puede devolver otro struct o una variable normal
+                if nombre_atributo in struct_temp.atributos:
+                    print("puta madre", struct_temp.atributos)
+                    struct_temp = struct_temp.atributos[nombre_atributo] # Actualizamos struct_temp
+                    print ("creo que deberia decir ...", struct_temp.IdSimbolo)
                 else: 
-                    print ("Error semantico en linea: {}. '{}' no es un struct".format(self.line, struct_temp.IdSimbolo))
+                    print ("===========luego de cambiarlo aqui abajo podrias esperar un errror =======================================")
+                    print ("Error semantico en linea: {}, '{}' no es un atributo del struct '{}'".format(self.line, nombre_atributo, struct_temp.IdSimbolo)) 
+                    
+                    print (struct_temp.valorSimbolo.atributos)
                     return None
-            # Si llega aqui todo esta correcto
+            else: 
+                print ("Error semantico en linea: {}. '{}' no es un struct".format(self.line, struct_temp.IdSimbolo))
+                return None
+        # Si llega aqui todo esta correcto
+        #print ("deberia estar llegando hasta aqui?", struct_temp.tipoSimbolo)
+        if struct_temp.tipoSimbolo == Type.STRUCT:
+            print ("creo que aqui esta el error", struct_temp.atributos, " que sera?", type(struct_temp.atributos)) 
+            return Return(struct_temp.tipoSimbolo, struct_temp.atributos)
+        else: 
             return Return(struct_temp.tipoSimbolo, struct_temp.valorSimbolo)
-        return 
+        #return 
         
