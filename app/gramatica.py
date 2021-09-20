@@ -554,7 +554,7 @@ def p_expresion(t):
                  | expresion DOSPUNTOS expresion
 
                  | IDENTIFICADOR
-                 | IDENTIFICADOR  PUNTO  IDENTIFICADOR
+                 | IDENTIFICADOR  operador_punto
                  | LPAR expresion RPAR
                  | primitivas
                  | nativas
@@ -565,10 +565,13 @@ def p_expresion(t):
     if len(t) == 3:  # NOT, 
         if t.slice[1].type == 'NOT': 
             t[0] = Not( t[2], t.lineno(1), t.lexpos(0))
-            #print (t[0].execute(None).value)
+            
         elif t.slice[1].type == 'RESTA': # Uminus
             t[0] = Aritmeticas(Numerica(0, Type.INT,t.lineno(1), t.lexpos(0)), Operador.MINUS, t[2], t.lineno(1), t.lexpos(0))
             #print (t[0].execute(None).value)
+        elif (t.slice[1].type =='IDENTIFICADOR'): # | IDENTIFICADOR  operador_punto
+            #print ("Quiere acceder a una variable del struct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            t[0] = AccesoStruct(t[1], t[2][0], t.lineno(1), t.lexpos(0), None)
 
     elif len(t) == 4: # SUM, DIV, MINUS
         if (t.slice[2].type =='SUM'): t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(2), t.lexpos(2))    
@@ -615,9 +618,6 @@ def p_expresion(t):
 
         elif (t.slice[1].type == 'LPAR'): 
             t[0] = t[2]
-        elif (t.slice[1].type =='IDENTIFICADOR'): # | IDENTIFICADOR  PUNTO  IDENTIFICADOR
-            #print ("Quiere acceder a una variable del struct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            t[0] = AccesoStruct(t[1], t[3], t.lineno(1), t.lexpos(0), None)
             
     elif len(t) == 2: # primitivas, nativas, callFunc, callArrays, IDENTIFICADOR
         if t.slice[1].type == 'IDENTIFICADOR':
@@ -625,7 +625,17 @@ def p_expresion(t):
         else: 
             t[0] = t[1]
             
-    
+
+# Operador_punto 
+def p_operador_punto(t):
+    '''operador_punto : operador_punto PUNTO  IDENTIFICADOR
+                      | PUNTO  IDENTIFICADOR
+    ''' 
+    if len(t) == 4: 
+        t[1].append( t[3] )
+        t[0] = t[1]  
+    else: 
+        t[0] = [ t[2] ] # arreglo de indentificadores    
     
 # callArrays 
 def p_callArrays(t):

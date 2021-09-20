@@ -54,3 +54,6 @@ end;
 println("Se debió imprimir");
 # Prueba, true debe aparecer en minuscula
 println(true);
+
+# Testeando acceso por operador punto
+println(actor1.edad.val.val);
