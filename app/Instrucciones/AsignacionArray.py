@@ -31,7 +31,8 @@ class AsignacionArray(Instruccion):
                         return None # Nos salimos de la funcion, porque esto es un error
                     if array_auxiliar.type == Type.ARRAY:
                         # Nos valemos de parametro por referencia que utiliza python para facilitar la actualizacion de un array
-                        array_auxiliar = array_auxiliar.value[val_expresion.value] 
+                        indice = val_expresion.value - 1
+                        array_auxiliar = array_auxiliar.value[indice] 
                     else: 
 
                         print ("Error semantico en linea: {}. La dimension que ingreso '{}' no existe en el arreglo".format(self.line, val_expresion.value))

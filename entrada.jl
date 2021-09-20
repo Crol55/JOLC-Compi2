@@ -25,3 +25,8 @@ println(contract);
 
 nuevita = algo(contract);
 println(nuevita);
+# Prueba para arrays
+array = [10,20,[true], "hola"];
+println(array[4]);
+array [4] = [10];
+println(array[4]);
