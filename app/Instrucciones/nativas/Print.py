@@ -22,7 +22,7 @@ class Print(Instruccion):
             resultado = expresion.execute(ambito)
 
             if (resultado.type == Type.STRUCT):  
-                #print ("DEBERIA ENTRAR 2 VECES !!!!!!!!!!!!!!!!!!!!!!", len(resultado.value.atributos))
+                print ("DEBERIA ENTRAR 2 VECES !!!!!!!!!!!!!!!!!!!!!!", len(resultado.value.atributos))
                 string_concat += self.mejorar_presentacion_para_imprimir_structs(resultado.value)
 
             elif resultado.type == Type.ARRAY: # Debemos presentar la informacion de una manera leible al usuario
@@ -49,18 +49,18 @@ class Print(Instruccion):
 
 
     def mejorar_presentacion_para_imprimir_structs(self, struct:simbolo): # la impresion del struct tiene una estructura definida (ej. Actor ("calors", 27))
-        #print ("Que tipo de variable es ==========================", struct.type)
+        print ("Hasta aqui todo bien no?")
         string_struct_structure = str (struct.IdSimbolo) + "("
         conta_commas = 0
-
+        print (len(struct.atributos))
         for val_atributo in struct.atributos.values(): 
             #print ("wujuuuu", type(val_atributo))
             if conta_commas > 0: 
                 string_struct_structure += ", "
             
             if (val_atributo.tipoSimbolo == Type.STRUCT):
-
-                string_struct_structure += self.generar_estructura_para_imprimir_structs(val_atributo.valorSimbolo)
+                
+                string_struct_structure += self.mejorar_presentacion_para_imprimir_structs(val_atributo)
             
             elif val_atributo.tipoSimbolo == Type.ARRAY: 
                 #print ("Aqui tiene que estar", val_atributo.valorSimbolo)

@@ -1,3 +1,5 @@
+from Nativas.Type import Type
+from typing import List
 from Tabla_Simbolos.simbolo import simbolo
 from Nativas.Return import Return
 from Abstractas.Expresion import Expresion
@@ -7,18 +9,42 @@ from Export import Output
 
 class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
 
-    def __init__(self,identificador:str, id_atributo:str, line, column, node):
+    def __init__(self,identificador:str, lista_id_atributos:List, line, column, node):
         Expresion.__init__(self, line, column)
         self.identificador = identificador
-        self.id_atributo = id_atributo #Acceso a variables del struct
-
+        #self.id_atributo = lista_id_atributos[0] #Acceso a variables del struct
+        self.lista_idAtributo = lista_id_atributos
+        
 
     def execute(self, ambito):
         
         #print ("En que ambito estoy?", ambito.variables)
         #print ("SIUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", self.identificador, self.id_atributo)
+        #id_del_struct = self.identificador
         struct:simbolo = ambito.getVariable(self.identificador)
-        #print ("SIUUUUU", len (struct.atributos) )
+
+        if (struct != None) and (struct.tipoSimbolo == Type.STRUCT): 
+
+            for idAtributo in self.lista_idAtributo: # aqui fijo entra almenos 1 vez..
+                
+                if struct != None: # verificar que este
+                    # Buscar adentro del struct el atributo que deseamos...
+                    if idAtributo in struct.atributos: 
+
+                        atributo_simbolo:simbolo = struct.atributos[idAtributo]
+                        #print ("Solo entro una maldita vez", atributo_simbolo.atributos)
+                        struct = atributo_simbolo  #actualizamos 
+            # El resultado de la busqueda puede ser un struct o un valor puntual
+            #print ("Que tipe extraje?", struct.tipoSimbolo)
+            if struct.tipoSimbolo == Type.STRUCT: 
+                return Return(struct.tipoSimbolo, struct) #retorno el struct
+            print("ALGUNA VEZ LLEGO ACA ????????????????????????????????")
+            return Return(struct.tipoSimbolo, struct.valorSimbolo) #retorno un valor puntual
+
+
+        return 
+        struct:simbolo = ambito.getVariable(self.identificador)
+        
         if struct != None: 
             # Buscar los atributos adentro del struct
             if self.id_atributo in struct.atributos: 

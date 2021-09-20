@@ -1,7 +1,7 @@
 
 # Esta clase es una clase normal, no hereda de instruccion (Y unicamente es llamada por 'CallFunction.py')
 # Esta clase utiliza la clase 'simbolo.py' para crear solo la estructura del struct, y se devuelve, y debe retornar el tipo de dato y el simbolo
-from types import new_class
+
 from Tabla_Simbolos.simbolo import simbolo
 from Nativas.Return import Return
 from Nativas.Type import Type
@@ -28,20 +28,32 @@ class InicializarStruct():
             # Si el tipado es any, no es necesario verificar
             for (parametro_del_prototipo, parametro_de_inicializacion) in zip(self.struct_prototipo.lista_parametros, self.parametros): 
                 #print("tipo de dato:",parametro_del_prototipo.tipo, parametro_del_prototipo.id)
-                param_value:Return = parametro_de_inicializacion.execute(ambito)
                 print("Que clase esta involucrada:", type(parametro_de_inicializacion))
-                #print("Que parametros trae:", param_value.type, param_value.value)
-                print ("Que parametro tiene el prototitpo", parametro_del_prototipo.tipo)
+                param_value:Return = parametro_de_inicializacion.execute(ambito)
+                
                 if parametro_del_prototipo.tipo != Type.ANY: # Verificamos si tienen el mismo tipo
 
                     if ( type(parametro_del_prototipo.tipo) == str): # Es un struct
                         
                         struct_simbolo = param_value.value 
-                        print("Encontre un struct",parametro_del_prototipo.tipo, type(struct_simbolo) ) 
-                        if ( parametro_del_prototipo.tipo != struct_simbolo.IdSimbolo):
-                            #print ("Error semantico en linea: {}. El tipo compuesto '{}' no coincide con el enviado: '{}'".format(self.line), param_de_funcion.tipo, struct_simbolo.IdSimbolo)
-                            return None 
+                        #self.graficar(struct_simbolo)
+                        print("Encontre un struct ->",parametro_del_prototipo.tipo,"-", type(struct_simbolo) ) 
+                        
+                        if ( parametro_del_prototipo.tipo == struct_simbolo.IdSimbolo): 
+                            #almacenamos un struct adentro de un struct 
+                            print ("muy importante", struct_simbolo.IdSimbolo)
+                            atribute_name = parametro_del_prototipo.id
+                            #print ("muy importante2", parametro_del_prototipo.id)
+                            struct_interno = simbolo(atribute_name, param_value.type, None)
 
+                            struct_interno.atributos [atribute_name] = struct_simbolo
+
+                            new_struct.atributos[ atribute_name] =  struct_interno
+                            self.graficar(new_struct)
+                            continue 
+                        else: 
+                            #print ("Error semantico en linea: {}. El tipo compuesto '{}' no coincide con el enviado: '{}'".format(self.line), param_de_funcion.tipo, struct_simbolo.IdSimbolo)
+                            return None      
                     elif parametro_del_prototipo.tipo != param_value.type: 
                         
                         print ("Error Semantico en la linea: {}, los tipos de datos para inicializar el struct no coinciden.".format(self.line))
@@ -49,16 +61,32 @@ class InicializarStruct():
                        
                         return False # La funcion retornar con error (False)
 
-                print("Creare la variable", parametro_del_prototipo.id)
+                #print("Creare la variable", parametro_del_prototipo.id)
                 nombre_de_variable =  parametro_del_prototipo.id 
 
                 new_struct.atributos[nombre_de_variable] =  simbolo(nombre_de_variable, param_value.type, param_value.value)
-            #Depues de crear el struct y sus variables internas, devolvemos el struct
             return Return(Type.STRUCT, new_struct) 
+
         else: 
             print("Error semantico en linea: {}, el numero de parametros no coincide con el prototipo del struct.".format(self.line))
             Output.errorSintactico.append(
                 Error(" El numero de parametros no coincide con el prototipo del struct.", self.line, 0)
             ) 
             
+
+
+    def graficar (self, simbolo:simbolo): 
+        print ()
+        print ()
+        print ()
+        print ("nombre: ", simbolo.IdSimbolo)
+        print ("atributos:", simbolo.atributos)
+        for atr in simbolo.atributos.values():
+            print (atr.IdSimbolo , " ", atr.tipoSimbolo)
+            for atr2 in atr.atributos.values(): 
+                print("--",atr2.IdSimbolo,".--> ", atr2.atributos)
+                
+
+        print ()
+        print ()
             

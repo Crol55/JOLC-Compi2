@@ -12,7 +12,7 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
 
 
     def execute(self, ambito):
-        
+        print ("no se ejecuta....")
         #print ("En que ambito estoy?", ambito.variables)
         #print("Acceso: Que variable debo buscar?", self.identificador)
         valor_variable = ambito.getVariable(self.identificador)
