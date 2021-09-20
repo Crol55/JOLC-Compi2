@@ -29,6 +29,10 @@ class Print(Instruccion):
                     string_concat += self.normalizar_impresion_de_arrays(resultado.value)
                     #print("Al terminar la normalizacion obtuve:", string_concat)
                     
+            elif resultado.type == Type.BOOL: 
+                bool_to_string = str(resultado.value)
+                string_concat += bool_to_string.lower()    
+                    
             elif resultado.type == Type.NULL: #Para que imprima nothing en vez de None
                 string_concat += "nothing"
             else: 

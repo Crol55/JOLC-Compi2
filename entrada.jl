@@ -52,3 +52,5 @@ while (a < 5)
 end;
 
 println("Se debió imprimir");
+# Prueba, true debe aparecer en minuscula
+println(true);
