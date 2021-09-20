@@ -30,3 +30,25 @@ array = [10,20,[true], "hola"];
 println(array[4]);
 array [4] = [10];
 println(array[4]);
+
+# prueba a sentencias de transferencia
+println("");
+println("=======================================================================");
+println("=============================TRANSFERENCIA=============================");
+println("=======================================================================");
+
+a = -1;
+while (a < 5)
+    global a = a + 1;
+    if a == 3
+        print("a");
+        continue;
+    elseif a == 4
+        println("b");
+        break;
+    end;
+
+    print("El valor de a es: ", a, ", ");
+end;
+
+println("Se debió imprimir");

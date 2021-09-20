@@ -1,4 +1,5 @@
 
+from Nativas.Type import Type
 from Nativas.Return import Return
 from Instrucciones.Functions.Funcion import Funcion
 from Abstractas.Instruccion import Instruccion
@@ -27,9 +28,8 @@ class Sentencia(Instruccion):
                     if type(ret) == dict: 
 
                         return ret # Solo retornamos que fue lo que ocurrio y las sentencias de abajo dejan de ejecutarse
-                    #elif type(ret) == Return: 
-                    #    print("si pues aqui es donde se esta metiendo jjajjajaj")
-                    #    return ret 
+                    elif ( type(ret) == Return and (ret.type == Type.CONTINUE or ret.type == Type.BREAK)): 
+                        return ret 
                     elif (type(ret) == bool and (ret == False)): #Implica que una instruccion esta erronea, por lo que ya no debe seguir ejecutando
 
                         return False #Retornamos False, para que la clase que llamo a sentencia, sepa que hubo un error
