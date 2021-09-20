@@ -571,7 +571,7 @@ def p_expresion(t):
             #print (t[0].execute(None).value)
         elif (t.slice[1].type =='IDENTIFICADOR'): # | IDENTIFICADOR  operador_punto
             #print ("Quiere acceder a una variable del struct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            t[0] = AccesoStruct(t[1], t[2][0], t.lineno(1), t.lexpos(0), None)
+            t[0] = AccesoStruct(t[1], t[2], t.lineno(1), t.lexpos(0), None)
 
     elif len(t) == 4: # SUM, DIV, MINUS
         if (t.slice[2].type =='SUM'): t[0] = Aritmeticas(t[1], Operador.PLUS, t[3], t.lineno(2), t.lexpos(2))    

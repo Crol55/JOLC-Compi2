@@ -24,12 +24,12 @@ print (" ================ EXECUTING FROM MAIN2.PY ============================")
 Output.init() # Inicio variables globales 
 #try : 
 for instruccion in ast: 
-    try:
-        retMain = instruccion.execute(newAmbitoGlobal)
+    #try:
+    retMain = instruccion.execute(newAmbitoGlobal)
         #print("KHA?", retMain)
-    except : 
-        print("murio")
-        break
+    #except : 
+        #print("murio")
+        #break
     if retMain != None: # Podria ser un (return, break, o continue) y eso no se permite a menos que este en un loop
         if type(retMain) == bool: 
             print ("Main.py: Una instruccion esta retornando algo distinto a None")
