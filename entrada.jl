@@ -9,51 +9,40 @@ struct Pelicula
 end;
 
 struct Contrato
-    inutil::Actor;
-    peli::Pelicula;
+    actor::Actor;
+    pelicula::Pelicula;
 end;
 
-struct algo 
-    prue::Contrato;
+actores = ["Elizabeth Olsen", "Adam Sandler", "Christian Bale", "Jennifer Aniston"];
+peliculas = ["Avengers: Age of Ultron", "Mr. Deeds", "Batman: The Dark Knight", "Marley & Me"];
+
+function contratar(actor::Actor, pelicula::Pelicula)
+    return Contrato(actor,pelicula);
 end;
 
-actor1 = Actor("malelin", 28);
-movie = Pelicula("God of war", 20);
+function crearActor(nombre::String, edad::Int64)
+    return Actor(nombre,edad);
+end;
 
-contract = Contrato(actor1, movie);
-println(contract);
+function crearPelicula(nombre::String, posicion::Int64) 
+    return Pelicula(nombre,posicion);
+end;
 
-nuevita = algo(contract);
-println(nuevita);
-# Prueba para arrays
-array = [10,20,[true], "hola"];
-println(array[4]);
-array [4] = [10];
-println(array[4]);
+function imprimir(contrato::Contrato)
+    println("Actor: ", contrato.actor.nombre, "   Edad: ", contrato.actor.edad);
+    println("Pelicula: ", contrato.pelicula.nombre, "   Genero: ", contrato.pelicula.posicion);
+end;
 
-# prueba a sentencias de transferencia
-println("");
-println("=======================================================================");
-println("=============================TRANSFERENCIA=============================");
-println("=======================================================================");
-
-a = -1;
-while (a < 5)
-    global a = a + 1;
-    if a == 3
-        print("a");
-        continue;
-    elseif a == 4
-        println("b");
-        break;
+function contratos()
+    for i in 1:(1*1+2)
+        contrato = Contrato(Actor("",0),Pelicula("",0))::Contrato;
+        if(i < 4)
+            actor = crearActor(actores[i], i+38)::Actor;
+            pelicula = crearPelicula(peliculas[i], i)::Pelicula;
+            contrato = contratar(actor, pelicula);
+        end;
+        imprimir(contrato);    
     end;
-
-    print("El valor de a es: ", a, ", ");
 end;
 
-println("Se debió imprimir");
-# Prueba, true debe aparecer en minuscula
-println(true);
-
-# Testeando acceso por operador punto
-println(actor1.edad.val.val);
+contratos();

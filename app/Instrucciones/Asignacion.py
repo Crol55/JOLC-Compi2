@@ -19,28 +19,17 @@ class Asignacion(Instruccion):
     
 
 
-    def testing (self, struct:simbolo): 
-        print ("analizaremos lo que se nos envio")
-        print(struct.IdSimbolo)
-        print("--", struct.atributos)
-        actor:simbolo = struct.atributos['actor']
-        print(actor.IdSimbolo)
-        print("---", actor.atributos)
-        print("FIN")
+    
 
     def execute(self, ambito:Ambito):
 
         resultado_expresion:Return = self.expresion.execute(ambito)
-        print("Asignacio: APARENTEMENTE AAAAAAAAAAAAAQUIIIIIIIIIIIIIIIIIIIIII ESTA EL CLAVOOOOOOOOOOOOOOOOOOOOOOO", type(self.expresion))
-        #simb = resultado_expresion.value 
-        #print ("Variables a asignar", simb.atributos)
-        #print("ASIGNACION: variable:",self.nombre_variable, resultado_expresion.value, resultado_expresion.type)
 
         if resultado_expresion.type == self.verifyType or self.verifyType == Type.ANY: 
-            #print ("Asignacion: Me estoy ejecutando????????????????????? ", self.nombre_variable)
+            
             if resultado_expresion.type == Type.STRUCT: 
-                if resultado_expresion.value.IdSimbolo == 'Contrato':
-                    self.testing(resultado_expresion.value)
+                #if resultado_expresion.value.IdSimbolo == 'Contrato':
+                #    self.printearlo(resultado_expresion.value)
                 ambito.save_Struct_As_Variable(self.nombre_variable, self.alcance, resultado_expresion.value) 
             else: 
                 ambito.saveVariable(self.nombre_variable, resultado_expresion.type, resultado_expresion.value, self.alcance)
@@ -57,3 +46,15 @@ class Asignacion(Instruccion):
                 Error("Los tipos de datos de la variable:{} no coinciden".format(self.nombre_variable), self.line, self.column)
             ) 
         return  # Si returna None, la ejecucion se realizo correctamente
+
+
+    def printearlo(self, struct:simbolo):
+        print ()
+        print ()
+        print ("********************** PRINTING STRUCT - ASIGNACION **************************") 
+        print (struct.IdSimbolo)
+        print (struct.atributos)
+        print ("id" ,struct.atributos['actor'].IdSimbolo ,struct.atributos['actor'].atributos)
+        print ("********************** FIN PRINTING STRUCT - ASIGNACION **************************") 
+        print()
+        print()

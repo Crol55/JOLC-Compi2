@@ -25,7 +25,7 @@ class Print(Instruccion):
 
             if (resultado.type == Type.STRUCT):  
                 #print ("DEBERIA ENTRAR 2 VECES !!!!!!!!!!!!!!!!!!!!!!", len(resultado.value.atributos))
-                print ("Print: falla al nomas entrar", type(expresion), "nose->", resultado.value)
+                #print ("Print: falla al nomas entrar", type(expresion), "nose->", resultado.value)
                 string_concat += self.mejorar_presentacion_para_imprimir_structs(resultado.value)
 
             elif resultado.type == Type.ARRAY: # Debemos presentar la informacion de una manera leible al usuario
@@ -55,7 +55,7 @@ class Print(Instruccion):
 
     def mejorar_presentacion_para_imprimir_structs(self, struct:simbolo): # la impresion del struct tiene una estructura definida (ej. Actor ("calors", 27))
         #print ("Que tipo de variable es ==========================", struct.type)
-        print("cuantas veces ingreso", struct.IdSimbolo)
+        #print("cuantas veces ingreso", struct.IdSimbolo)
         string_struct_structure = str (struct.IdSimbolo) + "("
         conta_commas = 0
 
@@ -65,8 +65,8 @@ class Print(Instruccion):
                 string_struct_structure += ", "
             
             if (val_atributo.tipoSimbolo == Type.STRUCT):
-                print ("justamente en la 2da pasada fallo")
-                string_struct_structure += self.mejorar_presentacion_para_imprimir_structs(val_atributo.valorSimbolo)
+                #print ("justamente en la 2da pasada fallo")
+                string_struct_structure += self.mejorar_presentacion_para_imprimir_structs(val_atributo)
             elif val_atributo.tipoSimbolo == Type.ARRAY: 
                 #print ("Aqui tiene que estar", val_atributo.valorSimbolo)
                 string_struct_structure += self.normalizar_impresion_de_arrays(val_atributo.valorSimbolo)
