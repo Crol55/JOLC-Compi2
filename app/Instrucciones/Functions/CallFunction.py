@@ -55,15 +55,18 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
         if self.crear_variables_de_funcion(funcion_a_ejecutar, new_ambito): 
 
             # Ejecutar las instrucciones que esten internamente en la funcion
+           # print ("Cuantas instrucciones tiene esta funcion *---------->", len(funcion_a_ejecutar.instrucciones))
             for inst in funcion_a_ejecutar.instrucciones: 
                 
                 posible_return_value = inst.execute(new_ambito) # Solo las instrucciones con Error o (return, continue y break) retornan algo
 
                 if posible_return_value != None: # Hubo error (Retorna false) o es una sentencia de transferencia(Retorna dict)
 
-                    if type(posible_return_value) is dict: # from Class ReturnINST -> si es return ya no ejecutar las instrucciones de abajo
+                    if type(posible_return_value) == dict: # from Class ReturnINST -> si es return ya no ejecutar las instrucciones de abajo
                         #valor_a_retornar = posible_return_value['value']
                         #print("Este valor fue devuelto a la funcion que ejecuto=============================",posible_return_value['value'].value)
+                        #print ("ALGUN  ME ENVIO UN RETURN ??????", posible_return_value['value'].value)
+                       #print ("Que funcion fue?", type(inst))
                         return posible_return_value['value'] # -> Type -> Return()
                     elif (type(posible_return_value) == bool and (posible_return_value == False)): #Implica que una instruccion esta erronea, por lo que ya no debe seguir ejecutando
                         

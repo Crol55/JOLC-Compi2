@@ -36,8 +36,8 @@ class While(Instruccion):
                             if ret_sentencias == False: # Hubo un error con alguna instruccion 
                                 break
                         elif type(ret_sentencias) == dict:  # RETURN 
-                            #print ("Se quiere retornar un valor", ret_sentencias['value'].value)
-                            return ret_sentencias['value']
+                            #print ("Se quiere retornar un valor", type(ret_sentencias))
+                            return ret_sentencias
                         elif ret_sentencias.type == Type.BREAK: 
                             #print("se detecto un break")
                             break
@@ -51,8 +51,6 @@ class While(Instruccion):
                     print ("Error semantico en linea: {}, la condicion debe ser tipo BOOL".format(self.condicional.line))
                     Output.errorSintactico.append( Error("La condicion debe ser tipo BOOL", self.line, self.column) )
                     return 
-                #print ("No hubieron errores")
-                #return 
         else:
             print ("Error semantico en linea: {}, la condicion debe ser tipo BOOL".format(self.condicional.line))
             Output.errorSintactico.append( Error("La condicion debe ser tipo BOOL", self.line, self.column) )
