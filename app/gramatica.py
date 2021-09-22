@@ -517,14 +517,22 @@ def p_lista_atributos(t):
 #inst_nativa
 def p_inst_nativa(t):
     '''inst_nativa : PRINT      LPAR lista_expresion RPAR SEMICOLON
+                   | PRINT      LPAR                 RPAR SEMICOLON
                    | PRINTLN    LPAR lista_expresion RPAR SEMICOLON
+                   | PRINTLN    LPAR                 RPAR SEMICOLON
                    | PUSH       LPAR IDENTIFICADOR COMMA expresion RPAR SEMICOLON
                    | POP        LPAR IDENTIFICADOR                 RPAR SEMICOLON
     '''
     if t.slice[1].type == 'PRINT':
-        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, False)
+        if len (t) == 5: 
+            t[0] = Print([], t.lineno(1), t.lexpos(0), None, False)
+        else:  
+            t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, False)
     if t.slice[1].type == 'PRINTLN':
-        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, True)
+        if len (t) == 5:
+            t[0] = Print([], t.lineno(1), t.lexpos(0), None, True)
+        else: 
+            t[0] = Print(t[3], t.lineno(1), t.lexpos(0), None, True)
     if t.slice[1].type == 'PUSH':
         t[0] = Push(t[3],t[5], t.lineno(1), t.lexpos(0), None)
     if t.slice[1].type == 'POP':
@@ -561,7 +569,7 @@ def p_expresion(t):
                  | callFunc
                  | callArrays
     '''
-    #print ((t.slice)) 
+    print ((t.slice)) 
     if len(t) == 3:  # NOT, 
         if t.slice[1].type == 'NOT': 
             t[0] = Not( t[2], t.lineno(1), t.lexpos(0))
@@ -704,7 +712,9 @@ def p_nativas(t):
                | STRINGCAST LPAR expresion RPAR
                | TYPEOF    LPAR expresion RPAR   
                | LENGTH    LPAR expresion RPAR
+               | POP       LPAR IDENTIFICADOR                 RPAR
     '''
+    print (t.slice)
     if len(t) == 5: # UPPERCASE, LOWERCASE, FLOATCAST, STRINGCAST, TYPEOF 
         if t.slice[1].type == 'UPPERCASE':
             t[0] = Uppercase(t[3], t.lineno(1), t.lexpos(0))
@@ -733,6 +743,8 @@ def p_nativas(t):
             t[0] = Raiz(t[3], t.lineno(1), t.lexpos(0)) 
         elif t.slice[1].type == 'LENGTH': 
             t[0] = Length(t[3], t.lineno(1), t.lexpos(0), None)
+        elif t.slice[1].type == 'POP':
+            t[0] = Pop(t[3], t.lineno(1), t.lexpos(0), None)
             
     elif len(t) == 7:
         if t.slice[1].type == 'PARSE':
