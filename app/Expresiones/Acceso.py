@@ -19,9 +19,12 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
         if valor_variable != None: 
             
          #   print ("ACCESO: tipo y valor de la tabla de simbolos: ",valor_variable.tipoSimbolo, valor_variable.valorSimbolo)
+            
             if valor_variable.tipoSimbolo == Type.STRUCT: 
                 #print ("Acceso: WHAT?", valor_variable.atributos)
                 return Return(Type.STRUCT, valor_variable) 
+            #elif valor_variable.tipoSimbolo == Type.ARRAY:
+            #    return Return(Type.ARRAY, valor_variable) 
             else: 
                 #print ("El paso sera por parametro", valor_variable)
                 return Return(valor_variable.tipoSimbolo, valor_variable.valorSimbolo) # Al usar Return () indirectamente utilizamos paso por 'parametros' y no por referencia

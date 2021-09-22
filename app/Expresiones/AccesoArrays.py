@@ -13,9 +13,7 @@ class AccesoArrays(Expresion):
 
     def execute(self, ambito):
         
-        #test = ambito.getVariable('test')
-        #print (test.valorSimbolo)
-        #return 
+        
         array = ambito.getVariable(self.id_array)
         if array != None: 
             #print ("si me estoy ejecutannnndo?", array)

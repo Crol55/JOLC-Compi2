@@ -423,7 +423,7 @@ def p_condicional(t):
         print ("El usuario quiere ejecutar un If sin de produccion #3")
         t[0] = If(t[2], t[3], t[5], t.lineno(1), t.lexpos(0), None) 
     elif len (t) == 9: #produccion 4
-        print ("El usuario quiere ejecutar la produccion 4")
+        #print ("El usuario quiere ejecutar la produccion 4")
 
         elseif_list = t[4]
 
@@ -520,8 +520,8 @@ def p_inst_nativa(t):
                    | PRINT      LPAR                 RPAR SEMICOLON
                    | PRINTLN    LPAR lista_expresion RPAR SEMICOLON
                    | PRINTLN    LPAR                 RPAR SEMICOLON
-                   | PUSH       LPAR IDENTIFICADOR COMMA expresion RPAR SEMICOLON
-                   | POP        LPAR IDENTIFICADOR                 RPAR SEMICOLON
+                   | PUSH       LPAR expresion COMMA expresion RPAR SEMICOLON
+                   | POP        LPAR expresion                 RPAR SEMICOLON
     '''
     if t.slice[1].type == 'PRINT':
         if len (t) == 5: 
@@ -569,7 +569,7 @@ def p_expresion(t):
                  | callFunc
                  | callArrays
     '''
-    print ((t.slice)) 
+    #print ((t.slice)) 
     if len(t) == 3:  # NOT, 
         if t.slice[1].type == 'NOT': 
             t[0] = Not( t[2], t.lineno(1), t.lexpos(0))
@@ -712,7 +712,7 @@ def p_nativas(t):
                | STRINGCAST LPAR expresion RPAR
                | TYPEOF    LPAR expresion RPAR   
                | LENGTH    LPAR expresion RPAR
-               | POP       LPAR IDENTIFICADOR                 RPAR
+               | POP       LPAR expresion RPAR
     '''
     print (t.slice)
     if len(t) == 5: # UPPERCASE, LOWERCASE, FLOATCAST, STRINGCAST, TYPEOF 
