@@ -1,3 +1,4 @@
+from Nativas.Return import Return
 from Nativas.Type import Type
 from Abstractas.Instruccion import Instruccion
 
@@ -16,8 +17,9 @@ class Pop(Instruccion):
             #print("Quieren ejecutar un cagado pop", array.valorSimbolo)
             if array.tipoSimbolo == Type.ARRAY:        
                 
-                array.valorSimbolo.pop()
+                val_eliminado:Return = array.valorSimbolo.pop()
                 #print ("despues de meterle la info tiene..", len (array.valorSimbolo)) 
+                return val_eliminado
             else:
                 print ("Error semantico en linea: {}. La variable '{}', no es un ARRAY.".format(self.line, self.id_array))
         else:
