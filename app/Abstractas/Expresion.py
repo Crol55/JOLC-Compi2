@@ -16,8 +16,8 @@ class Expresion(ABC):
     def execute(self, ambito): 
         pass
 
-    @abstractmethod 
-    def compile(): 
-        pass
+    #@abstractmethod 
+    #def compile(): 
+    #    pass
 
 
