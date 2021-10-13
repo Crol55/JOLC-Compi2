@@ -1,6 +1,5 @@
 
 from Tabla_Simbolos.Ambito import Ambito
-from sys import getcheckinterval
 from Nativas.Type import Type
 from Nativas.Return import Return
 from Abstractas.Instruccion import Instruccion

@@ -4,9 +4,9 @@ from Nativas.Type import Type
 from gramatica import interpretar
 from Tabla_Simbolos.Ambito import Ambito 
 from Export import Output
-import sys 
+#import sys 
 #
-sys.setrecursionlimit(2500)
+#sys.setrecursionlimit(2500)
 #print(sys.getrecursionlimit())
 
 # leer la entrada 
@@ -48,9 +48,3 @@ for instruccion in ast:
 #except: 
 #   print("Error Fatal del interprete al ejecutar instrucciones")
 #   print ("Errores leidos", len( Output.errorSintactico) )
-
-        
-'''
-    comandos faltantes: 
-    2. al imprimir un struct o un true adentro de un array -> muestra algo distinto
-'''

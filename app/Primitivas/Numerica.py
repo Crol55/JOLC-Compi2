@@ -13,4 +13,7 @@ class Numerica(Expresion):
     def execute(self, ambito):
         objetoRetorno = Return(self.tipoDato, self.valorNumerico)
         return objetoRetorno
+
+    #def compile():
+    #    print("bellow bebryone")
     

@@ -36,3 +36,5 @@ arreglo = [32,7*3,7,89,56,909,109,2,9,9874^1,44,3,820*10,11,8*0+8,10];
 arreglo[1] = arreglo[2]^0;
 insertionSort(arreglo);
 print("InsertionSort => ",arreglo);
+
+println(15000);
