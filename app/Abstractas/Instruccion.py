@@ -14,4 +14,8 @@ class Instruccion(ABC):
 
     @abstractmethod 
     def execute(self, ambito): 
+        pass 
+
+    @abstractmethod 
+    def compile (self, ambito): # Para proyecto 2 - C3D (codigo 3 direcciones)
         pass         

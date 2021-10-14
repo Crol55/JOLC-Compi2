@@ -1,9 +1,12 @@
 
+
 from Instrucciones.Transferencia.Break import Break
 from Nativas.Type import Type
 from gramatica import interpretar
 from Tabla_Simbolos.Ambito import Ambito 
 from Export import Output
+## Proyecto 2
+from compiler.Generator import Generator
 #import sys 
 #
 #sys.setrecursionlimit(2500)
@@ -17,6 +20,18 @@ input = file.read()
 
 newAmbitoGlobal = Ambito(None) # Este funciona como el ambito GLOBAL
 ast = interpretar(input)
+
+# area de compilador 
+for instruccion in ast: 
+    instruccion.compile(newAmbitoGlobal)
+
+aux = Generator.C3D_generator 
+if (aux): 
+    print(" =================== Codigo 3 direcciones ===================")
+    print(aux.getHeader())
+    print ("=================== Fin Codigo 3 direcciones ===================")
+
+''' 
 print("Cantidad de instrucciones: ", ast)
 print ("\n")
 print (" ================ EXECUTING FROM MAIN2.PY ============================")
@@ -48,3 +63,4 @@ for instruccion in ast:
 #except: 
 #   print("Error Fatal del interprete al ejecutar instrucciones")
 #   print ("Errores leidos", len( Output.errorSintactico) )
+'''

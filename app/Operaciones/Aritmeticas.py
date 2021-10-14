@@ -1,10 +1,14 @@
 
+
 from Nativas.Type import Type
 from Nativas.Return import Return
 from Abstractas.Expresion import *
 from enum import Enum
 from Nativas.Error import Error
 from Export import Output
+# proyecto2 
+from compiler.Generator import Generator
+from Nativas.ReturnCompiler import ReturnCompiler
 
 class Operador(Enum):
     PLUS  = 0
@@ -78,7 +82,6 @@ class Aritmeticas(Expresion):
             aritmeticError = Error('No se puede sumar {} con {}'.format(operando1.type, operando2.type), self.line, self.column)
             Output.errorSintactico.append(aritmeticError)
         return None
-
 
     def resta(self, operando1:Return, operando2:Return):
         if (operando1.type == Type.INT and operando2.type == Type.INT):  # ENTERO, ENTERO
@@ -181,5 +184,95 @@ class Aritmeticas(Expresion):
             Output.errorSintactico.append(aritmeticError)
         return None
       
+
+    ########## 
+    # El codigo de abajo es para el proyecto 2 - C3D (codigo 3 direcciones)
+    ##########
+    def compile(self, ambito):
+        
+        valorIzquierdo = self.leftExpression.compile(ambito)
+        valorDerecho = self.rightExpression.compile(ambito)
+
+        if (valorIzquierdo != None and valorDerecho != None): 
+
+            tipo_resultante = self.validar_operacion_aritmetica(valorIzquierdo.type, valorDerecho.type, self.operador) 
+            #print ("El tipo seria", tipo_resultante)
+            if (tipo_resultante): 
+                
+                aux_generator = Generator() 
+                static_generator = aux_generator.getInstance() 
+                # Crear el valor tempral para las variables 
+                varTemp = static_generator.addTemporal()        
+                op = self.op_to_string( self.operador)
+
+                static_generator.add_exp(varTemp, valorIzquierdo.value, valorDerecho.value, op)
+                #print (static_generator.codigo_C3D)
+                return ReturnCompiler( varTemp, tipo_resultante, True)
+        return None 
+
+    def validar_operacion_aritmetica(self, left_type, right_type, op):
+        
+        if op == Operador.PLUS: 
+            if (left_type == Type.INT and right_type == Type.INT):  # ENTERO, ENTERO
+                return Type.INT
+            elif (left_type == Type.FLOAT and right_type == Type.INT):  # FLOAT, ENTERO
+                return Type.FLOAT
+            elif (left_type == Type.INT and right_type == Type.FLOAT):  # ENTERO, FLOAT
+                return Type.FLOAT
+            elif (left_type == Type.FLOAT and right_type == Type.FLOAT): # FLOAT, FLOAT
+                return Type.FLOAT
+            elif (left_type == Type.STRING and right_type == Type.STRING): # STRING, STRING 
+                return Type.STRING
+            else: 
+                print("Error semantico en linea: {}, no se puede Sumar: {} con {}.".format(self.line, left_type, right_type) )
+        elif (op == Operador.MINUS):
+            if (left_type == Type.INT and right_type == Type.INT):  # ENTERO, ENTERO
+                return Type.INT
+            elif (left_type ==  Type.INT and right_type == Type.FLOAT): 
+                return Type.FLOAT
+            elif (left_type == Type.FLOAT and right_type == Type.INT):  
+                return Type.FLOAT
+            elif (left_type == Type.FLOAT and right_type == Type.FLOAT):  
+                return Type.FLOAT
+            else: 
+                print("Error semantico en linea: {}, no se puede restar: {} con {}.".format(self.line, left_type, right_type) )
+        elif (op == Operador.MUL):
+            if left_type == Type.INT and right_type == Type.INT:
+                return Type.INT
+            elif left_type == Type.FLOAT and right_type == Type.INT:
+                return Type.FLOAT
+            elif left_type == Type.INT and right_type == Type.FLOAT:
+                return Type.FLOAT
+            elif left_type == Type.FLOAT and right_type == Type.FLOAT:
+                return Type.FLOAT
+            elif (left_type == Type.STRING and right_type == Type.STRING): # STRING * STRING
+                return Type.STRING
+            else: 
+                print("Error Sintactico en linea {}:, no se puede multiplicar {} con {}.".format(self.line, left_type, right_type) ) 
+        elif (op == Operador.DIV):
+            if left_type == Type.INT and right_type == Type.INT:
+                return Type.FLOAT
+            elif left_type == Type.FLOAT and right_type == Type.INT:
+                return Type.FLOAT
+            elif left_type == Type.INT and right_type == Type.FLOAT:     
+                return Type.FLOAT
+            elif left_type == Type.FLOAT and right_type == Type.FLOAT:
+                return Type.FLOAT
+            else: 
+                print("Error Sintactico en linea {}:, no se puede dividir {} con {}.".format(self.line, left_type, right_type) ) 
+
+        return None # Si llega aqui, implica que hubo un error 
+
+    def op_to_string (self, operador):
+
+        if operador == Operador.PLUS:
+            return "+" 
+        elif operador == Operador.MINUS:
+            return "-"
+        elif operador == Operador.MUL:
+            return "*"
+        elif operador == Operador.DIV:
+            return "/"
+            
         
     

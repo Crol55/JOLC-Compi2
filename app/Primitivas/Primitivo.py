@@ -2,6 +2,9 @@
 from Abstractas.Expresion import *
 from Nativas.Return import Return
 from Nativas.Type import Type 
+# proyecto2 
+from Nativas.ReturnCompiler import ReturnCompiler
+
 
 '''
     Clase para el manejo de valores primitivos 
@@ -22,4 +25,7 @@ class Primitivo(Expresion):
     def execute(self, ambito):
         objetoRetorno = Return(self.tipoDato, self.valorPrimitivo)
         return objetoRetorno
+
+    def compile(self, ambito):
+        return ReturnCompiler(self.valorPrimitivo, self.tipoDato, False)
         

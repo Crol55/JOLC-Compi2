@@ -4,6 +4,11 @@ from Tabla_Simbolos.simbolo import simbolo
 from Nativas.Type import Type
 from Abstractas.Instruccion import Instruccion
 from Export import Output 
+# proyecto2 
+from compiler.Generator import Generator
+from Nativas.ReturnCompiler import ReturnCompiler
+
+
 
 class Print(Instruccion): 
 
@@ -106,6 +111,37 @@ class Print(Instruccion):
 
         valoresNormalizados += "]"
         return valoresNormalizados
+
+
+    # ======== El codigo de abajo es para el proyecto 2 - C3D (codigo 3 direcciones)
+
+    def compile(self, ambito):
+        #print("siu")
+        aux_generator = Generator() 
+        static_generator = aux_generator.getInstance() 
+
+        for expresion in self.__arreglo_expresiones__: 
+            
+            resultado:ReturnCompiler = expresion.compile(ambito)
+            print ("Aja->", resultado.type)
+
+            if resultado.type == Type.FLOAT: 
+                static_generator.add_print('f', resultado.value, "float64")
+            elif resultado.type == Type.INT: 
+                static_generator.add_print('d', resultado.value)
+            elif resultado.type == Type.BOOL: 
+                if resultado.value == True:
+                    static_generator.add_print_true() 
+                else: 
+                    static_generator.add_print_false()
+
+        if (self.__newLine__):
+            static_generator.add_print('c', 10)
+                
+
+
+
+    
 
         
         
