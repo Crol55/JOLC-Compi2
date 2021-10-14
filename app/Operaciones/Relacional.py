@@ -4,6 +4,10 @@ from Abstractas.Expresion import Expresion
 from Nativas.Return import Return
 from enum import Enum
 from Export import Output
+# proyecto2 
+from compiler.Generator import Generator
+from Nativas.ReturnCompiler import ReturnCompiler
+
 
 class OperadorRelacional(Enum):
     GREATER = 0
@@ -52,4 +56,39 @@ class Relacional(Expresion):
 
             Output.errorSintactico.append(errRelacional) # Almacenamos el error globalmente
             #print("vamua ver:", errRelacional.descripcion)
+
+    ########## 
+    # El codigo de abajo es para el proyecto 2 - C3D (codigo 3 direcciones)
+    ##########
+    def compile(this, ambito): # El true y false se manejaran como -> 1 y 0
+        
+        left_exp:ReturnCompiler  = this.left_expresion.compile(ambito) 
+        right_exp:ReturnCompiler = this.right_expresion.compile(ambito)
+
+        if (left_exp and right_exp): 
+            # Verificar si se puede aplicar la expresion relacional
+            boolean = False 
+            try: 
+                if this.operador == OperadorRelacional.GREATER: 
+                    boolean = left_exp.value > right_exp.value 
+                elif this.operador == OperadorRelacional.LESS: 
+                    boolean = left_exp.value < right_exp.value
+                elif this.operador == OperadorRelacional.GEQ: 
+                    boolean = left_exp.value >= right_exp.value
+                elif this.operador == OperadorRelacional.LEQ: 
+                    boolean = left_exp.value <= right_exp.value
+                elif this.operador == OperadorRelacional.DEQUAL: 
+                    boolean = left_exp.value == right_exp.value
+                    #print ("Que estoy comparandn?", left_exp.value == right_exp.value)
+                elif this.operador == OperadorRelacional.DISTINT: 
+                    boolean = left_exp.value != right_exp.value
+
+                return ReturnCompiler( int(boolean), Type.BOOL, False)
+            except: 
+                print("Error semantico en linea: {}, no se puede aplicar el operador relacional en el tipo {} con el tipo {}".format(
+                    this.line, left_exp.type, right_exp.type)
+                )         
+        return None 
+
+    
         

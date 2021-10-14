@@ -123,7 +123,7 @@ class Print(Instruccion):
         for expresion in self.__arreglo_expresiones__: 
             
             resultado:ReturnCompiler = expresion.compile(ambito)
-            print ("Aja->", resultado.type)
+            #print ("Aja->", resultado.type)
 
             if resultado.type == Type.FLOAT: 
                 static_generator.add_print('f', resultado.value, "float64")
@@ -134,6 +134,10 @@ class Print(Instruccion):
                     static_generator.add_print_true() 
                 else: 
                     static_generator.add_print_false()
+            elif resultado.type == Type.NULL:
+                static_generator.add_print("d", -1)
+            elif resultado.type == Type.CHAR:
+                static_generator.add_print("c", ord(resultado.value) )
 
         if (self.__newLine__):
             static_generator.add_print('c', 10)
