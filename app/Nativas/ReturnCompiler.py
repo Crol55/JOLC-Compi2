@@ -5,3 +5,6 @@ class ReturnCompiler:
         self.value = value
         self.type = type 
         self.isTemp = isTemp
+        # Ayuda con el paso de labels 
+        self.trueLabel = "" 
+        self.falseLabel = ""
