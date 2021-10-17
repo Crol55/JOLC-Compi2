@@ -11,6 +11,9 @@ class Expresion(ABC):
     def __init__(self, line, column):
         self.line = line 
         self.column = column
+        # === PROYECTO 2 
+        self.trueLabel  = "" 
+        self.falseLabel = ""
 
     @abstractmethod
     def execute(self, ambito): 
