@@ -36,6 +36,11 @@ class Generator:
             pass
         else: # default -> inGlobalCode
             self.codigo_C3D += tab + code  
+    
+    def generarLabel(self):
+        newLabel = f"L{self.contadorLabels}"
+        self.contadorLabels += 1
+        return newLabel 
 
     def getHeader(self):
         header = "" 
@@ -46,7 +51,7 @@ class Generator:
             header += self.listaTemporales[indice]
             if (indice < (len(self.listaTemporales)-1) ):
                 header += ","
-        header += " float64\n"
+        header += " float64;\n"
         # concatenar el codigo 3 direcciones 
         header += "\nfunc main(){\n" + self.codigo_C3D + "\n}"
 
@@ -55,6 +60,17 @@ class Generator:
     def add_newLine(self):
         self.insertCode("\n")
 
+    def add_comment(self, comentario):
+        self.insertCode(f'/*** {comentario} ***/\n')
+
+    def add_if(self, left, right, op, label):
+        self.insertCode(f'if({left} {op} {right}) {{goto {label};}}\n')
+    
+    def add_goto(self, label):
+        self.insertCode( f'goto {label};\n' )
+
+    def add_label(self, label):
+        self.insertCode(f'{label}:\n')
 
 
     ###################
@@ -70,7 +86,7 @@ class Generator:
     ###################
 
     def add_print(self, type, value, cast="int"): # Impresion nativa de GOlang 
-        instruccion = f'fmt.Printf("%{type}", {cast}({value}) )'
+        instruccion = f'fmt.Printf("%{type}", {cast}({value}) );'
         self.insertCode(instruccion)
         self.add_newLine()
 
