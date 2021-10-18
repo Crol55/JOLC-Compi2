@@ -24,7 +24,9 @@ class Relacional(Expresion):
         this.left_expresion = left_expresion
         this.right_expresion = right_expresion
         this.operador = operador
-        
+        ## === PROYECTO 2 
+        #this.trueLabel  = "" 
+        #this.falseLabel = ""   
 
     def execute(this, ambito):
         
@@ -57,38 +59,100 @@ class Relacional(Expresion):
             Output.errorSintactico.append(errRelacional) # Almacenamos el error globalmente
             #print("vamua ver:", errRelacional.descripcion)
 
+
     ########## 
     # El codigo de abajo es para el proyecto 2 - C3D (codigo 3 direcciones)
     ##########
     def compile(this, ambito): # El true y false se manejaran como -> 1 y 0
+
+        temp_generator   = Generator() 
+        static_generator = temp_generator.getInstance()
+
+        static_generator.add_comment("Inicio EXPRESION RELACIONAL")
         
         left_exp:ReturnCompiler  = this.left_expresion.compile(ambito) 
-        right_exp:ReturnCompiler = this.right_expresion.compile(ambito)
+        right_exp = None # Ejecutarla despues, solo tiene sentido cuando son Type.BOOL
 
-        if (left_exp and right_exp): 
-            # Verificar si se puede aplicar la expresion relacional
-            boolean = False 
-            try: 
-                if this.operador == OperadorRelacional.GREATER: 
-                    boolean = left_exp.value > right_exp.value 
-                elif this.operador == OperadorRelacional.LESS: 
-                    boolean = left_exp.value < right_exp.value
-                elif this.operador == OperadorRelacional.GEQ: 
-                    boolean = left_exp.value >= right_exp.value
-                elif this.operador == OperadorRelacional.LEQ: 
-                    boolean = left_exp.value <= right_exp.value
-                elif this.operador == OperadorRelacional.DEQUAL: 
-                    boolean = left_exp.value == right_exp.value
-                    #print ("Que estoy comparandn?", left_exp.value == right_exp.value)
-                elif this.operador == OperadorRelacional.DISTINT: 
-                    boolean = left_exp.value != right_exp.value
+        ret = ReturnCompiler(None, Type.BOOL, False)
 
-                return ReturnCompiler( int(boolean), Type.BOOL, False)
-            except: 
-                print("Error semantico en linea: {}, no se puede aplicar el operador relacional en el tipo {} con el tipo {}".format(
-                    this.line, left_exp.type, right_exp.type)
-                )         
-        return None 
+        if (left_exp.type != Type.BOOL): 
+            right_exp:ReturnCompiler = this.right_expresion.compile(ambito)
+            this.checkLabels()
+            if ( (left_exp.type == Type.INT or left_exp.type == Type.FLOAT or left_exp.type == Type.CHAR) and (right_exp.type == Type.INT or right_exp.type == Type.FLOAT or right_exp.type == Type.CHAR) ):
 
-    
+                static_generator.add_if(left_exp.value, right_exp.value, this.op_To_string(), this.trueLabel)
+                static_generator.add_goto(this.falseLabel)   
+            
+        else: # type -> BOOL 
+            
+            # left expression
+            leftTemp = static_generator.addTemporal()
+            # parte verdadera
+            static_generator.save_label(left_exp.trueLabel)
+            static_generator.add_exp(leftTemp, '1', '', '')
+
+            gotoRight = static_generator.generarLabel() # exit to right expresion
+            static_generator.add_goto(gotoRight)
+            # parte falsa 
+            static_generator.save_label(left_exp.falseLabel)
+            static_generator.add_exp(leftTemp, '0', '', '')
+
+            static_generator.save_label(gotoRight)
+            # Right expression
+
+            right_exp:ReturnCompiler = this.right_expresion.compile(ambito)
+            if (right_exp.type != Type.BOOL): 
+                print ("Error, en expresion relacional")
+                static_generator.add_comment("\t Error en expresion relacional")
+                return  None 
+            rightTemp = static_generator.addTemporal() # Temporal (t0) donde se almacenara el valor de true o false
+            exitLabel = static_generator.generarLabel()
+            # parte verdadera
+            static_generator.save_label(right_exp.trueLabel) 
+            static_generator.add_exp(rightTemp, '1', '', '')
+            static_generator.add_goto(exitLabel)
+            # parte falsa 
+            static_generator.save_label(right_exp.falseLabel) 
+            static_generator.add_exp(rightTemp, '0', '', '')
+            # colocar la el ultimo label 
+            static_generator.save_label(exitLabel)
+            # Comparar leftTemp con rightTemp 
+
+            this.checkLabels() 
+            static_generator.add_if(leftTemp, rightTemp, this.op_To_string(), this.trueLabel)
+            static_generator.add_goto(this.falseLabel)        
+                
+            
+
+        static_generator.add_comment("FIN EXPRESION RELACIONAL")  
+
+        ret.trueLabel = this.trueLabel 
+        ret.falseLabel = this.falseLabel 
+        return ret      
+        #return None 
+
+
+    def checkLabels(this):
+        tempGenerator = Generator() 
+        static_generator = tempGenerator.getInstance()
+        if this.trueLabel == '':
+            this.trueLabel = static_generator.generarLabel() 
+        if this.falseLabel == '':
+            this.falseLabel = static_generator.generarLabel() 
+
+
+    def op_To_string(this):
+
+        if this.operador == OperadorRelacional.GREATER: 
+            return '>'
+        elif this.operador == OperadorRelacional.LESS: 
+            return '<'
+        elif this.operador == OperadorRelacional.GEQ: 
+            return '>='
+        elif this.operador == OperadorRelacional.LEQ: 
+            return '<='
+        elif this.operador == OperadorRelacional.DEQUAL: 
+            return '=='
+        elif this.operador == OperadorRelacional.DISTINT: 
+            return '!='    
         
