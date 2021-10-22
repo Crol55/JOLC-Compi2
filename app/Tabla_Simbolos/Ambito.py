@@ -1,15 +1,32 @@
 
 #from Tabla_Simbolos.simbolo import simbolo
 from .simbolo import simbolo
+from .simboloC3D import simboloC3D
 from Nativas.Error import Error
 from Export import Output
 
 class Ambito():
-    def __init__(self, ambito_anterior):
+
+    def __init__(self, ambito_anterior): # constructor
+
         self.ambito_anterior = ambito_anterior
         self.variables = {}
         self.functions = {}
         self.structs   = {}
+        # proyecto 2 - Controlar el tamaño actual de variables en el stack
+        self.size = 0 
+        # Para while y for 
+        self.continueLabel = '' 
+        self.breakLabel    = ''
+        # para funciones
+        self.returnLabel    = ''
+
+        if (ambito_anterior != None ):  # Al inicializar jalamos los valores del ambito anterior, excepto si es el ambito global
+            self.size          = ambito_anterior.size 
+            self.continueLabel = ambito_anterior.continueLabel
+            self.breakLabel    = ambito_anterior.breakLabel
+            self.returnLabel   = ambito_anterior.returnLabel
+            
 
     
     def saveVariable(self,id_variable,tipo_variable,valor_variable, alcance):
@@ -44,6 +61,18 @@ class Ambito():
             # El ambito ACTUAL podria ser el global, a pesar de que no se itero ya que era el global
             self.variables[id_variable] = new_simbolo
         return 
+
+
+    def saveVariable_C3D(self,id_variable,tipo_variable, alcance, inHeap:bool ):
+        
+        if id_variable in self.variables.keys():
+            print ("var existente")
+        else: 
+            newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
+            self.size = self.size + 1 
+            self.variables[id_variable] = newSimbolo # Insertamos el nuevo simbolo
+        return self.variables[id_variable] # respondemos con el simbolo asociado
+
 
 
     def getVariable(self, id_variable):

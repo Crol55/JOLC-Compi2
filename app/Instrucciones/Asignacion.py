@@ -7,6 +7,10 @@ from Nativas.Type   import Type
 from Abstractas.Instruccion import Instruccion
 from Nativas.Error import Error
 from Export import Output
+from Tabla_Simbolos.simboloC3D import simboloC3D
+# proyecto2 
+from compiler.Generator import Generator
+from Nativas.ReturnCompiler import ReturnCompiler
 
 class Asignacion(Instruccion):
     def __init__(self, tipoVariable,verifyType, id, value, line, column, nodo):
@@ -58,3 +62,36 @@ class Asignacion(Instruccion):
         print ("********************** FIN PRINTING STRUCT - ASIGNACION **************************") 
         print()
         print()
+
+    def compile(self, ambito:Ambito):
+
+        resultado_exp:ReturnCompiler = self.expresion.compile(ambito)
+
+        if (resultado_exp):
+            aux_gen = Generator() 
+            static_generator = aux_gen.getInstance()
+    
+            # Inicio de asignacion de variables
+            static_generator.add_comment("Asignacion de variables")
+            
+            
+            isStoredInHeap = (resultado_exp.type == (Type.STRING or Type.STRUCT)) 
+            simbolo_creado:simboloC3D = ambito.saveVariable_C3D(self.nombre_variable, resultado_exp.type, self.alcance, isStoredInHeap)
+    
+
+            # Insertar al stack
+            if resultado_exp.type == Type.BOOL: 
+                exit_label = static_generator.generarLabel() 
+                # colocar etiqueta 
+                static_generator.save_label(resultado_exp.trueLabel)
+                static_generator.putIntoStack(simbolo_creado.pos, '1')
+                static_generator.add_goto(exit_label)
+                # colocar 2da etiqueta
+                static_generator.save_label(resultado_exp.falseLabel)
+                static_generator.putIntoStack(simbolo_creado.pos, '0')
+                # Settear la etiqueta de salida
+                static_generator.save_label(exit_label)
+            else: 
+                static_generator.putIntoStack(simbolo_creado.pos, resultado_exp.value)
+        
+        return

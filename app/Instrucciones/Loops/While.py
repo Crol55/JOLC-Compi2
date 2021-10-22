@@ -56,4 +56,8 @@ class While(Instruccion):
             Output.errorSintactico.append( Error("La condicion debe ser tipo BOOL", self.line, self.column) )
         return 
 
+
+    ###################
+    # Proyecto 2
+    ###################
     

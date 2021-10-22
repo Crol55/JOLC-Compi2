@@ -120,24 +120,65 @@ class Print(Instruccion):
         aux_generator = Generator() 
         static_generator = aux_generator.getInstance() 
 
+        static_generator.add_comment("PRINT de datos")
+
         for expresion in self.__arreglo_expresiones__: 
             
             resultado:ReturnCompiler = expresion.compile(ambito)
+            if not resultado: 
+                return None
             #print ("Aja->", resultado.type)
 
             if resultado.type == Type.FLOAT: 
                 static_generator.add_print('f', resultado.value, "float64")
             elif resultado.type == Type.INT: 
                 static_generator.add_print('d', resultado.value)
+
             elif resultado.type == Type.BOOL: 
-                if resultado.value == True:
-                    static_generator.add_print_true() 
-                else: 
-                    static_generator.add_print_false()
+                # Generamos el label de salida
+                exitLabel = static_generator.generarLabel() 
+                # Parte verdadera
+                static_generator.add_label(resultado.trueLabel)
+                static_generator.add_print_true() 
+                static_generator.add_goto(exitLabel) # evitar entrar a la etiqueta false
+                # parte falsa 
+                static_generator.add_label(resultado.falseLabel)
+                static_generator.add_print_false() 
+                static_generator.add_label(exitLabel)# insertamos la etiqueta de salida
+                
             elif resultado.type == Type.NULL:
                 static_generator.add_print("d", -1)
+
             elif resultado.type == Type.CHAR:
-                static_generator.add_print("c", ord(resultado.value) )
+                #print ("quiay}?", resultado.value)
+                static_generator.add_print("c", resultado.value )
+
+            elif (resultado.type == Type.STRING): 
+               
+                # Cargar la funcion nativa a la salida del compilador para asi poder llamarla despues
+                static_generator.load_nativa_printString()
+                # como usaremos una funcion, los valores se deben pasar por medio del STACK
+                # la funcion printString unicamente recibe un parametro que seria cadena, ej -> printString( cadena )
+                print (ambito.size)
+                static_generator.add_comment("Iniciamos impresion de strings")
+                # Almacenar la posicion del stack en donde inicia nuestra funcion printstring()
+                start_of_function = static_generator.addTemporal() # t0
+                static_generator.add_exp(start_of_function, 'SP', ambito.size, '+', " Almacenamos el inicio la funcion ") # t0 = SP + size -> aqui iniciara la funcion
+                # En la primera posicion almacenaremos el valor de retorno de la funcion, por lo que nos movemos una posicion 
+                static_generator.add_comment(" Nos movemos 1 posicion, y aqui sera donde coloquemos el parametro que requiere la funcion printstring()")
+                static_generator.add_exp(start_of_function, start_of_function, '1', '+')
+                static_generator.putIntoStack(start_of_function, resultado.value) 
+
+                # Mover el stack pointer al inicio de la funcion
+                static_generator.add_comment("Inicio de funcion printString()")
+                static_generator.newAmbito(ambito.size) # El stack pointer (SP) decide donde inicia la funcion
+                # llamando a la funcion generada por static_generator.load_nativa_printString()
+                static_generator.callFunction('printString')
+                temp_returnValue = static_generator.addTemporal() 
+                static_generator.getFromStack(temp_returnValue, 'SP') # El valor de retorno estara en la posicion donde ubicamos el stack pointer (SP)
+                # Restaurar el valor del stack pointer
+                static_generator.returnAmbito(ambito.size)
+                
 
         if (self.__newLine__):
             static_generator.add_print('c', 10)
