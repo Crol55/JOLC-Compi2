@@ -51,27 +51,54 @@ class Ambito():
             ambito = self 
             while ambito != None: # Iterar en los ambitos 
 
-                if ambito.ambito_anterior == None: # No iteramos en el ambito global 
-                    break 
+                #if ambito.ambito_anterior == None: # No iteramos en el ambito global 
+                #    break 
                 if id_variable in ambito.variables.keys(): # Ya existe en el diccionario del ambito?
                     ambito.variables[id_variable] = new_simbolo # Si ya existe reescribimos el valor (tipado dinamico)
                     return 
                 ambito = ambito.ambito_anterior # Si no existe, buscamos en un ambito anterior 
+
             # Si no lo encontro en ningun ambito, debemos insertarlo en el ambito ACTUAL 
-            # El ambito ACTUAL podria ser el global, a pesar de que no se itero ya que era el global
             self.variables[id_variable] = new_simbolo
         return 
 
 
-    def saveVariable_C3D(self,id_variable,tipo_variable, alcance, inHeap:bool ):
-        
-        if id_variable in self.variables.keys():
-            print ("var existente")
-        else: 
+    def saveVariable_C3D(self,id_variable,tipo_variable, alcance:str, inHeap:bool ):
+
+        if (alcance == 'local'): # Utiliza el ambito actual..
+            print ("encontre un local")
+            if id_variable in self.variables.keys():
+                print ("var existente")
+                return self.variables[id_variable] # Como ya existe solo la buscamos
+            else: 
+                newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
+                self.size = self.size + 1 
+                self.variables[id_variable] = newSimbolo # Insertamos el nuevo simbolo
+                return newSimbolo 
+        elif (alcance == 'global'):
+            pass 
+        elif (alcance == ''): # Buscar en el ambito actual o en todos los anteriores
+
+            ambito_aux = self # Ambito actual
+            
+            while ambito_aux != None: # Iterar en los ambitos 
+
+                #if ambito_aux.ambito_anterior == None: # No iteramos en el ambito global 
+                #    break 
+                if id_variable in ambito_aux.variables.keys(): # Ya existe en el diccionario del ambito?
+                    newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
+                    self.size = self.size + 1 
+                    ambito_aux.variables[id_variable] = newSimbolo # Si ya existe reescribimos el valor (tipado dinamico)
+                    return 
+                ambito_aux = ambito_aux.ambito_anterior # No vamos al ambito anterior 
+
+            # Si no lo encontro en ningun ambito la variable, debemos insertarlo en el ambito ACTUAL
             newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
             self.size = self.size + 1 
-            self.variables[id_variable] = newSimbolo # Insertamos el nuevo simbolo
-        return self.variables[id_variable] # respondemos con el simbolo asociado
+            self.variables[id_variable] = newSimbolo
+
+        
+        
 
 
 
