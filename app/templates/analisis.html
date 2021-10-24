@@ -2,9 +2,20 @@
 
 {% block body %}
 
+    <!-- Main buttons-->
+    <div class="container">
+        <div class="row"">
+            <div class="col-12 btns">
+                <button class="btn btn-success" onclick="analizar()"> Interpretar </button>
+                <button class="btn btn-danger" onclick="compilar()"> Compilar</button>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+    <!-- Text Areas -->
     <div class="flexbox-container">
         <h2>Input</h2>
-        <button class="btnA" onclick="analizar()">analizar</button>
+    
         <h2>Output</h2>
     </div>
 
@@ -42,9 +53,27 @@
         </div>
         
     </div>
+    <!--  -->
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
+
+        function compilar(){
+            let input_text = document.getElementById('input_textArea');
+            $.ajax({
+                type:'POST', 
+                url:'/compilar_codigo',
+                data: JSON.stringify( {input: input_text.value}), 
+                success: function(data) {
+                    console.log(data);
+                    //window.alert(data.msg);
+                    let output = document.getElementById('output_textArea'); 
+                    output.value = data.msg
+                }, 
+                contentType: 'application/json', 
+                dataType: 'json'
+            });
+        }
 
         function analizar(){
             let input_text = document.getElementById('input_textArea');

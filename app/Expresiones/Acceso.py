@@ -7,6 +7,9 @@ from Tabla_Simbolos.Ambito import *
 # Proyecto 2 
 from Nativas.ReturnCompiler import ReturnCompiler
 from compiler.Generator import Generator
+
+
+
 class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
 
     def __init__(self,identificador:str, line, column):
@@ -42,6 +45,7 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
     def compile(self, ambito:Ambito):
         
         variable_obtenida:simboloC3D = ambito.getVariable(self.identificador)
+
         if (variable_obtenida): 
 
             # Instanciar el traductor
@@ -50,6 +54,7 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
             static_generator.add_comment("ACCESO a variables")
             # Buscar la variable en heap o stack
             if (not variable_obtenida.inHeap): # Buscar la variable en el stack
+
                 print ("search in stack")
                 # Temporal donde almacenaremos el dato obtenido del stack
                 temporal_C3D = static_generator.addTemporal()
@@ -74,9 +79,9 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
                 return ret
 
             else: 
-                print ("Search in heap") # Buscar los datos/variable en el stack
+                print ("Search in heap") # Buscar los datos/variable en el heap
                
-            return None #ReturnCompiler(variable.)
+            return None 
         else: 
             print ("variable inexistente")
         return None 

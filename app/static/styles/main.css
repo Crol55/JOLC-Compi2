@@ -3,7 +3,7 @@ header {
     background-color:darkgoldenrod; 
     text-align: center;
     font-size: 25px;
-    padding: 10px;
+    padding: 20px;
 }
 
 .navbar {
@@ -70,6 +70,12 @@ body {
   margin: 4px 2px;
   cursor: pointer;
     background-color: #008CBA;
+    
+}
+
+.btns {
+    text-align: center;
+    padding: 15px 32px;
     
 }
 

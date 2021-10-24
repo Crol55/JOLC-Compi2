@@ -4,13 +4,14 @@ from Tabla_Simbolos.Ambito import Ambito
 from Nativas.Type import Type
 from Export import Output
 import sys 
-
+# Agregado en proyecto #2
+from compiler.Generator import Generator
 
 app = Flask(__name__)
 
 @app.route("/")
 def root_view():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route('/home')
 def home_view(): 
@@ -19,6 +20,30 @@ def home_view():
 @app.route('/analisis')
 def analisis_view(): 
     return render_template('analisis.html')
+
+
+@app.route('/compilar_codigo', methods=['POST'])
+def compilar_codigo(): 
+
+    juliaCode = request.json['input'] 
+
+    ast = interpretar(juliaCode)
+
+    # area de compilador 
+    newAmbitoGlobal = Ambito(None) # Este funciona como el ambito GLOBAL
+    Generator.C3D_generator = None # Limpiamos para que no se concatenen las instrucciones
+
+    for instruccion in ast: # Aqui se vuelve a generar -> Generator.C3D_generator
+        instruccion.compile(newAmbitoGlobal)
+
+    static_gen = Generator.C3D_generator 
+    if (static_gen): 
+        c3d_code = static_gen.getHeader()
+        print(" =================== Codigo 3 direcciones ===================")
+        print( c3d_code)
+        print ("=================== Fin Codigo 3 direcciones ===================")
+        return {"msg": c3d_code}
+    return {"msg": "Error"}
 
 
 @app.route('/analizar', methods=['POST'])
@@ -92,5 +117,5 @@ def get_report():
 
 
 if __name__ == "__main__":
-    app.run()
-    #app.run( debug=True, port=4000)
+    #app.run()
+    app.run( debug=True, port=4000)
