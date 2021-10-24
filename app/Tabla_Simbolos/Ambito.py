@@ -26,7 +26,8 @@ class Ambito():
             self.continueLabel = ambito_anterior.continueLabel
             self.breakLabel    = ambito_anterior.breakLabel
             self.returnLabel   = ambito_anterior.returnLabel
-            
+
+         
 
     
     def saveVariable(self,id_variable,tipo_variable,valor_variable, alcance):
@@ -63,42 +64,63 @@ class Ambito():
         return 
 
 
-    def saveVariable_C3D(self,id_variable,tipo_variable, alcance:str, inHeap:bool ):
+    def saveVariable_C3D(self, id_variable, tipo_variable, alcance:str, inHeap:bool ):
 
         if (alcance == 'local'): # Utiliza el ambito actual..
-            print ("encontre un local")
+            #print ("encontre un local")
             if id_variable in self.variables.keys():
+
                 print ("var existente")
-                return self.variables[id_variable] # Como ya existe solo la buscamos
+                var_repetida = self.variables[id_variable]
+                var_repetida.tipoSimbolo = tipo_variable    # Por si le cambian el tipo (tipado dinamico)
+                return var_repetida # Como ya existe solo la enviamos
             else: 
                 newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
                 self.size = self.size + 1 
                 self.variables[id_variable] = newSimbolo # Insertamos el nuevo simbolo
                 return newSimbolo 
-        elif (alcance == 'global'):
-            pass 
-        elif (alcance == ''): # Buscar en el ambito actual o en todos los anteriores
 
+        elif (alcance == 'global'): # Ir al ambito global 
+
+            ambito = self  
+            while True: 
+                if (ambito.ambito_anterior == None): # Implica que estamos en el global
+                    if id_variable in self.variables.keys():
+
+                        print ("var existente")
+                        var_repetida = ambito.variables[id_variable]
+                        var_repetida.tipoSimbolo = tipo_variable    # Por si le cambian el tipo (tipado dinamico)
+                        return var_repetida # Como ya existe solo la enviamos
+                    else: 
+                        newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
+                        self.size = self.size + 1 
+                        ambito.variables[id_variable] = newSimbolo # Insertamos el nuevo simbolo
+                        return newSimbolo 
+                ambito = ambito.ambito_anterior
+        
+        elif (alcance == ''): # Buscar en el ambito actual o en todos los anteriores
+            
             ambito_aux = self # Ambito actual
             
             while ambito_aux != None: # Iterar en los ambitos 
+                
+                if id_variable in ambito_aux.variables.keys(): # Si ya existe, solo retornamos el simbolo, pero modificamos su tipo
+                    
+                    var_repetida = ambito_aux.variables[id_variable]
 
-                #if ambito_aux.ambito_anterior == None: # No iteramos en el ambito global 
-                #    break 
-                if id_variable in ambito_aux.variables.keys(): # Ya existe en el diccionario del ambito?
-                    newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
-                    self.size = self.size + 1 
-                    ambito_aux.variables[id_variable] = newSimbolo # Si ya existe reescribimos el valor (tipado dinamico)
-                    return 
+                    # como python lo pasa por referencia, si modificamos, modificamos el simbolo adentro de "self.variables" 
+                    var_repetida.tipoSimbolo = tipo_variable # Por si le cambian el tipo (tipado dinamico)
+                    return var_repetida # Como ya existe solo la enviamos
+
                 ambito_aux = ambito_aux.ambito_anterior # No vamos al ambito anterior 
 
             # Si no lo encontro en ningun ambito la variable, debemos insertarlo en el ambito ACTUAL
             newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
             self.size = self.size + 1 
             self.variables[id_variable] = newSimbolo
+            return newSimbolo
 
-        
-        
+        return None 
 
 
 
