@@ -125,9 +125,10 @@ class Print(Instruccion):
         for expresion in self.__arreglo_expresiones__: 
             
             resultado:ReturnCompiler = expresion.compile(ambito)
+            #print ("Que putasssssssssssssss->", resultado.type)
             if not resultado: 
                 return None
-            #print ("Aja->", resultado.type)
+            
 
             if resultado.type == Type.FLOAT: 
                 static_generator.add_print('f', resultado.value, "float64")
@@ -154,7 +155,7 @@ class Print(Instruccion):
                 static_generator.add_print("c", resultado.value )
 
             elif (resultado.type == Type.STRING): 
-               
+                
                 # Cargar la funcion nativa a la salida del compilador para asi poder llamarla despues
                 static_generator.load_nativa_printString()
                 # como usaremos una funcion, los valores se deben pasar por medio del STACK

@@ -96,7 +96,8 @@ class If(Instruccion): # IF, ELSEIF Y ELSE, tienen un ambito separado
 
             # Colocamos el exitIf -> Solo una vez
             if ( (self.else_or_elseif == None) or (type(self.else_or_elseif) == Sentencia)):
-                static_gen.save_label(self.exitIf)
+                if (self.exitIf != ''):
+                    static_gen.save_label(self.exitIf) 
         else: 
             print ("Error de compilacion en linea: {}, la condicion debe ser BOOL y se obtuvo: {}".format(self.line, condition.type.name))
 

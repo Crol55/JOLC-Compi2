@@ -77,10 +77,11 @@ class Asignacion(Instruccion):
             
             isStoredInHeap = (resultado_exp.type == (Type.STRING or Type.STRUCT)) 
             simbolo_creado:simboloC3D = ambito.saveVariable_C3D(self.nombre_variable, resultado_exp.type, self.alcance, isStoredInHeap)
-    
+            print ("Que tipo trajo", simbolo_creado.tipoSimbolo)
 
             # Insertar al stack
             if resultado_exp.type == Type.BOOL: 
+
                 exit_label = static_generator.generarLabel() 
                 # colocar etiqueta 
                 static_generator.save_label(resultado_exp.trueLabel)
@@ -91,6 +92,7 @@ class Asignacion(Instruccion):
                 static_generator.putIntoStack(simbolo_creado.pos, '0')
                 # Settear la etiqueta de salida
                 static_generator.save_label(exit_label)
+
             else: 
                 static_generator.putIntoStack(simbolo_creado.pos, resultado_exp.value)
         

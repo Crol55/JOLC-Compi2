@@ -5,7 +5,11 @@ from Abstractas.Instruccion import Instruccion
 from Abstractas.Expresion import Expresion
 from Nativas.Error import Error
 from Export import Output
-
+###################
+# Proyecto 2 - clases importadas
+###################
+from Nativas.ReturnCompiler import ReturnCompiler
+from compiler.Generator import Generator
 
 class While(Instruccion): 
     def __init__(self, expresion:Expresion, sentencias, line, column, nodo):
@@ -58,6 +62,34 @@ class While(Instruccion):
 
 
     ###################
-    # Proyecto 2
+    # Proyecto 2 - codigo abajo
     ###################
+
+    def compile(self, ambito):
+        print ("cuantas veces ingresa al while?")
+        temp = Generator() 
+        static_gen = temp.getInstance()
+        # ===== Inicio while 
+        static_gen.add_comment(" INICIO WHILE  ")
+        
+        continueLabel = static_gen.generarLabel()
+        static_gen.save_label(continueLabel)
+        # Crear ambito del while y cargar sus etiquetas
+        new_ambito = Ambito(ambito)
+         
+        condicion:ReturnCompiler = self.condicional.compile(new_ambito) # Etiqueta true y false
+        new_ambito.continueLabel = continueLabel 
+        new_ambito.breakLabel    = condicion.falseLabel
+
+        static_gen.save_label(condicion.trueLabel)
+
+        # codigo a ejecutar adentro del while 
+        
+        self.sentencias.compile(new_ambito)
+        # regresar al inicio del while 
+        static_gen.add_goto(continueLabel)
+        end_label   = condicion.falseLabel
+        static_gen.save_label(end_label)
+        return 
+
     
