@@ -39,7 +39,7 @@
         <div>
             <textarea class="rownr" name="input2" id="" cols="3" rows="25" value="1" readonly></textarea>
             
-            <textarea class="txt" rows="25" cols="50" nowrap="nowrap" wrap="off" readonly id="output_textArea"
+            <textarea class="txt" rows="25" cols="50" nowrap="nowrap" wrap="off" readonly id="output_textArea" #salida_analisis
                 autocomplete="off" autocorrect="off" 
                 autocapitalize="off" spellcheck="false"
                 onclick="selectionchanged(this)" 
@@ -59,7 +59,13 @@
     <script>
 
         function compilar(){
+
+            // limpiamos el textarea de salida 
+            let output = document.getElementById("output_textArea"); 
+                output.value = ""
+               
             let input_text = document.getElementById('input_textArea');
+            
             $.ajax({
                 type:'POST', 
                 url:'/compilar_codigo',
@@ -76,6 +82,10 @@
         }
 
         function analizar(){
+
+            // limpiamos el textarea de salida 
+            let output = document.getElementById("output_textArea"); 
+                output.value = ""
             let input_text = document.getElementById('input_textArea');
             //window.alert(input_text.value);
             $.ajax({

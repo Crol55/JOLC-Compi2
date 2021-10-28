@@ -260,18 +260,34 @@ def p_declareFunction(t):
                        | FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR lista_instrucciones  END SEMICOLON
                        | FUNCTION IDENTIFICADOR LPAR                  RPAR lista_instrucciones  END SEMICOLON
                        | FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR                      END SEMICOLON
+
+                       | FUNCTION IDENTIFICADOR LPAR                  RPAR SUFIX tipo_dato                      END SEMICOLON
+                       | FUNCTION IDENTIFICADOR LPAR                  RPAR SUFIX tipo_dato lista_instrucciones  END SEMICOLON
+                       | FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR SUFIX tipo_dato                      END SEMICOLON
+                       | FUNCTION IDENTIFICADOR LPAR lista_parametros RPAR SUFIX tipo_dato lista_instrucciones  END SEMICOLON
+                       
     '''
     # 9 , 7 , 8, 
     if len(t) == 7:
-        t[0] = Funcion(t[2], [], [], t.lineno(1), t.lexpos(0), None) # Produccion 1
+        t[0] = Funcion(t[2], [], Type.ANY, [], t.lineno(1), t.lexpos(0), None)        # Produccion 1
     elif len(t) == 8:
         if (t.slice[4].type == 'lista_parametros'):
-            t[0] = Funcion(t[2],t[4],[], t.lineno(1), t.lexpos(0), None) # produccion 4
+            t[0] = Funcion(t[2],t[4], Type.ANY, [], t.lineno(1), t.lexpos(0), None)   # produccion 4
         else: 
-            t[0] = Funcion(t[2],[],t[5], t.lineno(1), t.lexpos(0), None) # produccion 3
+            t[0] = Funcion(t[2],[], Type.ANY,t[5], t.lineno(1), t.lexpos(0), None)    # produccion 3
+    elif len(t) == 9: 
+        if (t.slice[4].type == 'lista_parametros'):
+            t[0] = Funcion(t[2],t[4], Type.ANY, t[6], t.lineno(1), t.lexpos(0), None) # produccion 2
+        else: 
+            t[0] = Funcion(t[2], [] , t[6], [], t.lineno(1), t.lexpos(0) )# Produccion 5
+    elif len(t) == 10: 
+        if (t.slice[4].type == 'lista_parametros'):
+            t[0] = Funcion(t[2], t[4] , t[6], [], t.lineno(1), t.lexpos(0) )         # Produccion 7
+        else:
+            t[0] = Funcion(t[2], [] , t[6], t[7], t.lineno(1), t.lexpos(0) )         # Produccion 6
     else:
-        t[0] = Funcion(t[2],t[4],t[6], t.lineno(1), t.lexpos(0), None) # produccion 2
-        #print ("Ingreso con la ultima funcion",t[2], t[6])
+        t[0] = Funcion(t[2], t[4] , t[7], t[8], t.lineno(1), t.lexpos(0) )           # Produccion 8
+
 
 # lista_instrucciones
 def p_lista_instrucciones(t):
@@ -395,6 +411,7 @@ def p_callFunc(t): # Puede llamar a una Funcion o llamar a un struct, ya que se 
     if len(t) == 4: # produccion 1
         t[0] = CallFunction(t[1], [], t.lineno(1), t.lexpos(0), None)  
     else: # Produccion 2
+        print ("Creo que entro a esta damier de funcion jiji", t.lineno(1))
         t[0] = CallFunction(t[1], t[3], t.lineno(1), t.lexpos(0), None) 
 
 # sentencias
@@ -784,6 +801,7 @@ parser = yacc.yacc()
 
 
 def interpretar(input): 
-    #print(input)
+    #print("El input que me enviaron es",input)
+    lex.lex() # Creamos una nueva instancia del lexer para reiniciar el lineno
     return parser.parse(input)
 

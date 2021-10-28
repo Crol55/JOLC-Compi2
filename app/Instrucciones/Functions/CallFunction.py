@@ -1,19 +1,23 @@
 
 from Instrucciones.Structs.InicializarStruct import InicializarStruct
-from Instrucciones.Transferencia.ReturnINST import ReturnINST
 from Nativas.Return import Return
 from Nativas.Type import Type
 from Instrucciones.Functions.Funcion import Funcion
-from Abstractas.Instruccion import Instruccion
+#from Abstractas.Instruccion import Instruccion
+from Abstractas.Expresion import Expresion
 from Tabla_Simbolos.Ambito  import Ambito
 from Nativas.Error import Error
 from Export import Output
+###################
+# Imports PROYECTO 2 - CODIGO DE 3 DIRECCIONES
+###################
+from compiler.Generator import Generator
+from Nativas.ReturnCompiler import ReturnCompiler
 
-
-class CallFunction( Instruccion ): # call struct y call function utilizan la misma clase porque basicamente son lo mismo
+class CallFunction( Expresion ): # call struct y call function utilizan la misma clase porque basicamente son lo mismo
     
     def __init__(self, id, parametros, line, column, node):
-        Instruccion.__init__(self, line, column)
+        Expresion.__init__(self, line, column)
         self.id_funcion = id 
         self.parametros = parametros
 
@@ -72,7 +76,7 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
                         
                         return False #Retornamos False, para que la clase que llamo a la funcion, sepa que hubo un error
 
-            # Si no existe algun return explicito en la funcion, retornar nothing 
+            # Si no existe algun rturn explicito en la funcion, retornar nothing 
             return Return(Type.NULL, None)
         else: 
             return False
@@ -120,5 +124,70 @@ class CallFunction( Instruccion ): # call struct y call function utilizan la mis
             Output.errorSintactico.append( 
                 Error(" El numero de parametros no coincide con la funcion.", self.line, self.column)
             ) 
+
+
+    ###################
+    # PROYECTO 2 - CODIGO DE 3 DIRECCIONES
+    ###################
+
+    def compile(self, ambito:Ambito):
+
+        temp = Generator() 
+        static_gen = temp.getInstance() 
+
+        # ======= Buscamos si es una funcion 
+        prototype_function:Funcion = ambito.getFunction(self.id_funcion)
+
+        if prototype_function != None : 
+
+            static_gen.add_comment(f"Inicio Callfuncion '{self.id_funcion}'")
+            errorMessage = ""
+            # Verificar que almenos tengan la misma cantidad de parametros
+            if (len (prototype_function.parametros) == len (self.parametros)): 
+                
+                if ( len(self.parametros) > 0): 
+                    # Cargar los parametros en el stack 
+                    
+                    memoria_libre_stack = ambito.size + 1                         # El +1 es porque en +0 se coloca el return de la funcion
+                    temporal = static_gen.addTemporal() 
+                    static_gen.add_exp(temporal, 'SP', memoria_libre_stack , '+') # t0 = SP + mem_libre
+
+                    aux = 0
+                    for parametro in self.parametros:
+
+                        aux = aux + 1
+
+                        parametro_compilado:ReturnCompiler = parametro.compile(ambito)
+                        static_gen.putIntoStack(temporal, parametro_compilado.value)
+                        
+                        if (aux != len(self.parametros)):
+                            static_gen.add_exp(temporal, temporal, '1', '+')       # t0 = t0 + 1
+                        
+                # Colocar el type de retorno
+                if (prototype_function.type == Type.ANY): # not valid 
+                    return None 
+                
+                # Colocar el SP en la primera posicion libre del stack 
+                static_gen.newAmbito(ambito.size)
+                # Ejecutamos la funcion 
+                static_gen.callFunction(prototype_function.id)
+                # Retorno tras ejecutar la funcion
+                returnTemp = static_gen.addTemporal() 
+                static_gen.getFromStack(returnTemp, 'SP')  # El valor de retorno siempre esta en SP luego de ejecutar la funcion 
+
+                # Colocar el SP en a la posicion en donde estaba antes libre del stack 
+                static_gen.returnAmbito(ambito.size)
+
+                return ReturnCompiler( returnTemp, prototype_function.type, True)
+            else: 
+                errorMessage = "Error en linea {}: El numero de parametros no coincide con la funcion".format(self.line)
+                print (errorMessage)
+                static_gen.add_comment(errorMessage)
+                return None 
+        else: 
+            print ("Error la funcion no existe")
+
+        # ======= Buscamos si es un struct 
+        return 
 
     

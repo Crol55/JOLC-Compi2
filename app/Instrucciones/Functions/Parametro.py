@@ -1,9 +1,7 @@
 
-
-from Nativas.Return import Return
 from Tabla_Simbolos.Ambito import Ambito
-from Nativas.Type   import Type
 from Abstractas.Instruccion import Instruccion
+
 
 class Parametro(Instruccion):
     def __init__(self, id, tipo, line, column, nodo):
@@ -13,5 +11,11 @@ class Parametro(Instruccion):
         
     
     def execute(self, ambito:Ambito):
-        print ("Alguna vez me ejecuto?")
+        return self # Retorno la clase {id, tipo}
+
+    ###################
+    # PROYECTO 2 - CODIGO DE 3 DIRECCIONES
+    ###################
+    
+    def compile(self, ambito):
         return self # Retorno la clase {id, tipo}

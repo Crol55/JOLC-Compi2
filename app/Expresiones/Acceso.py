@@ -51,18 +51,30 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
             # Instanciar el traductor
             temp = Generator() 
             static_generator = temp.getInstance() 
-            static_generator.add_comment("ACCESO a variables")
-            # Buscar la variable en heap o stack
-            if (not variable_obtenida.inHeap): # Buscar la variable en el stack
 
-                print ("search in stack")
+            static_generator.add_comment("ACCESO a variables")
+            # ==== Buscar la variable en heap o stack ====
+            # Buscar la variable en el stack
+            if (not variable_obtenida.inHeap): 
+
                 # Temporal donde almacenaremos el dato obtenido del stack
                 temporal_C3D = static_generator.addTemporal()
-                static_generator.getFromStack(temporal_C3D, variable_obtenida.pos) 
+
+                # ===== Posicion donde se encuentra la variable en el STACK
+                pos_in_stack = variable_obtenida.pos 
+
+                if (not variable_obtenida.isStoredGlobally): # La accedemos por posicion relativa
+                    pos_in_stack = static_generator.addTemporal() 
+                    static_generator.add_exp(pos_in_stack, 'SP', variable_obtenida.pos, '+', " -> posicion relativa")
+
+                static_generator.getFromStack(temporal_C3D, pos_in_stack) 
+                # ====== 
 
                 if (variable_obtenida.tipoSimbolo != Type.BOOL):
-
+                    
+                    static_generator.add_comment(" FIN ACCESO a variables")
                     return ReturnCompiler(temporal_C3D, variable_obtenida.tipoSimbolo, True)
+                    
                 # tipoSimbolo == Type.BOOL 
                 if self.trueLabel == '':
                     self.trueLabel = static_generator.generarLabel()
@@ -75,12 +87,12 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
                 ret =  ReturnCompiler(None, variable_obtenida.tipoSimbolo, False)
                 ret.trueLabel  = self.trueLabel 
                 ret.falseLabel = self.falseLabel
-
+                static_generator.add_comment(" FIN ACCESO a variables")
                 return ret
 
             else: 
                 print ("Search in heap") # Buscar los datos/variable en el heap
-               
+                print ("y tiene el valor", self.identificador, ":", variable_obtenida.inHeap)
             return None 
         else: 
             print ("variable inexistente")

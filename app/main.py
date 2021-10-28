@@ -50,7 +50,7 @@ def compilar_codigo():
 def analizar():
     
     code = request.json['input']
-    print("Me estoy ejecutando chato", code)
+    #print("Me estoy ejecutando chato", code)
 
     sys.setrecursionlimit(2500)
     newAmbitoGlobal = Ambito(None) # Este funciona como el ambito GLOBAL

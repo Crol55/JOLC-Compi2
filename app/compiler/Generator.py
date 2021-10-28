@@ -11,6 +11,7 @@ class Generator:
         # Lugar donde se almacenara todo el codigo 3 direcciones
         self.codigo_C3D = ""
         self.codigo_funcionesNativas = "" # Almacenara el codigo C3D de las funciones nativas.
+        self.codigo_funciones = ""        # Almacenara el codigo C3D de las funciones declaradas por el usuario
         # Lista de temporales 
         self.listaTemporales = []
         # banderas 
@@ -21,11 +22,14 @@ class Generator:
             'printString': False 
         }
 
+
+
     def addTemporal(self):
         temp = f"t{self.contadorVariablesTemporales}"
         self.contadorVariablesTemporales += 1
         self.listaTemporales.append( temp ) 
         return temp 
+
 
     def getInstance(self): # Aqui se crea o recupera la unica instancia existente de esta clase 'Generator'
         #print ("obteniendo instancia")
@@ -33,15 +37,21 @@ class Generator:
             Generator.C3D_generator = Generator() 
         return Generator.C3D_generator
 
+
     def insertCode(self, code, tab = "\t"): 
 
         if (self.inNativas):
+
             if (self.codigo_funcionesNativas == ''): 
                 self.codigo_funcionesNativas = '/**** FUNCIONES NATIVAS *****/\n' # inicializarlo con un comentario
-
             self.codigo_funcionesNativas += tab + code 
+
         elif(self.inFuncion):
-            pass
+
+            if (self.codigo_funciones == ''): 
+                self.codigo_funciones = "/**** FUNCIONES DECLARADAS ****/\n" # Inicializarlo con un comentario
+            self.codigo_funciones += tab + code 
+                
         else: # default -> inGlobalCode
             self.codigo_C3D += tab + code  
     
@@ -60,7 +70,7 @@ class Generator:
         header += "var stack[30102000] float64;\nvar heap[30102000] float64;\n"
         header += "var SP, H float64;\n"
         # concatenar el codigo 3 direcciones 
-        header += "\n"+self.codigo_funcionesNativas + "\nfunc main(){\n" + self.codigo_C3D + "\n}"
+        header += "\n"+self.codigo_funcionesNativas+"\n" + self.codigo_funciones+ "\n\nfunc main(){\n" + self.codigo_C3D + "\n}"
 
         return header
 
@@ -179,8 +189,16 @@ class Generator:
         instruccion = f"{temp} = {leftVal} {operador} {rightVal}; {comentario}\n"
         self.insertCode(instruccion)
     ###################
-    # Manejo de Ambitos y funciones
+    # Manejo de AMBITOS y FUNCIONES
     ###################
+
+    def addBeginOfFuncion(self, id_funcion:str):
+        self.inFuncion = True
+        self.insertCode(f'func {id_funcion}(){{\n', '') 
+
+    def addEndOfFuncion(self):
+        self.insertCode("return;\n}\n")
+        self.inFuncion = False   
 
     def newAmbito(self, size):
         moveStackPointer = f"SP = SP + {size};\n"

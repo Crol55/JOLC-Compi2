@@ -66,7 +66,7 @@ class While(Instruccion):
     ###################
 
     def compile(self, ambito):
-        print ("cuantas veces ingresa al while?")
+        
         temp = Generator() 
         static_gen = temp.getInstance()
         # ===== Inicio while 
@@ -80,7 +80,7 @@ class While(Instruccion):
         condicion:ReturnCompiler = self.condicional.compile(new_ambito) # Etiqueta true y false
         new_ambito.continueLabel = continueLabel 
         new_ambito.breakLabel    = condicion.falseLabel
-
+        
         static_gen.save_label(condicion.trueLabel)
 
         # codigo a ejecutar adentro del while 

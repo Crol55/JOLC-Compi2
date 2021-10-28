@@ -75,7 +75,7 @@ class Ambito():
                 var_repetida.tipoSimbolo = tipo_variable    # Por si le cambian el tipo (tipado dinamico)
                 return var_repetida # Como ya existe solo la enviamos
             else: 
-                newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
+                newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap, (self.ambito_anterior == None))
                 self.size = self.size + 1 
                 self.variables[id_variable] = newSimbolo # Insertamos el nuevo simbolo
                 return newSimbolo 
@@ -92,7 +92,7 @@ class Ambito():
                         var_repetida.tipoSimbolo = tipo_variable    # Por si le cambian el tipo (tipado dinamico)
                         return var_repetida # Como ya existe solo la enviamos
                     else: 
-                        newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
+                        newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap, True)
                         self.size = self.size + 1 
                         ambito.variables[id_variable] = newSimbolo # Insertamos el nuevo simbolo
                         return newSimbolo 
@@ -115,9 +115,9 @@ class Ambito():
                 ambito_aux = ambito_aux.ambito_anterior # No vamos al ambito anterior 
 
             # Si no lo encontro en ningun ambito la variable, debemos insertarlo en el ambito ACTUAL
-            newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap)
+            newSimbolo = simboloC3D(id_variable, tipo_variable, self.size, inHeap, (self.ambito_anterior == None))
             self.size = self.size + 1 
-            self.variables[id_variable] = newSimbolo
+            self.variables[id_variable] = newSimbolo  # Insertamos el nuevo simbolo
             return newSimbolo
 
         return None 
