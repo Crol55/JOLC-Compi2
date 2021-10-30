@@ -40,7 +40,7 @@ def compilar_codigo():
     if (static_gen): 
         c3d_code = static_gen.getHeader()
         print(" =================== Codigo 3 direcciones ===================")
-        print( c3d_code)
+        #print( c3d_code)
         print ("=================== Fin Codigo 3 direcciones ===================")
         return {"msg": c3d_code}
     return {"msg": "Error"}

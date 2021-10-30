@@ -78,7 +78,7 @@ class Generator:
         self.insertCode("\n")
 
     def add_comment(self, comentario):
-        self.insertCode(f'\n\t/*** {comentario} ***/\n')
+        self.insertCode(f'\t/*** {comentario} ***/\n')
 
     def add_if(self, left, right, op, label):
         self.insertCode(f'if({left} {op} {right}) {{goto {label};}}\n')

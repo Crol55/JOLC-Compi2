@@ -194,6 +194,65 @@ class Ambito():
         return None
 
 
+    def save_Struct_As_Variable_C3D(self, id_variable, alcance, new_simbolo:simboloC3D):
+
+        if ( alcance == 'local'):       # utiliza el ambito actual
+            if ( id_variable in self.variables.keys()):             # Esta repetida 
+                
+                var_repetida = self.variables[id_variable]
+                var_repetida.tipoSimbolo = new_simbolo.tipoSimbolo  # tipado dinamico 
+                return var_repetida
+            else: # Es nueva
+                new_simbolo.pos = self.size                         # lugar en el stack, donde estara este struct
+                self.variables[id_variable] = new_simbolo
+                self.size = self.size + 1                           #Incrementamos el stack pointer
+                return new_simbolo                                  # retorna con 'pos' actualizado
+
+        elif (alcance == 'global'):     # Busca en el ambito global unicamente
+
+            ambito = self  
+            while True: 
+                if (ambito.ambito_anterior == None):        # Implica que estamos en el global
+                    
+                    if id_variable in self.variables.keys():
+                        print ("var existente")
+                        var_repetida = ambito.variables[id_variable]
+                        var_repetida.tipoSimbolo = new_simbolo.tipoSimbolo   # Por si le cambian el tipo (tipado dinamico)
+
+                        return var_repetida # Como ya existe solo la enviamos
+                    else: 
+                        new_simbolo.pos = self.size         #lugar en el stack donde estara este struct
+                        ambito.variables[id_variable] = new_simbolo # Insertamos el nuevo simbolo
+                        self.size = self.size + 1 
+                        
+                        return new_simbolo
+                ambito = ambito.ambito_anterior
+
+        elif (alcance == ''):   # Buscar en el ambito actual o en todos los anteriores
+
+            ambito_aux = self   # Ambito actual
+            
+            while ambito_aux != None: # Iterar en los ambitos 
+                
+                if id_variable in ambito_aux.variables.keys(): # Si ya existe, solo retornamos el simbolo, pero modificamos su tipo
+                    
+                    var_repetida = ambito_aux.variables[id_variable]
+                    # como python lo pasa por referencia, si modificamos, modificamos el simbolo adentro de "self.variables" 
+                    var_repetida.tipoSimbolo = new_simbolo.tipoSimbolo  # Por si le cambian el tipo (tipado dinamico)
+
+                    return var_repetida                                 # Como ya existe solo la enviamos
+
+                ambito_aux = ambito_aux.ambito_anterior # No vamos al ambito anterior 
+
+            # Si no lo encontro en ningun ambito la variable, debemos insertarlo en el ambito ACTUAL
+            
+            new_simbolo.pos = self.size
+            self.variables[id_variable] = new_simbolo  # Insertamos el nuevo struct
+            self.size = self.size + 1                  #Incrementamos el stack pointer
+
+            return new_simbolo 
+
+        return None
 
     def save_Struct_As_Variable(self, id_variable, alcance, new_simbolo):
         

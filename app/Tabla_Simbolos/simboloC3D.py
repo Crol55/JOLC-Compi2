@@ -11,4 +11,8 @@ class simboloC3D():
         self.isStoredGlobally = isStoredGlobally 
 
         self.valorSimbolo = None # El valor ya no se requiere, ahora se utiliza la posicion
+
+        # Exclusivo para structs 
+        self.isMutable = False
+        self.atributos = {}     # El struct maneja multiples atributos
     

@@ -52,6 +52,7 @@ class Primitivo(Expresion):
             return_aux.falseLabel = self.falseLabel
 
             return return_aux
+
         elif (self.tipoDato == Type.STRING):
             
             static_generator.add_comment(" Inicio Strings")
@@ -70,6 +71,7 @@ class Primitivo(Expresion):
             static_generator.add_comment(" Fin Strings")
 
             self.valorPrimitivo = inicio_de_string_en_heap      # t0
+            return ReturnCompiler(self.valorPrimitivo, self.tipoDato, True)
 
         elif (self.tipoDato == Type.CHAR):
             #print ("que valor primirito tiene: ", self.valorPrimitivo)

@@ -140,7 +140,7 @@ class CallFunction( Expresion ): # call struct y call function utilizan la misma
 
         if prototype_function != None : 
 
-            static_gen.add_comment(f"Inicio Callfuncion '{self.id_funcion}'")
+            static_gen.add_comment(f"\n Inicio Callfuncion '{self.id_funcion}'")
             errorMessage = ""
             # Verificar que almenos tengan la misma cantidad de parametros
             if (len (prototype_function.parametros) == len (self.parametros)): 
@@ -163,7 +163,7 @@ class CallFunction( Expresion ): # call struct y call function utilizan la misma
                         if (aux != len(self.parametros)):
                             static_gen.add_exp(temporal, temporal, '1', '+')       # t0 = t0 + 1
                         
-                # Colocar el type de retorno
+                # Verificar el type de retorno
                 if (prototype_function.type == Type.ANY): # not valid 
                     return None 
                 
@@ -184,10 +184,21 @@ class CallFunction( Expresion ): # call struct y call function utilizan la misma
                 print (errorMessage)
                 static_gen.add_comment(errorMessage)
                 return None 
-        else: 
-            print ("Error la funcion no existe")
-
+        
         # ======= Buscamos si es un struct 
+        struct_prototype = ambito.getStruct(self.id_funcion)
+
+        if struct_prototype != None: 
+            newStruct = InicializarStruct(struct_prototype, self.parametros, self.line).compile(ambito)
+            #newStruct.execute(ambito)
+            #print("Que devuelve del struct?:", newStruct)
+            #print (newStruct.IdSimbolo, newStruct.tipoSimbolo, newStruct.isMutable)
+            return newStruct # Al retornarla solo tiene sentido si se utiliza adentro de un parametro, o se iguala a otra variable
+
+        # ======= Si llega aqui implica que no existe 
+        msgError = "Error en linea: {}. La Funcion/Struct no existe".format(self.line)
+        print(msgError)
+        static_gen.add_comment(msgError)
         return 
 
     

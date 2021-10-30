@@ -86,4 +86,13 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
         else: 
             return Return(struct_temp.tipoSimbolo, struct_temp.valorSimbolo)
         #return 
+
+
+
+    ###################
+    # PROYECTO 2 - CODIGO DE 3 DIRECCIONES
+    ###################
+
+    def compile(self, ambito):
+        return None
         
