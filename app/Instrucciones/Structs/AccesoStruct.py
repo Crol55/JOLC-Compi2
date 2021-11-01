@@ -4,6 +4,13 @@ from Nativas.Return import Return
 from Abstractas.Expresion import Expresion
 from Nativas.Error import Error
 from Export import Output
+###################
+# Imports PROYECTO 2 - CODIGO DE 3 DIRECCIONES
+###################
+from compiler.Generator import Generator
+from Nativas.ReturnCompiler import ReturnCompiler
+from Tabla_Simbolos.simboloC3D import simboloC3D
+
 
 
 class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
@@ -12,33 +19,6 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
         Expresion.__init__(self, line, column)
         self.identificador = identificador
         self.lista_idAtributos = lista_atributos #Acceso a variables del struct
-
-
-    def execute(self, ambito):
-        
-        #print ("En que ambito estoy?", ambito.variables)
-        #print ("SIUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", self.identificador, self.id_atributo)
-        struct:simbolo = ambito.getVariable(self.identificador)
-        #print ("SIUUUUU", len (struct.atributos) )
-        if struct != None: 
-            # Buscar los atributos adentro del struct
-            if self.lista_idAtributos in struct.atributos: 
-                
-                atribute_simbolo = struct.atributos[self.lista_idAtributos]
-                #print ("Que saqueeeeeeeeeeee?", atribute_simbolo.tipoSimbolo, atribute_simbolo.valorSimbolo)
-                return Return(atribute_simbolo.tipoSimbolo, atribute_simbolo.valorSimbolo)
-            else: 
-                print ("Error semantico en linea: {}, el atributo: '{}' no existe en la declaracion del Struct.".format(self.line, self.lista_idAtributos))
-                Output.errorSintactico.append(
-                    Error("El atributo: '{}' no existe en la declaracion del Struct.".format(self.lista_idAtributos), self.line, self.column)
-                ) 
-                return False
-        else: 
-            print ("Error semantico: La variable", self.identificador,"no existe")
-            Output.errorSintactico.append(
-                Error("La variable: '{}' no existe.".format(self.identificador), self.line, self.column)
-            ) 
-        return  
 
 
     def printearlo(self, struct:simbolo):
@@ -53,7 +33,7 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
 
 
     def execute(self, ambito):
-        
+        print ("Esta se esta ejecuntando?")
         #print("Aqui viene el momento decisivo", self.lista_idAtributos)
         struct_temp:simbolo = ambito.getVariable(self.identificador)
         #self.printearlo(struct_temp)
@@ -67,14 +47,13 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
             if (struct_temp != None) and (struct_temp.tipoSimbolo == Type.STRUCT):
                 # Buscar adentro del struct la variable -> puede devolver otro struct o una variable normal
                 if nombre_atributo in struct_temp.atributos:
-                    #print("puta madre", struct_temp.atributos)
+                    
                     struct_temp = struct_temp.atributos[nombre_atributo] # Actualizamos struct_temp
-                    #print ("creo que deberia decir ...", struct_temp.IdSimbolo)
+                    
                 else: 
-                    #print ("===========luego de cambiarlo aqui abajo podrias esperar un errror =======================================")
+                    
                     print ("Error semantico en linea: {}, '{}' no es un atributo del struct '{}'".format(self.line, nombre_atributo, struct_temp.IdSimbolo)) 
                     
-                    #print (struct_temp.valorSimbolo.atributos)
                     return None
             else: 
                 print ("Error semantico en linea: {}. '{}' no es un struct".format(self.line, struct_temp.IdSimbolo))
@@ -94,5 +73,36 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
     ###################
 
     def compile(self, ambito):
-        return None
+        
+        auxg = Generator() 
+        static_generator = auxg.getInstance() 
+
+        static_generator.add_comment("=== Inicio Acceso Structs ===")
+
+        # Recuperacion de los valores de un struct 
+        struct_temporal:simboloC3D = ambito.getVariable(self.identificador)
+
+        # Donde se encuentra el struct en el HEAP? 
+        pos_in_heap = static_generator.addTemporal() 
+        static_generator.getFromStack(pos_in_heap, struct_temporal.pos)
+        # ====
+        # En que posicion a partir del inicio del struct se encuentra mi atributo? 
+
+        for nombre_atributo in self.lista_idAtributos:      # la lista puede contener algo como ( Raton.cola.color.atributos...)
+            print ("Atributo a buscar:", nombre_atributo)
+            if (nombre_atributo in struct_temporal.atributos): 
+                
+                struct_temporal = struct_temporal.atributos[nombre_atributo]  # El simbolo puede ser un tipo struct o tipo nativo
+                print ("pos in heap", struct_temporal.pos)
+        
+        # Si llega aqui es porque todo estuvo correcto 
+        # lugar exacto donde se encuentra el atributo
+        static_generator.add_exp(pos_in_heap, pos_in_heap, struct_temporal.pos, '+')
+        # ==
+        # Obtenemos el valor adentro del heap
+        TEMP = static_generator.addTemporal() 
+        static_generator.getFromHeap(TEMP, pos_in_heap) # Aqui se encuentra el atributo 
+        # == 
+        static_generator.add_comment("=== Fin Acceso Structs ===")
+        return ReturnCompiler(TEMP, struct_temporal.tipoSimbolo, True) 
         

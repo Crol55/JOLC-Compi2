@@ -114,21 +114,20 @@ class InicializarStruct():
         #pos_in_stack = ambito.size # posicion vacia del stack, al almacenar el simboloC3D (en la clase asginacionStruct), el puntero del stack(ambito.size) debe cambiar
         #                           # por esa razon no incrementamos aqui a la siguiente posicion....
         
-        TEMP_heapLibre = static_gen.addTemporal()         # t0 
-        static_gen.add_exp(TEMP_heapLibre, 'H','','')     # t0 = H;   -> Posicion donde INICIA el struct 
+        TEMP_heapLibre = static_gen.addTemporal()              # t0 
+        static_gen.add_exp(TEMP_heapLibre, 'H','','')          # t0 = H;   -> Posicion donde INICIA el struct 
 
         heap_index = static_gen.addTemporal()   
-        static_gen.add_exp(heap_index, TEMP_heapLibre,'','') 
+        static_gen.add_exp(heap_index, TEMP_heapLibre,'','')   # t1 = t0;
+
         # Insertar al stack la posicion del heap donde inicia el struct
-        #static_gen.putIntoStack(pos_in_stack, heap_index) # stack[ pos ] = H
-
-
-        new_struct = simboloC3D(self.struct_prototipo.id, Type.STRUCT, TEMP_heapLibre, True, (ambito.ambito_anterior == None) )
-        new_struct.isMutable = self.struct_prototipo.isMutable # True or false
+        #new_struct = simboloC3D(self.struct_prototipo.id, Type.STRUCT, TEMP_heapLibre, True, (ambito.ambito_anterior == None) )
+        #new_struct.isMutable = self.struct_prototipo.isMutable # True or false
           
         # mover el puntero del heap la cantidad de numero de parametros que tenga el struct (para apartar el lugar)
         cantidad_de_params = len (self.struct_prototipo.lista_parametros) 
         static_gen.add_exp('H','H',cantidad_de_params, '+')   # H = H + ( #params)
+        # =====================
 
         # compilar los parametros entrantes y almacenar que posicion tienen respecto a la posicion 0 donde inicia el struct
         posicion_relativa = 0
@@ -145,8 +144,8 @@ class InicializarStruct():
                 if (conta < cantidad_de_params -1):
                     static_gen.add_exp(heap_index, heap_index, 1, '+')              
                 
-                nombre_atributo = parametro_del_prototipo.id
-                new_struct.atributos[nombre_atributo] = simboloC3D(nombre_atributo, parametro_compilado.type, posicion_relativa, True, (ambito.ambito_anterior == None) )
+                #nombre_atributo = parametro_del_prototipo.id
+                #new_struct.atributos[nombre_atributo] = simboloC3D(nombre_atributo, parametro_compilado.type, posicion_relativa, True, (ambito.ambito_anterior == None) )
 
                 posicion_relativa = posicion_relativa + 1
                 conta = conta + 1
@@ -158,8 +157,8 @@ class InicializarStruct():
 
         static_gen.add_comment(" == FIN- Inicializacion de struct ==")
 
-
-        return ReturnCompiler(new_struct, Type.STRUCT, False)
+        
+        return ReturnCompiler(TEMP_heapLibre, Type.STRUCT, True,self.struct_prototipo.id)
         
         
             

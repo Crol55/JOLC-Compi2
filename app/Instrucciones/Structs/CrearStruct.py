@@ -54,13 +54,13 @@ class CrearStruct(Instruccion):
         
         # Antes de almacenar, debemos verificar si existe un tipo de dato compuesto ( no nativo -> ::Actor), 
         # y ese tipo de dato compuesto, hace referencia a otro struct, por lo que debemos verificar que ese otro struct haya sido declarado previamente
-
+        
         temp = Generator()
         static_gen = temp.getInstance()
 
         struct_valido = True
 
-        for parametro in self.lista_parametros: 
+        for parametro in self.lista_parametros: # Solo para verificar si algun campo del struct tiene un dato compuesto (nombre::Actor)
 
             if type(parametro.tipo) == str: #El tipo de dato es un struct (tipo compuesto)
                 

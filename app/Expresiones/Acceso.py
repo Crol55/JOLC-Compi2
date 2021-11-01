@@ -91,9 +91,17 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
                 return ret
 
             else: 
-                print ("Search in heap") # Buscar los datos/variable en el heap
-                print ("y tiene el valor", self.identificador, ":", variable_obtenida.inHeap)
-            return None 
+                print ("Search in heap", variable_obtenida.pos, variable_obtenida.tipoSimbolo) # Buscar los datos/variable en el heap
+                
+                # Temporal donde almacenaremos a que posicion del heap apuntamos desde el stack 
+                temporal_C3D = static_generator.addTemporal()
+                static_generator.getFromStack(temporal_C3D, variable_obtenida.pos)
+
+                
+                static_generator.add_comment(" Fin ACCESO a variables")
+                return ReturnCompiler(temporal_C3D, variable_obtenida.tipoSimbolo, True)
+                # ====== 
+            
         else: 
             print ("variable inexistente")
         return None 

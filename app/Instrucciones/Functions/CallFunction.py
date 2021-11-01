@@ -186,13 +186,13 @@ class CallFunction( Expresion ): # call struct y call function utilizan la misma
                 return None 
         
         # ======= Buscamos si es un struct 
+        
         struct_prototype = ambito.getStruct(self.id_funcion)
 
         if struct_prototype != None: 
-            newStruct = InicializarStruct(struct_prototype, self.parametros, self.line).compile(ambito)
-            #newStruct.execute(ambito)
-            #print("Que devuelve del struct?:", newStruct)
-            #print (newStruct.IdSimbolo, newStruct.tipoSimbolo, newStruct.isMutable)
+
+            newStruct:ReturnCompiler = InicializarStruct(struct_prototype, self.parametros, self.line).compile(ambito)
+            
             return newStruct # Al retornarla solo tiene sentido si se utiliza adentro de un parametro, o se iguala a otra variable
 
         # ======= Si llega aqui implica que no existe 

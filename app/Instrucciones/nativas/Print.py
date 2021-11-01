@@ -7,7 +7,7 @@ from Export import Output
 # proyecto2 
 from compiler.Generator import Generator
 from Nativas.ReturnCompiler import ReturnCompiler
-
+from Instrucciones.Structs.CrearStruct import *
 
 
 class Print(Instruccion): 
@@ -113,9 +113,12 @@ class Print(Instruccion):
         return valoresNormalizados
 
 
-    # ======== El codigo de abajo es para el proyecto 2 - C3D (codigo 3 direcciones)
+    ###################
+    # PROYECTO 2 - CODIGO DE 3 DIRECCIONES
+    ###################
 
-    def compile(self, ambito):
+
+    def compile(self, ambito:Ambito):
         #print("siu")
         aux_generator = Generator() 
         static_generator = aux_generator.getInstance() 
@@ -125,15 +128,15 @@ class Print(Instruccion):
         for expresion in self.__arreglo_expresiones__: 
             
             resultado:ReturnCompiler = expresion.compile(ambito)
-            #print ("Que putasssssssssssssss->", resultado.type)
+            
             if not resultado: 
                 return None
             
 
             if resultado.type == Type.FLOAT: 
-                static_generator.add_print('f', resultado.value, "float64")
+                self.C3D_printFloat(resultado.value)
             elif resultado.type == Type.INT: 
-                static_generator.add_print('d', resultado.value)
+                self.C3D_printInteger(resultado.value)
 
             elif resultado.type == Type.BOOL: 
                 # Generamos el label de salida
@@ -156,33 +159,99 @@ class Print(Instruccion):
 
             elif (resultado.type == Type.STRING): 
                 
-                # Cargar la funcion nativa a la salida del compilador para asi poder llamarla despues
-                static_generator.load_nativa_printString()
-                # como usaremos una funcion, los valores se deben pasar por medio del STACK
-                # la funcion printString unicamente recibe un parametro que seria cadena, ej -> printString( cadena )
-                print (ambito.size)
-                static_generator.add_comment("Iniciamos impresion de strings")
-                # Almacenar la posicion del stack en donde inicia nuestra funcion printstring()
-                start_of_function = static_generator.addTemporal() # t0
-                static_generator.add_exp(start_of_function, 'SP', ambito.size, '+', " Almacenamos el inicio la funcion ") # t0 = SP + size -> aqui iniciara la funcion
-                # En la primera posicion almacenaremos el valor de retorno de la funcion, por lo que nos movemos una posicion 
-                static_generator.add_comment(" Nos movemos 1 posicion, y aqui sera donde coloquemos el parametro que requiere la funcion printstring()")
-                static_generator.add_exp(start_of_function, start_of_function, '1', '+')
-                static_generator.putIntoStack(start_of_function, resultado.value) 
+                self.print_string(resultado.value, ambito)
 
-                # Mover el stack pointer al inicio de la funcion
-                static_generator.add_comment("Inicio de funcion printString()")
-                static_generator.newAmbito(ambito.size) # El stack pointer (SP) decide donde inicia la funcion
-                # llamando a la funcion generada por static_generator.load_nativa_printString()
-                static_generator.callFunction('printString')
-                temp_returnValue = static_generator.addTemporal() 
-                static_generator.getFromStack(temp_returnValue, 'SP') # El valor de retorno estara en la posicion donde ubicamos el stack pointer (SP)
-                # Restaurar el valor del stack pointer
-                static_generator.returnAmbito(ambito.size)
+            elif (resultado.type == Type.STRUCT):
+               
+                print (resultado.tipoCompuesto)
+                self.print_struct(resultado.tipoCompuesto, resultado.value, ambito)
                 
 
         if (self.__newLine__):
             static_generator.add_print('c', 10)
+
+    
+    def C3D_printFloat(self, valor):
+
+        static_generator = Generator.C3D_generator
+        static_generator.add_print('f', valor, "float64")
+    
+    def C3D_printInteger(self, valor):
+
+        static_generator = Generator.C3D_generator
+        static_generator.add_print('d', valor)
+
+    
+    def print_string(self, position_of_string_in_heap, ambito:Ambito):
+
+        static_generator = Generator.C3D_generator
+        # Cargar la funcion nativa a la salida del compilador para asi poder llamarla despues
+        static_generator.load_nativa_printString()
+        # como usaremos una funcion, los valores se deben pasar por medio del STACK
+        # la funcion printString unicamente recibe un parametro que seria cadena, ej -> printString( cadena )
+        print (ambito.size)
+        static_generator.add_comment("Iniciamos impresion de strings")
+        # Almacenar la posicion del stack en donde inicia nuestra funcion printstring()
+        start_of_function = static_generator.addTemporal() # t0
+        static_generator.add_exp(start_of_function, 'SP', ambito.size, '+', " Almacenamos el inicio la funcion ") # t0 = SP + size -> aqui iniciara la funcion
+        # En la primera posicion almacenaremos el valor de retorno de la funcion, por lo que nos movemos una posicion 
+        static_generator.add_comment(" Nos movemos 1 posicion, y aqui sera donde coloquemos el parametro que requiere la funcion printstring()")
+        static_generator.add_exp(start_of_function, start_of_function, '1', '+')
+        static_generator.putIntoStack(start_of_function, position_of_string_in_heap)
+        # Mover el stack pointer al inicio de la funcion
+        static_generator.add_comment("Inicio de funcion printString()")
+        static_generator.newAmbito(ambito.size) # El stack pointer (SP) decide donde inicia la funcion
+        # llamando a la funcion generada por static_generator.load_nativa_printString()
+        static_generator.callFunction('printString')
+        temp_returnValue = static_generator.addTemporal() 
+        static_generator.getFromStack(temp_returnValue, 'SP') # El valor de retorno estara en la posicion donde ubicamos el stack pointer (SP)
+        # Restaurar el valor del stack pointer
+        static_generator.returnAmbito(ambito.size)
+
+    
+    def print_struct(self, struct_name, position_of_struct_in_heap, ambito:Ambito ):
+
+        struct_prototype:CrearStruct = ambito.getStruct( struct_name)
+        static_generator = Generator.C3D_generator
+
+        if (struct_prototype):
+
+            # colocar el nombre del struct -> Actor ()
+            for char in struct_name: 
+                static_generator.add_print('c', ord(char))
+            static_generator.add_print('c', ord('('))
+            # ===
+            print ("donde inicia", position_of_struct_in_heap)
+
+            TEMP_heap_value = static_generator.addTemporal()
+            __comma__ = 0
+
+            for parametro in struct_prototype.lista_parametros:
+                #print ("tipado", parametro.tipo)
+
+                static_generator.getFromHeap(TEMP_heap_value, position_of_struct_in_heap)    
+                # ==
+                if __comma__ > 0: 
+                    static_generator.add_print('c', 44)
+
+                if (parametro.tipo == Type.INT):
+                    
+                    self.C3D_printInteger(TEMP_heap_value)
+
+                elif (parametro.tipo == Type.STRING):
+
+                    self.print_string(TEMP_heap_value, ambito)
+
+                elif (parametro.tipo == Type.STRUCT):
+                    print ("Debo ejecutar esta clase denuevo macho XD")
+
+                static_generator.add_exp(position_of_struct_in_heap, position_of_struct_in_heap, '1', '+') 
+                __comma__ = __comma__ + 1
+            # Colocar parentesis final
+            static_generator.add_print('c', ord(')'))
+
+    
+
                 
 
 

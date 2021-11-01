@@ -72,7 +72,7 @@ class Asignacion(Instruccion):
     def compile(self, ambito:Ambito):
 
         resultado_exp:ReturnCompiler = self.expresion.compile(ambito)
-
+        print ("Que sera?", type(self.expresion))
         if (resultado_exp):
 
             aux_gen = Generator() 
@@ -81,14 +81,14 @@ class Asignacion(Instruccion):
             # Inicio de asignacion de variables
             static_generator.add_comment(" == INICIO Asignacion de variables ==")
             
-            if (resultado_exp.type == Type.STRUCT): 
-                
-                struct_simbolo:simboloC3D = resultado_exp.value 
-                start_of_struct_in_heap = struct_simbolo.pos 
-                stored_struct = ambito.save_Struct_As_Variable_C3D(self.nombre_variable, self.alcance, struct_simbolo)
-                free_pos_in_stack = stored_struct.pos 
+            if (resultado_exp.type == Type.NULL): 
+                print ("alguna puta vez ingreso?")
+                #struct_simbolo:simboloC3D = resultado_exp.value 
+                #start_of_struct_in_heap = struct_simbolo.pos 
+                #stored_struct = ambito.save_Struct_As_Variable_C3D(self.nombre_variable, self.alcance, struct_simbolo)
+                #free_pos_in_stack = stored_struct.pos 
                 # C3D 
-                static_generator.putIntoStack(free_pos_in_stack, start_of_struct_in_heap)
+                #static_generator.putIntoStack(free_pos_in_stack, start_of_struct_in_heap)
             else: 
 
                 isStoredInHeap = (resultado_exp.type == (Type.STRING or Type.STRUCT)) 
