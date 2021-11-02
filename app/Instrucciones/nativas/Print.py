@@ -151,7 +151,9 @@ class Print(Instruccion):
                 static_generator.add_label(exitLabel)# insertamos la etiqueta de salida
                 
             elif resultado.type == Type.NULL:
-                static_generator.add_print("d", -1)
+                for char in "nothing": 
+                    static_generator.add_print('c', ord(char))
+                
 
             elif resultado.type == Type.CHAR:
                 #print ("quiay}?", resultado.value)
@@ -162,7 +164,7 @@ class Print(Instruccion):
                 self.print_string(resultado.value, ambito)
 
             elif (resultado.type == Type.STRUCT):
-               
+                print ("si estoy por imprimir")
                 print (resultado.tipoCompuesto)
                 self.print_struct(resultado.tipoCompuesto, resultado.value, ambito)
                 
@@ -213,7 +215,7 @@ class Print(Instruccion):
 
         struct_prototype:CrearStruct = ambito.getStruct( struct_name)
         static_generator = Generator.C3D_generator
-
+        
         if (struct_prototype):
 
             # colocar el nombre del struct -> Actor ()
@@ -227,7 +229,7 @@ class Print(Instruccion):
             __comma__ = 0
 
             for parametro in struct_prototype.lista_parametros:
-                #print ("tipado", parametro.tipo)
+                print ("tipado", parametro.tipo)
 
                 static_generator.getFromHeap(TEMP_heap_value, position_of_struct_in_heap)    
                 # ==
@@ -242,8 +244,11 @@ class Print(Instruccion):
 
                     self.print_string(TEMP_heap_value, ambito)
 
-                elif (parametro.tipo == Type.STRUCT):
-                    print ("Debo ejecutar esta clase denuevo macho XD")
+                elif (  (parametro.tipo) == Type.STRUCT ):  # parametro.tipo == Type.STRUCT , esta no se cumple por culpa de la clase parametro.py
+
+                    self.print_struct(parametro.tipoCompuesto, TEMP_heap_value, ambito)
+                else: 
+                    print ("se va al else ")
 
                 static_generator.add_exp(position_of_struct_in_heap, position_of_struct_in_heap, '1', '+') 
                 __comma__ = __comma__ + 1

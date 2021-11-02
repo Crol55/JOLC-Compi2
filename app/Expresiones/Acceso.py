@@ -56,7 +56,7 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
             # ==== Buscar la variable en heap o stack ====
             # Buscar la variable en el stack
             if (not variable_obtenida.inHeap): 
-
+                print ("search in stack")
                 # Temporal donde almacenaremos el dato obtenido del stack
                 temporal_C3D = static_generator.addTemporal()
 
@@ -73,7 +73,7 @@ class Acceso(Expresion): # Clase para acceder a la tabla de simbolos
                 if (variable_obtenida.tipoSimbolo != Type.BOOL):
                     
                     static_generator.add_comment(" FIN ACCESO a variables")
-                    return ReturnCompiler(temporal_C3D, variable_obtenida.tipoSimbolo, True)
+                    return ReturnCompiler(temporal_C3D, variable_obtenida.tipoSimbolo, True, variable_obtenida.structType)
                     
                 # tipoSimbolo == Type.BOOL 
                 if self.trueLabel == '':

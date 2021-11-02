@@ -135,18 +135,16 @@ class InicializarStruct():
         for parametro_entrante, parametro_del_prototipo in zip(self.parametros, self.struct_prototipo.lista_parametros): 
             
             parametro_compilado:ReturnCompiler = parametro_entrante.compile(ambito) 
-            
+            print (" A CHINGA =======", parametro_del_prototipo.tipo, parametro_del_prototipo.tipoCompuesto)
             # Verificar que tengan el mismo tipado 
-            if (parametro_compilado.type == (parametro_del_prototipo.tipo or Type.ANY) ): 
-                
+            #print ("comparo:", parametro_compilado.type, parametro_del_prototipo.tipo, parametro_compilado.tipoCompuesto)
+            if ( (parametro_compilado.type == (parametro_del_prototipo.tipo or Type.ANY)) ): #or (parametro_compilado.tipoCompuesto == parametro_del_prototipo.tipo) 
+                print ("Que esta colocando", parametro_compilado.value)
                 static_gen.putIntoHeap(heap_index, parametro_compilado.value)
                 
                 if (conta < cantidad_de_params -1):
                     static_gen.add_exp(heap_index, heap_index, 1, '+')              
-                
-                #nombre_atributo = parametro_del_prototipo.id
-                #new_struct.atributos[nombre_atributo] = simboloC3D(nombre_atributo, parametro_compilado.type, posicion_relativa, True, (ambito.ambito_anterior == None) )
-
+            
                 posicion_relativa = posicion_relativa + 1
                 conta = conta + 1
             
@@ -158,7 +156,7 @@ class InicializarStruct():
         static_gen.add_comment(" == FIN- Inicializacion de struct ==")
 
         
-        return ReturnCompiler(TEMP_heapLibre, Type.STRUCT, True,self.struct_prototipo.id)
+        return ReturnCompiler(TEMP_heapLibre, Type.STRUCT, True, self.struct_prototipo.id)
         
         
             

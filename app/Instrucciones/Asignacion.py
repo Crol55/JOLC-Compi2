@@ -72,7 +72,7 @@ class Asignacion(Instruccion):
     def compile(self, ambito:Ambito):
 
         resultado_exp:ReturnCompiler = self.expresion.compile(ambito)
-        print ("Que sera?", type(self.expresion))
+        print ("Que sera?", type(self.expresion), resultado_exp.value)
         if (resultado_exp):
 
             aux_gen = Generator() 
@@ -81,40 +81,32 @@ class Asignacion(Instruccion):
             # Inicio de asignacion de variables
             static_generator.add_comment(" == INICIO Asignacion de variables ==")
             
-            if (resultado_exp.type == Type.NULL): 
-                print ("alguna puta vez ingreso?")
-                #struct_simbolo:simboloC3D = resultado_exp.value 
-                #start_of_struct_in_heap = struct_simbolo.pos 
-                #stored_struct = ambito.save_Struct_As_Variable_C3D(self.nombre_variable, self.alcance, struct_simbolo)
-                #free_pos_in_stack = stored_struct.pos 
-                # C3D 
-                #static_generator.putIntoStack(free_pos_in_stack, start_of_struct_in_heap)
+
+            isStoredInHeap = (resultado_exp.type == (Type.STRING or Type.STRUCT)) 
+            simbolo_creado:simboloC3D = ambito.saveVariable_C3D(self.nombre_variable, resultado_exp.type, self.alcance, isStoredInHeap, resultado_exp.tipoCompuesto)
+            #print ("Que tipo trajo", simbolo_creado.tipoSimbolo, simbolo_creado.structType)
+            # Insertar al stack
+            pos_in_stack = simbolo_creado.pos 
+            if (not simbolo_creado.isStoredGlobally): 
+                pos_in_stack = static_generator.addTemporal() 
+                static_generator.add_exp(pos_in_stack, 'SP', simbolo_creado.pos, '+', "    -> Posicion relativa")
+
+            if resultado_exp.type == Type.BOOL: 
+                exit_label = static_generator.generarLabel() 
+                # colocar etiqueta 
+                static_generator.save_label(resultado_exp.trueLabel)
+                static_generator.putIntoStack(pos_in_stack, '1')
+                static_generator.add_goto(exit_label)
+                # colocar 2da etiqueta
+                static_generator.save_label(resultado_exp.falseLabel)
+                static_generator.putIntoStack(pos_in_stack, '0')
+                # Settear la etiqueta de salida
+                static_generator.save_label(exit_label)
+
+            elif resultado_exp.type == Type.NULL: 
+                static_generator.putIntoStack(pos_in_stack, '-1')
+                
             else: 
-
-                isStoredInHeap = (resultado_exp.type == (Type.STRING or Type.STRUCT)) 
-                simbolo_creado:simboloC3D = ambito.saveVariable_C3D(self.nombre_variable, resultado_exp.type, self.alcance, isStoredInHeap)
-                #print ("Que tipo trajo", simbolo_creado.tipoSimbolo)
-
-                # Insertar al stack
-                pos_in_stack = simbolo_creado.pos 
-                if (not simbolo_creado.isStoredGlobally): 
-                    pos_in_stack = static_generator.addTemporal() 
-                    static_generator.add_exp(pos_in_stack, 'SP', simbolo_creado.pos, '+', "    -> Posicion relativa")
-
-                if resultado_exp.type == Type.BOOL: 
-
-                    exit_label = static_generator.generarLabel() 
-                    # colocar etiqueta 
-                    static_generator.save_label(resultado_exp.trueLabel)
-                    static_generator.putIntoStack(pos_in_stack, '1')
-                    static_generator.add_goto(exit_label)
-                    # colocar 2da etiqueta
-                    static_generator.save_label(resultado_exp.falseLabel)
-                    static_generator.putIntoStack(pos_in_stack, '0')
-                    # Settear la etiqueta de salida
-                    static_generator.save_label(exit_label)
-
-                else: 
-                    static_generator.putIntoStack(pos_in_stack, resultado_exp.value)
+                static_generator.putIntoStack(pos_in_stack, resultado_exp.value)
         
         return

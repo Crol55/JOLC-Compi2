@@ -10,7 +10,7 @@ from Export import Output
 from compiler.Generator import Generator
 from Nativas.ReturnCompiler import ReturnCompiler
 from Tabla_Simbolos.simboloC3D import simboloC3D
-
+from Instrucciones.Structs.CrearStruct import *
 
 
 class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
@@ -18,7 +18,7 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
     def __init__(self,identificador:str, lista_atributos, line, column, node):
         Expresion.__init__(self, line, column)
         self.identificador = identificador
-        self.lista_idAtributos = lista_atributos #Acceso a variables del struct
+        self.lista_idAtributos = lista_atributos #Acceso a atributos del struct
 
 
     def printearlo(self, struct:simbolo):
@@ -72,37 +72,67 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
     # PROYECTO 2 - CODIGO DE 3 DIRECCIONES
     ###################
 
-    def compile(self, ambito):
+    def compile(self, ambito:Ambito):
         
         auxg = Generator() 
         static_generator = auxg.getInstance() 
 
         static_generator.add_comment("=== Inicio Acceso Structs ===")
 
-        # Recuperacion de los valores de un struct 
+        # ============== ACCESO A STRUCT
         struct_temporal:simboloC3D = ambito.getVariable(self.identificador)
-
-        # Donde se encuentra el struct en el HEAP? 
-        pos_in_heap = static_generator.addTemporal() 
-        static_generator.getFromStack(pos_in_heap, struct_temporal.pos)
-        # ====
-        # En que posicion a partir del inicio del struct se encuentra mi atributo? 
-
-        for nombre_atributo in self.lista_idAtributos:      # la lista puede contener algo como ( Raton.cola.color.atributos...)
-            print ("Atributo a buscar:", nombre_atributo)
-            if (nombre_atributo in struct_temporal.atributos): 
-                
-                struct_temporal = struct_temporal.atributos[nombre_atributo]  # El simbolo puede ser un tipo struct o tipo nativo
-                print ("pos in heap", struct_temporal.pos)
+        # ==============
         
-        # Si llega aqui es porque todo estuvo correcto 
-        # lugar exacto donde se encuentra el atributo
-        static_generator.add_exp(pos_in_heap, pos_in_heap, struct_temporal.pos, '+')
-        # ==
-        # Obtenemos el valor adentro del heap
-        TEMP = static_generator.addTemporal() 
-        static_generator.getFromHeap(TEMP, pos_in_heap) # Aqui se encuentra el atributo 
-        # == 
-        static_generator.add_comment("=== Fin Acceso Structs ===")
-        return ReturnCompiler(TEMP, struct_temporal.tipoSimbolo, True) 
+        if ( (struct_temporal != None) and (struct_temporal.tipoSimbolo == Type.STRUCT) ): 
+
+            print ("Angora??????", struct_temporal.structType)
+
+            # ===== Donde se encuentra el struct en el HEAP? 
+            pos_in_heap = static_generator.addTemporal() 
+            static_generator.getFromStack(pos_in_heap, struct_temporal.pos)
+            # =====
+
+            # En que posicion a partir del inicio del struct se encuentra mi atributo? 
+            
+            struct_name = struct_temporal.structType # reusable
+            pos_of_struct_in_heap = pos_in_heap      # reusable
+            parametro_coincidente:Parametro = None   # reusable
+
+            for atributo in self.lista_idAtributos: # cada vez que entre aqui, debe recorrer con un struct sino es un error..
+                
+                #print (atributo, struct_name, pos_of_struct_in_heap)
+                struct_prototype:CrearStruct= ambito.getStruct( struct_name)
+                if (struct_prototype == None):
+                    print (f"Error el atributo {atributo} no esta asociado con un struct")
+                    return None
+
+                pos_counter = 0
+                parametro_coincidente = None
+                for parametro in struct_prototype.lista_parametros:
+                    if (parametro.id == atributo):
+                        #print ("hora de la verga..",parametro.id, parametro.tipoCompuesto)
+                        parametro_coincidente = parametro
+                        break
+                    pos_counter += 1
+
+                if (parametro_coincidente == None): 
+                    print (f"Error el atributo {atributo} no existe")
+                    return None 
+                
+                static_generator.add_exp(pos_of_struct_in_heap, pos_of_struct_in_heap, pos_counter, '+', f' -> atributo "{atributo}"')
+                static_generator.getFromHeap(pos_of_struct_in_heap, pos_of_struct_in_heap)
+
+                # si reiteramos (tiene mas atributos) 
+                #print ("hora de la verga 2..",parametro_coincidente.id, parametro_coincidente.tipoCompuesto)
+                struct_name = parametro_coincidente.tipoCompuesto
+
+            ## == 
+            static_generator.add_comment("=== Fin Acceso Structs ===")
+            print ("aver:",pos_of_struct_in_heap, parametro_coincidente.tipo, True, parametro_coincidente.tipoCompuesto)
+            return ReturnCompiler(pos_of_struct_in_heap, parametro_coincidente.tipo, True, parametro_coincidente.tipoCompuesto) 
+
+        else: 
+            msgError = "Error al compilar la linea: {}, La variable: {}, no es un struct/No existe".format(self.line, self.identificador)
+            print (msgError)
+            static_generator.add_comment(msgError)
         

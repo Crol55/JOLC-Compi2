@@ -1,6 +1,6 @@
 
 
-from Instrucciones.Functions.Parametro import Parametro
+from Instrucciones.Functions.Parametro import *
 from Tabla_Simbolos.Ambito import Ambito
 from Abstractas.Instruccion import Instruccion
 from Nativas.Error import Error
@@ -9,6 +9,8 @@ from Export import Output
 # Imports PROYECTO 2 - CODIGO DE 3 DIRECCIONES
 ###################
 from compiler.Generator import Generator
+
+
 
 class CrearStruct(Instruccion):
     
@@ -62,11 +64,15 @@ class CrearStruct(Instruccion):
 
         for parametro in self.lista_parametros: # Solo para verificar si algun campo del struct tiene un dato compuesto (nombre::Actor)
 
-            if type(parametro.tipo) == str: #El tipo de dato es un struct (tipo compuesto)
+            parametro_compilado:Parametro = parametro.compile(ambito)
+
+            # Si el tipo_dato del parametro es otro struct, este debe existir previamente...
+            if  parametro_compilado.tipo == Type.STRUCT: #El tipo de dato es un struct (tipo compuesto)
                 
-                struct_referencia = ambito.getStruct(parametro.tipo) 
+                struct_referencia = ambito.getStruct(parametro_compilado.tipoCompuesto) 
+
                 if ( not struct_referencia): 
-                    msgError = "Error en linea: {}, el tipo de dato compuesto: '{}' NO existe.".format(parametro.line, parametro.tipo)
+                    msgError = "Error en linea: {}, el tipo de dato compuesto: '{}' NO existe.".format(parametro_compilado.line, parametro_compilado.tipoCompuesto)
                     print( msgError)
                     static_gen.add_comment(msgError)
                     struct_valido = False
