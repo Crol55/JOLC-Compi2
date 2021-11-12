@@ -72,7 +72,7 @@ class Asignacion(Instruccion):
     def compile(self, ambito:Ambito):
 
         resultado_exp:ReturnCompiler = self.expresion.compile(ambito)
-        print ("Que sera?", type(self.expresion), resultado_exp.value)
+        #print ("Que sera?", type(self.expresion), resultado_exp.value)
         if (resultado_exp):
 
             aux_gen = Generator() 

@@ -19,7 +19,9 @@ class Generator:
         self.inFuncion = False
         # Lista de funciones nativas ya implementadas
         self.listaNativas = { # Se inicializan en false para no duplicar el codigo
-            'printString': False 
+            'printString': False, 
+            'potenciaNumerica': False, 
+            'potenciaString': False 
         }
 
 
@@ -91,7 +93,7 @@ class Generator:
         self.insertCode("func "+functionName+ "(){\n", "")
 
     def setFuntionEnd(self):
-        self.insertCode("return;\n}")
+        self.insertCode("return;\n}\n")
 
     ###################
     # LABELS
@@ -117,7 +119,7 @@ class Generator:
         # Verificar que no carguemos 2 veces la funcion nativa 
         function_name = "printString"
         already_loaded = self.listaNativas[function_name]
-
+        
         if (not already_loaded):
 
             self.listaNativas[function_name] = True 
@@ -155,6 +157,137 @@ class Generator:
             self.setFuntionEnd() 
             self.inNativas = False
             # Insertar la cabecera de la funcion
+
+    def load_nativa_potenciaNumerica(self):   # 2 parametros, base  y exponente
+        # Verificar que no carguemos 2 veces la funcion nativa 
+        function_name = "potenciaNumerica"
+        already_loaded = self.listaNativas[function_name]
+
+        if (not already_loaded):
+
+            self.listaNativas[function_name] = True 
+            self.inNativas = True # Para que el codigo se inserte en el string de nativas 
+
+            # set inicio de funcion 
+            self.setFunctionHeader(function_name)
+
+            # codigo interno de la funcion nativa
+            SP_index = self.addTemporal() # t0
+            self.add_exp(SP_index, 'SP', '1', '+', ' -> Base') # t0 = SP +1
+            # param 1 -> base 
+            param1 = self.addTemporal() # BASE 
+            self.getFromStack(param1, SP_index)    # param1 = stack[t0] 
+            # Param2 -> exponente
+            self.add_exp(SP_index, 'SP', '2', '+', "-> Exponente") # t0 = SP + 2
+            param2 = self.addTemporal() # EXPONENTE
+            self.getFromStack(param2, SP_index)    # param2 = stack[t0] 
+            # cargar resultado y contador
+            # resultado
+            resultado = self.addTemporal() 
+            self.add_exp(resultado, '1', '', '')
+            # contador
+            contador = self.addTemporal() 
+            self.add_exp(contador, '0', '', '')
+            # WHILE para multiplicar por si mismo la base, n cantidad de veces, donde n -> exponente 
+            init = self.generarLabel()
+            self.save_label(init) 
+            fin  = self.generarLabel() 
+
+            self.add_if(contador, param2, '>=',fin) 
+            # codigo para multiplicar 
+            self.add_exp(resultado, resultado, param1,'*')
+
+            self.add_exp(contador, contador, '1', '+')
+            self.add_goto(init)
+            # fin de while
+            self.save_label(fin)
+            self.putIntoStack('SP', resultado)
+
+            self.setFuntionEnd() 
+            self.inNativas = False
+
+
+    def load_nativa_potenciaString (self):
+       # Verificar que no carguemos 2 veces la funcion nativa 
+        function_name = "potenciaString"
+        already_loaded = self.listaNativas[function_name]
+
+        if (not already_loaded):
+
+            self.listaNativas[function_name] = True 
+            self.inNativas = True # Para que el codigo se inserte en el string de nativas 
+
+            # set inicio de funcion 
+            self.setFunctionHeader(function_name)
+
+            # codigo interno de la funcion nativa
+            SP_index = self.addTemporal() # t0
+            self.add_exp(SP_index, 'SP', '1', '+', ' -> Base') # t0 = SP +1
+
+            # param 1 -> base(string) 
+            param1 = self.addTemporal() # BASE 
+            self.getFromStack(param1, SP_index)    # param1 = stack[t0] 
+
+            # Param2 -> exponente
+            self.add_exp(SP_index, 'SP', '2', '+', "-> Exponente") # t0 = SP + 2
+            param2 = self.addTemporal() # EXPONENTE
+            self.getFromStack(param2, SP_index)    # param2 = stack[t0] 
+            
+            # contador
+            contador = self.addTemporal() 
+            self.add_exp(contador, '0', '', '')
+            # Inicio de nuevo string en heap 
+            start_of_new_string = self.addTemporal() 
+            self.add_exp(start_of_new_string, 'H','','')
+
+            # WHILE para exponente 
+            init = self.generarLabel()
+            self.save_label(init) 
+            fin  = self.generarLabel() 
+
+            self.add_if(contador, param2, '>=',fin) 
+
+            # codigo para exponente de cadena
+            heap_iterator = self.addTemporal() 
+            self.add_exp(heap_iterator, param1,'','')
+            # WHILE2 para iterar el heap 
+            init2 = self.generarLabel()
+            self.save_label(init2) 
+            fin2  = self.generarLabel() 
+
+            # char value === 
+            char_temp = self.addTemporal()
+            self.getFromHeap(char_temp, heap_iterator)
+
+            # verificar si no es fin de cadena 
+            self.add_if(char_temp, '-1', '==', fin2)
+
+            # si no es fin de cadena, lo copiamos en una nueva posicion de heap libre
+            #self.add_print('c', char_temp)
+            self.putIntoHeap('H', char_temp) 
+            self.increaseHeapPointer()
+            self.add_exp(heap_iterator, heap_iterator, '1', '+')
+
+            self.add_goto(init2)
+            self.save_label(fin2)
+            # fin WHILE2
+
+            #Incremento de contadores
+            self.add_exp(contador, contador, '1', '+')
+            self.add_goto(init)
+
+            # fin de while
+            self.save_label(fin)
+            # colocar fin de cadena 
+            self.putIntoHeap('H', '-1')
+            self.increaseHeapPointer() 
+
+            # return value
+            self.putIntoStack('SP', start_of_new_string)
+
+            self.setFuntionEnd() 
+            self.inNativas = False
+     
 
 
     ###################

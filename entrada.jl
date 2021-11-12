@@ -49,7 +49,7 @@
 #println( true && true && (50 && 70 && 80));
 
 #val1 = 10*25-7;
-val2 = 0;
+#val2 = 0;
 #println(val1);
 #println(val2);
 #println("");
@@ -65,5 +65,40 @@ val2 = 0;
 
 #val2 = val1;
 
-while (val2 < 2)
+#while (val2 < 2)
+#end;
+
+local val = 1;
+
+#println(val);
+local val = "hi"; 
+val2 = 10;
+val2 = "jiji";
+println(val);
+println(val2);
+
+global xx = 25;
+
+if (xx == 25)
+    local x = 1; 
+    xx = 30;
 end;
+
+print(xx);
+
+ # =====================
+
+ struct Actor
+    nombre:: String;
+    edad:: Int64;
+end;
+
+struct Contrato 
+    actor::Actor;
+end;
+
+carl = Contrato( Actor("carlos", 28) );
+
+println(  carl.actor.edad, carl.actor.nombre );
+#println( carl);
+

@@ -189,6 +189,9 @@ class Aritmeticas(Expresion):
     # El codigo de abajo es para el proyecto 2 - C3D (codigo 3 direcciones)
     ##########
     def compile(self, ambito):
+
+        aux_generator = Generator() 
+        static_generator = aux_generator.getInstance() 
         
         valorIzquierdo = self.leftExpression.compile(ambito)
         valorDerecho = self.rightExpression.compile(ambito)
@@ -196,18 +199,50 @@ class Aritmeticas(Expresion):
         if (valorIzquierdo != None and valorDerecho != None): 
 
             tipo_resultante = self.validar_operacion_aritmetica(valorIzquierdo.type, valorDerecho.type, self.operador) 
-            #print ("El tipo seria", tipo_resultante)
+            #print ("El tipo seria ====================", tipo_resultante)
             if (tipo_resultante): 
                 
-                aux_generator = Generator() 
-                static_generator = aux_generator.getInstance() 
-                # Crear el valor tempral para las variables 
-                varTemp = static_generator.addTemporal()        
-                op = self.op_to_string( self.operador)
+                if (self.operador == Operador.POT):
+                    print ("este es un codigo 3 direcciones distinto", tipo_resultante)
 
-                static_generator.add_exp(varTemp, valorIzquierdo.value, valorDerecho.value, op)
-                #print (static_generator.codigo_C3D)
-                return ReturnCompiler( varTemp, tipo_resultante, True)
+                    # Cargar parametros base y exponente
+                    temp = static_generator.addTemporal() 
+                    static_generator.add_exp(temp, 'SP', ambito.size, '+') 
+                    # parametro base 
+                    static_generator.add_exp(temp, temp, '1', '+') 
+                    static_generator.putIntoStack(temp, valorIzquierdo.value)
+
+                    # parametro exponente 
+                    static_generator.add_exp(temp, temp, '1', '+') 
+                    static_generator.putIntoStack(temp, valorDerecho.value)
+
+                    # Mover el stack pointer, temporalmente 
+                    static_generator.newAmbito(ambito.size) 
+
+                    if tipo_resultante == Type.STRING: 
+                        print (valorIzquierdo.value)
+                        static_generator.load_nativa_potenciaString()
+                        static_generator.callFunction('potenciaString')
+                    else: 
+                        static_generator.load_nativa_potenciaNumerica()  
+                        static_generator.callFunction('potenciaNumerica')
+
+                    # recuperar el resultado 
+                    resultado = static_generator.addTemporal() 
+                    static_generator.getFromStack(resultado, 'SP')
+
+                    # Regresar el stack pointer a donde estaba antes
+                    static_generator.returnAmbito(ambito.size)
+                    return ReturnCompiler(resultado, tipo_resultante, True)
+
+                else:
+                    # Crear el valor tempral para las variables 
+                    varTemp = static_generator.addTemporal()        
+                    op = self.op_to_string( self.operador)
+
+                    static_generator.add_exp(varTemp, valorIzquierdo.value, valorDerecho.value, op)
+                    #print (static_generator.codigo_C3D)
+                    return ReturnCompiler( varTemp, tipo_resultante, True)
         return None 
 
     def validar_operacion_aritmetica(self, left_type, right_type, op):
@@ -260,6 +295,21 @@ class Aritmeticas(Expresion):
                 return Type.FLOAT
             else: 
                 print("Error Sintactico en linea {}:, no se puede dividir {} con {}.".format(self.line, left_type, right_type) ) 
+        elif (op == Operador.POT):
+
+            if (  left_type == Type.FLOAT  and right_type == (Type.INT or Type.FLOAT) ):
+                return Type.FLOAT
+            elif (left_type == Type.INT  and right_type == (Type.INT)):
+                return Type.INT
+            elif (left_type == Type.INT  and right_type == (Type.FLOAT)):
+                return Type.FLOAT
+            elif (left_type == Type.STRING  and right_type == (Type.INT)):
+                return Type.STRING
+            else: 
+                msgError = "Error Sintactico en linea {}:, no se puede realizar la potencia de {} con {}.".format(self.line, left_type, right_type)
+                static_gen = Generator.C3D_generator
+                static_gen.add_comment(msgError)
+                print(msgError)
 
         return None # Si llega aqui, implica que hubo un error 
 
