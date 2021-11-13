@@ -85,11 +85,14 @@ class Funcion(Instruccion):
         # Guardamos los parametros en el nuevo ambito (Deben tener tipo de dato los parametros )
         # Se pueden manejar sin tipo de dato, pero es mas complejo el codigo 3 direcciones, y el auxiliar dijo que todo vendria tipado
         for parametro  in self.parametros: 
-            #print ("Cual es el type?:", parametro.tipo)
+            print ("Cual es el type?:", parametro.tipo)
             if parametro.tipo != Type.ANY :
                 
                 storedInHeap = parametro.tipo == (Type.STRING or Type.STRUCT)
-                new_ambito.saveVariable_C3D(parametro.id, parametro.tipo, 'local', storedInHeap )
+                if( type(parametro.tipo) == str): 
+                    new_ambito.saveVariable_C3D(parametro.id, Type.STRUCT, 'local', storedInHeap, parametro.tipo ) 
+                else: 
+                    new_ambito.saveVariable_C3D(parametro.id, parametro.tipo, 'local', storedInHeap )
             else:
                 errorMsg = "Error en la linea: {}, Los parametros deben tener tipo de dato (::Int64)".format(self.line)
                 static_gen.add_comment(errorMsg)

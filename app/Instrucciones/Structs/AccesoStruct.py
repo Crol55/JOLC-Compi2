@@ -82,10 +82,10 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
         # ============== ACCESO A STRUCT
         struct_temporal:simboloC3D = ambito.getVariable(self.identificador)
         # ==============
-        
+        #print ("encontro esta mierda ====================", struct_temporal.tipoSimbolo)
         if ( (struct_temporal != None) and (struct_temporal.tipoSimbolo == Type.STRUCT) ): 
 
-            print ("Angora??????", struct_temporal.structType)
+            #print ("Angora??????", struct_temporal.structType)
 
             # ===== Donde se encuentra el struct en el HEAP? 
             pos_in_heap = static_generator.addTemporal() 
@@ -100,7 +100,7 @@ class AccesoStruct(Expresion): # Clase para acceder a la tabla de simbolos
 
             for atributo in self.lista_idAtributos: # cada vez que entre aqui, debe recorrer con un struct sino es un error..
                 
-                #print (atributo, struct_name, pos_of_struct_in_heap)
+                print ("porque das tanto clavo =======",atributo, struct_name, pos_of_struct_in_heap)
                 struct_prototype:CrearStruct= ambito.getStruct( struct_name)
                 if (struct_prototype == None):
                     print (f"Error el atributo {atributo} no esta asociado con un struct")

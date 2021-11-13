@@ -199,12 +199,11 @@ class Aritmeticas(Expresion):
         if (valorIzquierdo != None and valorDerecho != None): 
 
             tipo_resultante = self.validar_operacion_aritmetica(valorIzquierdo.type, valorDerecho.type, self.operador) 
-            #print ("El tipo seria ====================", tipo_resultante)
+            print ("El tipo seria ====================", tipo_resultante)
             if (tipo_resultante): 
                 
                 if (self.operador == Operador.POT):
-                    print ("este es un codigo 3 direcciones distinto", tipo_resultante)
-
+            
                     # Cargar parametros base y exponente
                     temp = static_generator.addTemporal() 
                     static_generator.add_exp(temp, 'SP', ambito.size, '+') 
@@ -238,9 +237,55 @@ class Aritmeticas(Expresion):
                 else:
                     # Crear el valor tempral para las variables 
                     varTemp = static_generator.addTemporal()        
-                    op = self.op_to_string( self.operador)
+                    
+                    # comprobacion dinamica en division, divisor != 0
+                    if (self.operador == Operador.DIV):
+                        
+                        if ( valorDerecho.isTemp == False and valorIzquierdo.isTemp == False): # Esto es porque GO no puede operar 10/20 y retornar el valor correcto
+                            TEMP_divisor = static_generator.addTemporal() 
+                            static_generator.add_exp(TEMP_divisor, valorDerecho.value, '','', "Evitar que GO calcule erroneamente con float64")  
+                            valorDerecho.value = TEMP_divisor
+                        
+                        LABEL_validOperation = static_generator.generarLabel() 
+                        static_generator.add_if(valorDerecho.value, '0', '!=', LABEL_validOperation)
+                        # matherror 
+                        for char in "MathError": 
+                            static_generator.add_print('c', ord(char), "int", "\t\t")
+                        # no realizar la operacion
+                        LABEL_noOperation = static_generator.generarLabel()
+                        static_generator.add_exp(varTemp, '0', '', '') # res = 0
+                        static_generator.add_goto(LABEL_noOperation)
+                        # Parte donde se deberia realizar la operacion
+                        static_generator.save_label(LABEL_validOperation)
+                        op = self.op_to_string( self.operador)
+                        static_generator.add_exp(varTemp, valorIzquierdo.value, valorDerecho.value, op)
+                        #salida
+                        static_generator.save_label(LABEL_noOperation)
 
-                    static_generator.add_exp(varTemp, valorIzquierdo.value, valorDerecho.value, op)
+                    elif (self.operador == Operador.MOD):
+                        
+                        static_generator.GOlangImports['math'] = True
+
+                        LABEL_validOperation = static_generator.generarLabel() 
+                        static_generator.add_if(valorDerecho.value, '0', '!=', LABEL_validOperation)
+                        # matherror 
+                        for char in "MathError": 
+                            static_generator.add_print('c', ord(char), "int", "\t\t")
+                        # no realizar la operacion
+                        LABEL_noOperation = static_generator.generarLabel()
+                        static_generator.add_exp(varTemp, '0', '', '') # res = 0
+                        static_generator.add_goto(LABEL_noOperation)
+                        # Parte donde se deberia realizar la operacion
+                        static_generator.save_label(LABEL_validOperation)
+                        static_generator.add_math_mod(varTemp, valorIzquierdo.value, valorDerecho.value)
+                        #salida
+                        static_generator.save_label(LABEL_noOperation)
+
+                        
+
+                    else: 
+                        op = self.op_to_string( self.operador)
+                        static_generator.add_exp(varTemp, valorIzquierdo.value, valorDerecho.value, op)
                     #print (static_generator.codigo_C3D)
                     return ReturnCompiler( varTemp, tipo_resultante, True)
         return None 
@@ -310,6 +355,19 @@ class Aritmeticas(Expresion):
                 static_gen = Generator.C3D_generator
                 static_gen.add_comment(msgError)
                 print(msgError)
+        elif (op == Operador.MOD):
+            if left_type == Type.INT and right_type == Type.INT: # ENTERO, ENTERO
+                return Type.INT
+            elif left_type == Type.FLOAT and right_type == Type.INT: # FLOAT, ENTERO
+                return Type.FLOAT
+            elif left_type == Type.INT and right_type == Type.FLOAT:
+                return Type.FLOAT
+            elif left_type == Type.FLOAT and right_type == Type.FLOAT:
+                return Type.FLOAT
+            else: 
+                print("Error Sintactico en linea {}:, no se puede modular {} con {}.".format(self.line, left_type, right_type) )
+                aritmeticError = Error('No se puede aplicar modulo a {} con {}'.format(left_type, right_type), self.line, self.column)
+                Output.errorSintactico.append(aritmeticError)
 
         return None # Si llega aqui, implica que hubo un error 
 

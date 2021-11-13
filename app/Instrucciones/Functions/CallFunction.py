@@ -178,7 +178,11 @@ class CallFunction( Expresion ): # call struct y call function utilizan la misma
                 # Colocar el SP en a la posicion en donde estaba antes libre del stack 
                 static_gen.returnAmbito(ambito.size)
 
-                return ReturnCompiler( returnTemp, prototype_function.type, True)
+                
+                if( type (prototype_function.type) == str):     # El return es struct 
+                    return ReturnCompiler( returnTemp, Type.STRUCT, True, prototype_function.type)
+                else:
+                    return ReturnCompiler( returnTemp, prototype_function.type, True)
             else: 
                 errorMessage = "Error en linea {}: El numero de parametros no coincide con la funcion".format(self.line)
                 print (errorMessage)

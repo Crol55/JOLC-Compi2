@@ -66,6 +66,7 @@ class Ambito():
 
     def saveVariable_C3D(self, id_variable, tipo_variable, alcance:str, inHeap:bool, structName = '' ):
 
+        print ("variable a crear:========== ", id_variable, self.size)
         if (alcance == 'local'): # Utiliza el ambito actual..
             #print ("encontre un local")
             if id_variable in self.variables.keys():

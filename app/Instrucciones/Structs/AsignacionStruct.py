@@ -99,11 +99,16 @@ class AsignacionStruct(Instruccion):
                     if (existe_atributo): 
                         # colocar codigo 3 direcciones para modificar el valor 
 
-                        #print ("SI existeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", struct.pos)
-                        #print ("que se asignra?===========", new_value.value)
+                        print ("SI existeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", struct.pos, struct.inHeap)
+                        
                         # Donde esta el struct en el heap?
                         TEMP_pos_of_struct_in_heap = static_gen.addTemporal() 
-                        static_gen.add_exp(TEMP_pos_of_struct_in_heap, struct.pos,'','')
+
+                        if (not struct.inHeap):         # implica que hay que buscar la posicion del heap adentro del stack 
+                            static_gen.getFromStack(TEMP_pos_of_struct_in_heap, struct.pos)
+                        else:                           # Implica que si esta en el heap
+                            static_gen.add_exp(TEMP_pos_of_struct_in_heap, struct.pos,'','')
+
                         # Donde esta el atributo? 
                         static_gen.add_exp(TEMP_pos_of_struct_in_heap, TEMP_pos_of_struct_in_heap, pos_counter, '+')
                         static_gen.putIntoHeap(TEMP_pos_of_struct_in_heap, new_value.value)

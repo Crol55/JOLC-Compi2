@@ -132,7 +132,7 @@ class Print(Instruccion):
             if not resultado: 
                 return None
             
-
+            print ("resultadooooooooooooo", resultado.type, resultado.tipoCompuesto)
             if resultado.type == Type.FLOAT: 
                 self.C3D_printFloat(resultado.value)
             elif resultado.type == Type.INT: 
@@ -176,7 +176,7 @@ class Print(Instruccion):
     def C3D_printFloat(self, valor):
 
         static_generator = Generator.C3D_generator
-        static_generator.add_print('f', valor, "float64")
+        static_generator.add_print('f', valor, "")
     
     def C3D_printInteger(self, valor):
 

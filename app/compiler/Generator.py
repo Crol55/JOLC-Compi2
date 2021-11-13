@@ -1,5 +1,6 @@
 
 
+
 class Generator: 
 
     C3D_generator = None # Static variable -> Solo esta instancia existira 
@@ -22,6 +23,9 @@ class Generator:
             'printString': False, 
             'potenciaNumerica': False, 
             'potenciaString': False 
+        }
+        self.GOlangImports = {
+            'math': False
         }
 
 
@@ -61,7 +65,10 @@ class Generator:
     def getHeader(self):
         header = "" 
         # Insertar cabecera de go 
-        header += 'package main\n\n import (\n "fmt" \n)\n\n'
+        # Insertar impots 
+        
+        header += 'package main\n\n import (\n' 
+        header +=  (self.getGOlangImports() + '\n)\n\n')
         if len(self.listaTemporales):
             header += "var "
             for indice in range( len(self.listaTemporales) ):
@@ -75,6 +82,16 @@ class Generator:
         header += "\n"+self.codigo_funcionesNativas+"\n" + self.codigo_funciones+ "\n\nfunc main(){\n" + self.codigo_C3D + "\n}"
 
         return header
+
+    def getGOlangImports(self): 
+        importsTostring = '"fmt"'
+        for name in self.GOlangImports: 
+
+            state = self.GOlangImports[name] 
+            if(state == True): 
+                importsTostring += f';\n"{name}"'
+        
+        return importsTostring
 
     def add_newLine(self):
         self.insertCode("\n")
@@ -348,9 +365,12 @@ class Generator:
     # INSTRUCCIONES 
     ###################
 
-    def add_print(self, type, value, cast="int"): # Impresion nativa de GOlang 
+    def add_print(self, type, value, cast="int", tab="\t"): # Impresion nativa de GOlang 
+        
         instruccion = f'fmt.Printf("%{type}", {cast}({value}) );'
-        self.insertCode(instruccion)
+        if (cast == ""):
+            instruccion = f'fmt.Printf("%{type}", {value} );'
+        self.insertCode(instruccion,tab)
         self.add_newLine()
 
     def add_print_true(self ):
@@ -365,4 +385,10 @@ class Generator:
         self.add_print("c", 108)
         self.add_print("c", 115)
         self.add_print("c", 101)
+
+    def add_math_mod(self,result, param1, param2):
+
+        instruccion = f'{result} = math.Mod({param1},{param2});'
+        self.insertCode(instruccion)
+        self.add_newLine()
     
