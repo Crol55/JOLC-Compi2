@@ -22,7 +22,9 @@ class Generator:
         self.listaNativas = { # Se inicializan en false para no duplicar el codigo
             'printString': False, 
             'potenciaNumerica': False, 
-            'potenciaString': False 
+            'potenciaString': False, 
+            'lowercase': False, 
+            'uppercase': False, 
         }
         self.GOlangImports = {
             'math': False
@@ -306,6 +308,66 @@ class Generator:
             self.inNativas = False
      
 
+    def load_nativa_lowercase (self):
+       # Verificar que no carguemos 2 veces la funcion nativa 
+        function_name = "lowercase"
+        already_loaded = self.listaNativas[function_name]
+
+        if (not already_loaded):
+
+            self.listaNativas[function_name] = True 
+            self.inNativas = True # Para que el codigo se inserte en el string de nativas 
+
+            # set inicio de funcion 
+            self.setFunctionHeader(function_name)
+
+            # codigo interno de la funcion nativa
+            SP_index = self.addTemporal() # t0
+            self.add_exp(SP_index, 'SP', '1', '+', ' -> Base') # t0 = SP +1
+
+            # param 1 -> string
+            param1 = self.addTemporal() # BASE 
+            self.getFromStack(param1, SP_index)    # param1 = stack[t0] 
+
+            free_heap = self.addTemporal() 
+            self.add_exp(free_heap, 'H', '','')
+            char__ = self.addTemporal() 
+            # while
+            init = self.generarLabel() 
+            self.save_label(init)
+            fin = self.generarLabel() 
+
+            # iterar el string 
+            self.getFromHeap(char__, param1)
+            self.add_if(char__, '-1', '==', fin)
+
+            #Verificar que sea mayuscula 
+            LBL_no_mayuscula = self.generarLabel()
+            self.add_if(char__, '65', '<', LBL_no_mayuscula)
+            self.add_if(char__, '90', '>', LBL_no_mayuscula)
+            # Codigo para convertirlo a minuscula
+            self.add_exp(char__, char__, '32','+', "convertir a minuscula")
+            self.save_label(LBL_no_mayuscula)
+            
+            # save into a new string 
+            self.putIntoHeap('H', char__)
+            self.increaseHeapPointer()
+            # move into string 
+            self.add_exp(param1, param1, '1', '+')
+            self.add_goto(init)
+            #Fin while
+            self.save_label(fin)
+            
+            
+            # colocar fin de cadena 
+            self.putIntoHeap('H', '-1')
+            self.increaseHeapPointer() 
+
+            # return value
+            self.putIntoStack('SP', free_heap)
+
+            self.setFuntionEnd() 
+            self.inNativas = False
 
     ###################
     # STACK

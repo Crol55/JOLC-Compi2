@@ -731,7 +731,7 @@ def p_nativas(t):
                | LENGTH    LPAR expresion RPAR
                | POP       LPAR expresion RPAR
     '''
-    print (t.slice)
+    #print (t.slice)
     if len(t) == 5: # UPPERCASE, LOWERCASE, FLOATCAST, STRINGCAST, TYPEOF 
         if t.slice[1].type == 'UPPERCASE':
             t[0] = Uppercase(t[3], t.lineno(1), t.lexpos(0))
