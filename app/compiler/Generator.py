@@ -323,7 +323,7 @@ class Generator:
 
             # codigo interno de la funcion nativa
             SP_index = self.addTemporal() # t0
-            self.add_exp(SP_index, 'SP', '1', '+', ' -> Base') # t0 = SP +1
+            self.add_exp(SP_index, 'SP', '1', '+') # t0 = SP +1
 
             # param 1 -> string
             param1 = self.addTemporal() # BASE 
@@ -347,6 +347,68 @@ class Generator:
             self.add_if(char__, '90', '>', LBL_no_mayuscula)
             # Codigo para convertirlo a minuscula
             self.add_exp(char__, char__, '32','+', "convertir a minuscula")
+            self.save_label(LBL_no_mayuscula)
+            
+            # save into a new string 
+            self.putIntoHeap('H', char__)
+            self.increaseHeapPointer()
+            # move into string 
+            self.add_exp(param1, param1, '1', '+')
+            self.add_goto(init)
+            #Fin while
+            self.save_label(fin)
+            
+            
+            # colocar fin de cadena 
+            self.putIntoHeap('H', '-1')
+            self.increaseHeapPointer() 
+
+            # return value
+            self.putIntoStack('SP', free_heap)
+
+            self.setFuntionEnd() 
+            self.inNativas = False
+
+    
+    def load_nativa_uppercase (self):
+       # Verificar que no carguemos 2 veces la funcion nativa 
+        function_name = "uppercase"
+        already_loaded = self.listaNativas[function_name]
+
+        if (not already_loaded):
+
+            self.listaNativas[function_name] = True 
+            self.inNativas = True # Para que el codigo se inserte en el string de nativas 
+
+            # set inicio de funcion 
+            self.setFunctionHeader(function_name)
+
+            # codigo interno de la funcion nativa
+            SP_index = self.addTemporal() # t0
+            self.add_exp(SP_index, 'SP', '1', '+') # t0 = SP +1
+
+            # param 1 -> string
+            param1 = self.addTemporal() # BASE 
+            self.getFromStack(param1, SP_index)    # param1 = stack[t0] 
+
+            free_heap = self.addTemporal() 
+            self.add_exp(free_heap, 'H', '','')
+            char__ = self.addTemporal() 
+            # while
+            init = self.generarLabel() 
+            self.save_label(init)
+            fin = self.generarLabel() 
+
+            # iterar el string 
+            self.getFromHeap(char__, param1)
+            self.add_if(char__, '-1', '==', fin)
+
+            #Verificar que sea mayuscula 
+            LBL_no_mayuscula = self.generarLabel()
+            self.add_if(char__, '97', '<', LBL_no_mayuscula)
+            self.add_if(char__, '122', '>', LBL_no_mayuscula)
+            # Codigo para convertirlo a minuscula
+            self.add_exp(char__, char__, '32','-', "convertir a Mayuscula")
             self.save_label(LBL_no_mayuscula)
             
             # save into a new string 
@@ -454,3 +516,56 @@ class Generator:
         self.insertCode(instruccion)
         self.add_newLine()
     
+
+
+    ########################
+    # Manejo de Temporales
+    ########################
+    def addTemp(self):
+        temp = f't{self.countTemp}'
+        self.countTemp += 1
+        self.temps.append(temp)
+        self.tempsRecover[temp] = temp
+        return temp
+
+    def freeAllTemps(self):
+        self.tempsRecover = {}
+
+    def freeTemp(self, temp):
+        if(temp in self.tempsRecover):
+            self.tempsRecover.pop(temp, None)
+
+    def saveTemps(self, env):
+        size = 0
+        if len(self.tempsRecover) > 0:
+            temp = self.addTemp()
+            self.freeTemp(temp)
+
+            self.add_comment('Guardado de temporales')
+            self.add_exp(temp, 'P', env.size, '+')
+            for value in self.tempsRecover:
+                size += 1
+                self.putIntoStack(temp, value, False)
+                if size != len(self.tempsRecover):
+                    self.add_exp(temp, temp, '1', '+')
+            self.add_comment('Fin Guardado de temporales')
+        ptr = env.size
+        env.size = ptr + size
+        return ptr
+    
+    def recoverTemps(self, env, pos):
+        if len(self.tempsRecover) > 0:
+            temp = self.addTemp()
+            self.freeTemp(temp)
+
+            size = 0
+
+            self.add_comment('Recuperacion de temporales')
+            self.add_exp(temp, 'P', pos, '+')
+            for value in self.tempsRecover:
+                size += 1
+                self.getStack(value, temp)
+                if size != len(self.tempsRecover):
+                    self.add_exp(temp, temp, '1', '+')
+            env.size = pos
+            self.add_comment('Fin Recuperacion de temporales')

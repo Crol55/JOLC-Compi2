@@ -13,6 +13,7 @@ from compiler.Generator import Generator
 
 
 class Uppercase(Expresion):
+
     def __init__(self,expresion:Expresion, line, column):
         Expresion.__init__(self, line, column)
         self.expresion = expresion
@@ -28,6 +29,40 @@ class Uppercase(Expresion):
                 Error("La funcion 'uppercase' no se puede aplicar al tipo de dato: {}".format(resultado.type.name), self.line, self.column)
             ) 
         return None
+
+    
+    def compile(self, ambito):
+        
+        temp = Generator()
+        static_gen = temp.getInstance()
+        static_gen.add_comment(" Inicio - Return")
+        ### Calcular el valor
+        var_resultante:ReturnCompiler = self.expresion.compile(ambito)
+
+        ### Verificar que sea string
+        if (var_resultante.type == Type.STRING):
+            
+            # Cargar parametro string
+            temp = static_gen.addTemporal() 
+            static_gen.add_exp(temp, 'SP', ambito.size, '+') 
+            # parametro string
+            static_gen.add_exp(temp, temp, '1', '+') 
+            static_gen.putIntoStack(temp, var_resultante.value)
+
+            # Mover el stack pointer, temporalmente 
+            static_gen.newAmbito(ambito.size) 
+           
+            static_gen.load_nativa_uppercase() 
+            static_gen.callFunction('uppercase')
+            # recuperar el resultado 
+            resultado = static_gen.addTemporal() 
+            static_gen.getFromStack(resultado, 'SP')
+            # Regresar el stack pointer a donde estaba antes
+            static_gen.returnAmbito(ambito.size)
+            return ReturnCompiler(resultado, var_resultante.type, True)
+        else: 
+            pass 
+        return None 
 
 
 
